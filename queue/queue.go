@@ -20,6 +20,10 @@ type Package struct {
 	Arch    string
 }
 
+func (p *Package) Key() string {
+	return p.Name + "-" + p.Repo + "-" + p.Arch + "-" + p.Version
+}
+
 type Queue struct {
 	curPackages map[string]*Package
 	newPackages map[string]*Package
