@@ -3,26 +3,40 @@ package config
 import (
 	"encoding/json"
 	"github.com/autoabs/autoabs/errortypes"
+	"github.com/dropbox/godropbox/container/set"
 	"github.com/dropbox/godropbox/errors"
 	"io/ioutil"
 	"os"
 )
 
-const (
-	confPath          = "/etc/autoabs.json"
-	rootPathDefault   = "/autoabs"
-	serverPortDefault = 80
-	serverHostDefault = "0.0.0.0"
+var (
+	confPath           = "/etc/autoabs.json"
+	rootPathDefault    = "/autoabs"
+	serverPortDefault  = 80
+	serverHostDefault  = "0.0.0.0"
+	targetReposDefault = set.NewSet(
+		"community",
+		"core",
+		"extra",
+		"multilib",
+	)
+	targetArchsDefault = set.NewSet(
+		"x86_64",
+	)
 )
 
 var Config = &ConfigData{}
 
 type ConfigData struct {
-	path       string `json:"path"`
-	loaded     bool   `json:"-"`
-	RootPath   string `json:"root_path"`
-	ServerPort int    `json:"server_port"`
-	ServerHost string `json:"server_host"`
+	path        string   `json:"path"`
+	loaded      bool     `json:"-"`
+	RootPath    string   `json:"root_path"`
+	ServerPort  int      `json:"server_port"`
+	ServerHost  string   `json:"server_host"`
+	targetRepos []string `json:"target_repos"`
+	TargetRepos set.Set  `json:"-"`
+	targetArchs []string `json:"target_archs"`
+	TargetArchs set.Set  `json:"-"`
 }
 
 func (c *ConfigData) Load(path string) (err error) {
@@ -68,6 +82,24 @@ func (c *ConfigData) Load(path string) (err error) {
 		c.ServerHost = serverHostDefault
 	}
 
+	if len(c.targetRepos) == 0 {
+		c.TargetRepos = targetReposDefault.Copy()
+	} else {
+		c.TargetRepos = set.NewSet()
+		for _, item := range c.targetRepos {
+			c.TargetRepos.Add(item)
+		}
+	}
+
+	if len(c.targetArchs) == 0 {
+		c.TargetArchs = targetArchsDefault.Copy()
+	} else {
+		c.TargetArchs = set.NewSet()
+		for _, item := range c.targetArchs {
+			c.TargetRepos.Add(item)
+		}
+	}
+
 	c.loaded = true
 
 	return
@@ -79,6 +111,16 @@ func (c *ConfigData) Save() (err error) {
 			errors.New("config: Config file has not been loaded"),
 		}
 		return
+	}
+
+	c.targetRepos = []string{}
+	for item := range c.TargetRepos.Iter() {
+		c.targetRepos = append(c.targetRepos, item.(string))
+	}
+
+	c.targetArchs = []string{}
+	for item := range c.TargetArchs.Iter() {
+		c.targetArchs = append(c.targetArchs, item.(string))
 	}
 
 	data, err := json.Marshal(c)
