@@ -1,29 +1,12 @@
 package queue
 
 import (
-	"fmt"
+	"github.com/autoabs/autoabs/pkg"
 )
 
-type Package struct {
-	Name    string
-	Version string
-	Release string
-	Repo    string
-	Arch    string
-}
-
-func (p *Package) Key() string {
-	return p.Name + "-" + p.Repo + "-" + p.Arch + "-" + p.Version
-}
-
-func (p *Package) Print() {
-	fmt.Printf("%s %s-%s: %s:%s\n",
-		p.Name, p.Version, p.Release, p.Repo, p.Arch)
-}
-
 type Queue struct {
-	curPackages map[string]*Package
-	newPackages map[string]*Package
+	curPackages map[string]*pkg.Package
+	newPackages map[string]*pkg.Package
 }
 
 func Build() (err error) {

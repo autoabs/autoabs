@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/autoabs/autoabs/config"
 	"github.com/autoabs/autoabs/errortypes"
+	"github.com/autoabs/autoabs/pkg"
 	"github.com/autoabs/autoabs/utils"
 	"github.com/dropbox/godropbox/errors"
 	"io/ioutil"
@@ -12,8 +13,8 @@ import (
 	"strings"
 )
 
-func scanRepos(pkgName, pth string) (pkgs []*Package, err error) {
-	pkgs = []*Package{}
+func scanRepos(pkgName, pth string) (pkgs []*pkg.Package, err error) {
+	pkgs = []*pkg.Package{}
 
 	repos, err := ioutil.ReadDir(pth)
 	if err != nil {
@@ -75,7 +76,7 @@ func scanRepos(pkgName, pth string) (pkgs []*Package, err error) {
 
 		pkgInfo := strings.Split(strings.TrimSpace(string(output)), "-")
 
-		pkg := &Package{
+		pkg := &pkg.Package{
 			Name:    pkgName,
 			Version: pkgInfo[0],
 			Release: pkgInfo[1],
@@ -83,13 +84,15 @@ func scanRepos(pkgName, pth string) (pkgs []*Package, err error) {
 			Arch:    arch,
 		}
 		pkgs = append(pkgs, pkg)
+
+		pkg.Print()
 	}
 
 	return
 }
 
-func scanSource(pth string) (pkgs []*Package, err error) {
-	pkgs = []*Package{}
+func scanSource(pth string) (pkgs []*pkg.Package, err error) {
+	pkgs = []*pkg.Package{}
 
 	packages, err := ioutil.ReadDir(pth)
 	if err != nil {
@@ -130,9 +133,9 @@ func scanSource(pth string) (pkgs []*Package, err error) {
 	return
 }
 
-func getCurPackages() (pkgs []*Package, err error) {
+func getCurPackages() (pkgs []*pkg.Package, err error) {
 	pth := path.Join(config.Config.RootPath, "sources")
-	pkgs = []*Package{}
+	pkgs = []*pkg.Package{}
 
 	exists, err := utils.ExistsDir(pth)
 	if err != nil {
