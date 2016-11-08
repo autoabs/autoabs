@@ -27,3 +27,7 @@ type ParseError struct {
 type ApiError struct {
 	errors.DropboxError
 }
+
+type ExecError struct {
+	errors.DropboxError
+}
