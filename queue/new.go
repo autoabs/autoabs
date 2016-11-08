@@ -13,7 +13,7 @@ import (
 	"strings"
 )
 
-func scanRepos(pkgName, pth string) (pkgs []*pkg.Package, err error) {
+func scanNewRepos(pkgName, pth string) (pkgs []*pkg.Package, err error) {
 	pkgs = []*pkg.Package{}
 
 	repos, err := ioutil.ReadDir(pth)
@@ -91,7 +91,7 @@ func scanRepos(pkgName, pth string) (pkgs []*pkg.Package, err error) {
 	return
 }
 
-func scanSource(pth string) (pkgs []*pkg.Package, err error) {
+func scanNewSource(pth string) (pkgs []*pkg.Package, err error) {
 	pkgs = []*pkg.Package{}
 
 	packages, err := ioutil.ReadDir(pth)
@@ -121,7 +121,7 @@ func scanSource(pth string) (pkgs []*pkg.Package, err error) {
 			continue
 		}
 
-		reposPkgs, e := scanRepos(name, reposPath)
+		reposPkgs, e := scanNewRepos(name, reposPath)
 		if e != nil {
 			err = e
 			return
@@ -161,7 +161,7 @@ func getNewPackages() (pkgs []*pkg.Package, err error) {
 
 		sourcePath := path.Join(pth, entry.Name())
 
-		sourcePkgs, e := scanSource(sourcePath)
+		sourcePkgs, e := scanNewSource(sourcePath)
 		if e != nil {
 			err = e
 			return
