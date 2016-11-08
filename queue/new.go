@@ -133,7 +133,7 @@ func scanSource(pth string) (pkgs []*pkg.Package, err error) {
 	return
 }
 
-func getCurPackages() (pkgs []*pkg.Package, err error) {
+func getNewPackages() (pkgs []*pkg.Package, err error) {
 	pth := path.Join(config.Config.RootPath, "sources")
 	pkgs = []*pkg.Package{}
 

@@ -10,12 +10,12 @@ type Queue struct {
 }
 
 func Build() (err error) {
-	curPkgs, err := getCurPackages()
+	newPkgs, err := getNewPackages()
 	if err != nil {
 		return
 	}
 
-	_ = curPkgs
+	_ = newPkgs
 
 	return
 }
