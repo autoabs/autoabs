@@ -19,6 +19,6 @@ func (p *Package) Key() string {
 }
 
 func (p *Package) Print() {
-	fmt.Printf("%s %s-%s: %s %s\n",
-		p.Name, p.Version, p.Release, p.Repo, p.Arch)
+	fmt.Printf("%s %s-%s: %s %s %s\n",
+		p.Name, p.Version, p.Release, p.Repo, p.Arch, p.Path)
 }
