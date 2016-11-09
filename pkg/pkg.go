@@ -13,7 +13,7 @@ type Package struct {
 }
 
 func (p *Package) Key() string {
-	return p.Name + "-" + p.Repo + "-" + p.Arch + "-" + p.Version
+	return p.Name + "-" + p.Repo + "-" + p.Arch
 }
 
 func (p *Package) Print() {
