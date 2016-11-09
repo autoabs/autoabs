@@ -76,16 +76,16 @@ func scanNewRepos(pkgName, pth string) (pkgs []*pkg.Package, err error) {
 
 		pkgInfo := strings.Split(strings.TrimSpace(string(output)), "-")
 
-		pkg := &pkg.Package{
+		pk := &pkg.Package{
 			Name:    pkgName,
 			Version: pkgInfo[0],
 			Release: pkgInfo[1],
 			Repo:    repo,
 			Arch:    arch,
 		}
-		pkgs = append(pkgs, pkg)
+		pkgs = append(pkgs, pk)
 
-		pkg.Print()
+		pk.Print()
 	}
 
 	return
