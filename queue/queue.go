@@ -12,6 +12,7 @@ type Queue struct {
 	newPackagesKeys set.Set
 	addPackages     []*pkg.Package
 	remPackages     []*pkg.Package
+	dupPackages     []*pkg.Package
 }
 
 func (q *Queue) Build() (err error) {
@@ -21,6 +22,7 @@ func (q *Queue) Build() (err error) {
 	q.newPackagesKeys = set.NewSet()
 	q.addPackages = []*pkg.Package{}
 	q.remPackages = []*pkg.Package{}
+	q.dupPackages = []*pkg.Package{}
 
 	curPkgs, err := getCurPackages()
 	if err != nil {
@@ -30,7 +32,12 @@ func (q *Queue) Build() (err error) {
 	for _, pk := range curPkgs {
 		key := pk.Key()
 		q.curPackages[key] = pk
-		q.curPackagesKeys.Add(key)
+
+		if q.curPackagesKeys.Contains(key) {
+			q.dupPackages = append(q.dupPackages, pk)
+		} else {
+			q.curPackagesKeys.Add(key)
+		}
 	}
 
 	return
