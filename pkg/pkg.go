@@ -10,6 +10,7 @@ type Package struct {
 	Release string
 	Repo    string
 	Arch    string
+	Path    string
 }
 
 func (p *Package) Key() string {
