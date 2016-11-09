@@ -5,12 +5,13 @@ import (
 )
 
 type Package struct {
-	Name    string
-	Version string
-	Release string
-	Repo    string
-	Arch    string
-	Path    string
+	Name     string
+	Version  string
+	Release  string
+	Repo     string
+	Arch     string
+	Path     string
+	Previous *Package
 }
 
 func (p *Package) Key() string {
