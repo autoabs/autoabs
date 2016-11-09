@@ -15,7 +15,7 @@ type Queue struct {
 	dupPackages     []*pkg.Package
 }
 
-func (q *Queue) Build() (err error) {
+func (q *Queue) Queue() (err error) {
 	q.curPackages = map[string]*pkg.Package{}
 	q.curPackagesKeys = set.NewSet()
 	q.newPackages = map[string]*pkg.Package{}
