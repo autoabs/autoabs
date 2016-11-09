@@ -51,5 +51,11 @@ func (q *Queue) Build() (err error) {
 		q.newPackagesKeys.Add(key)
 	}
 
+	remPackagesKeys := q.curPackagesKeys.Copy()
+	remPackagesKeys.Subtract(q.newPackagesKeys)
+
+	addPackagesKeys := q.newPackagesKeys.Copy()
+	addPackagesKeys.Subtract(q.curPackagesKeys)
+
 	return
 }
