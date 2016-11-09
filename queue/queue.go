@@ -53,9 +53,15 @@ func (q *Queue) Build() (err error) {
 
 	remPackagesKeys := q.curPackagesKeys.Copy()
 	remPackagesKeys.Subtract(q.newPackagesKeys)
+	for key := range remPackagesKeys.Iter() {
+		q.remPackages = append(q.remPackages, q.curPackages[key.(string)])
+	}
 
 	addPackagesKeys := q.newPackagesKeys.Copy()
 	addPackagesKeys.Subtract(q.curPackagesKeys)
+	for key := range addPackagesKeys.Iter() {
+		q.addPackages = append(q.addPackages, q.newPackages[key.(string)])
+	}
 
 	return
 }
