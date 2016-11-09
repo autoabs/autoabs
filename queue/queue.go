@@ -40,5 +40,16 @@ func (q *Queue) Build() (err error) {
 		}
 	}
 
+	newPkgs, err := getNewPackages()
+	if err != nil {
+		return
+	}
+
+	for _, pk := range newPkgs {
+		key := pk.Key()
+		q.newPackages[key] = pk
+		q.newPackagesKeys.Add(key)
+	}
+
 	return
 }
