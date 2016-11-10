@@ -45,7 +45,8 @@ func scanNewRepos(pkgName, pth string) (pkgs []*pkg.Package, err error) {
 			continue
 		}
 
-		pkgBuildPath := path.Join(pth, name, "PKGBUILD")
+		sourcePath := path.Join(pth, name)
+		pkgBuildPath := path.Join(sourcePath, "PKGBUILD")
 
 		exists, e := utils.ExistsFile(pkgBuildPath)
 		if e != nil {
@@ -77,11 +78,12 @@ func scanNewRepos(pkgName, pth string) (pkgs []*pkg.Package, err error) {
 		pkgInfo := strings.Split(strings.TrimSpace(string(output)), "-")
 
 		pk := &pkg.Package{
-			Name:    pkgName,
-			Version: pkgInfo[0],
-			Release: pkgInfo[1],
-			Repo:    repo,
-			Arch:    arch,
+			Name:       pkgName,
+			Version:    pkgInfo[0],
+			Release:    pkgInfo[1],
+			Repo:       repo,
+			Arch:       arch,
+			SourcePath: sourcePath,
 		}
 		pkgs = append(pkgs, pk)
 
