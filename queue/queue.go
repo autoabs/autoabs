@@ -72,6 +72,33 @@ func (q *Queue) Scan() (err error) {
 	return
 }
 
+func (q *Queue) Queue() (err error) {
+	err = q.Scan()
+	if err != nil {
+		return
+	}
+
+	for _, pk := range q.remPackages {
+		pk.Remove()
+	}
+
+	for _, pk := range q.addPackages {
+		err = pk.QueueBuild()
+		if err != nil {
+			return
+		}
+	}
+
+	for _, pk := range q.updatePackages {
+		err = pk.QueueBuild()
+		if err != nil {
+			return
+		}
+	}
+
+	return
+}
+
 func (q *Queue) Clean() (err error) {
 	curPkgs, err := getCurPackages()
 	if err != nil {
