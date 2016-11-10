@@ -72,3 +72,23 @@ func (q *Queue) Queue() (err error) {
 
 	return
 }
+
+func (q *Queue) Clean() (err error) {
+	curPkgs, err := getCurPackages()
+	if err != nil {
+		return
+	}
+
+	for _, pk := range curPkgs {
+		newPkg, ok := q.newPackages[pk.Key()]
+		if !ok {
+			continue
+		}
+
+		if newPkg.Version != pk.Version || newPkg.Release != pk.Release {
+			pk.Remove()
+		}
+	}
+
+	return
+}
