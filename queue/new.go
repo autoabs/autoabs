@@ -77,7 +77,7 @@ func scanNewRepos(pkgName, pth string) (pkgs []*pkg.Package, err error) {
 
 		pkgInfo := strings.Split(strings.TrimSpace(string(output)), "&&")
 
-		for _, pkName := range strings.Split(pkgInfo, " ") {
+		for _, pkName := range strings.Split(pkgInfo[0], " ") {
 			pk := &pkg.Package{
 				Id:         pkgName,
 				Name:       pkName,
