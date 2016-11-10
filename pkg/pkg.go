@@ -34,22 +34,16 @@ func (p *Package) RepoPath() string {
 		fmt.Sprintf("%s.db.tar.gz", p.Repo))
 }
 
-func (p *Package) Remove() (err error) {
+func (p *Package) Remove() {
 	if p.Path == "" {
 		return
 	}
 
-	err = exec.Command(
+	exec.Command(
 		"repo-remove",
 		p.RepoPath(),
 		p.Path,
 	).Run()
-	if err != nil {
-		err = errortypes.ExecError{
-			errors.Wrapf(err, "package: Failed to remove package"),
-		}
-		return
-	}
 
 	os.Remove(p.Path)
 	os.Remove(p.Path + ".sig")
