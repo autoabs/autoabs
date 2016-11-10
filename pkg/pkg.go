@@ -92,7 +92,7 @@ func (p *Package) Build() (err error) {
 		"run",
 		"--rm",
 		"-v", tmpPath+":/pkg",
-		"builder",
+		constants.BuildImage,
 	)
 
 	stdout, err := cmd.StdoutPipe()
