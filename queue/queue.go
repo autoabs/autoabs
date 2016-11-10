@@ -58,15 +58,15 @@ func (q *Queue) Queue() (err error) {
 		q.addPackages = append(q.addPackages, q.newPackages[key.(string)])
 	}
 
-	for key, pkg := range q.curPackages {
-		prevPkg, ok := q.newPackages[key]
+	for key, pk := range q.curPackages {
+		newPkg, ok := q.newPackages[key]
 		if !ok {
 			continue
 		}
 
-		if prevPkg.Version != pkg.Version || prevPkg.Release != pkg.Release {
-			pkg.Previous = prevPkg
-			q.updatePackages = append(q.updatePackages, pkg)
+		if newPkg.Version != pk.Version || newPkg.Release != pk.Release {
+			pk.Previous = newPkg
+			q.updatePackages = append(q.updatePackages, pk)
 		}
 	}
 
