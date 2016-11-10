@@ -28,6 +28,11 @@ func scanCurPackages(repo, arch, pth string) (pkgs []*pkg.Package, err error) {
 		}
 
 		name := entry.Name()
+
+		if !strings.HasSuffix(name, "pkg.tar.xz") {
+			continue
+		}
+
 		pkgPth := path.Join(pth, name)
 
 		nameSpl := strings.Split(name, "-")
