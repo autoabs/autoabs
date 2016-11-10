@@ -18,6 +18,7 @@ import (
 )
 
 type Package struct {
+	Id         string
 	Name       string
 	Version    string
 	Release    string
@@ -48,12 +49,12 @@ func (p *Package) DatabasePath() string {
 
 func (p *Package) BuildPath() string {
 	return path.Join(config.Config.RootPath, "builds",
-		p.Name+"-"+p.Repo+"-"+p.Arch+"-"+p.Version+"-"+p.Release)
+		p.Id+"-"+p.Repo+"-"+p.Arch+"-"+p.Version+"-"+p.Release)
 }
 
 func (p *Package) TmpPath() string {
 	return path.Join(config.Config.RootPath, "tmp",
-		p.Name+"-"+p.Repo+"-"+p.Arch+"-"+p.Version+"-"+p.Release)
+		p.Id+"-"+p.Repo+"-"+p.Arch+"-"+p.Version+"-"+p.Release)
 }
 
 func (p *Package) QueueBuild() (err error) {
