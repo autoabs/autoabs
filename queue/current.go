@@ -2,6 +2,7 @@ package queue
 
 import (
 	"github.com/autoabs/autoabs/config"
+	"github.com/autoabs/autoabs/constants"
 	"github.com/autoabs/autoabs/errortypes"
 	"github.com/autoabs/autoabs/pkg"
 	"github.com/autoabs/autoabs/utils"
@@ -29,7 +30,7 @@ func scanCurPackages(repo, arch, pth string) (pkgs []*pkg.Package, err error) {
 
 		name := entry.Name()
 
-		if !strings.HasSuffix(name, "pkg.tar.xz") {
+		if !strings.HasSuffix(name, constants.PackageExt) {
 			continue
 		}
 
