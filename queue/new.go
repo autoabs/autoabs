@@ -62,7 +62,7 @@ func scanNewRepos(pkgName, pth string) (pkgs []*pkg.Package, err error) {
 			"/bin/sh",
 			"-c",
 			fmt.Sprintf(
-				`sh -c 'source "%s"; echo $pkgver-$pkgrel'`,
+				`sh -c 'source "%s"; echo ${pkgname[*]}&&$pkgver&&$pkgrel'`,
 				pkgBuildPath,
 			),
 		)
@@ -75,19 +75,22 @@ func scanNewRepos(pkgName, pth string) (pkgs []*pkg.Package, err error) {
 			return
 		}
 
-		pkgInfo := strings.Split(strings.TrimSpace(string(output)), "-")
+		pkgInfo := strings.Split(strings.TrimSpace(string(output)), "&&")
 
-		pk := &pkg.Package{
-			Name:       pkgName,
-			Version:    pkgInfo[0],
-			Release:    pkgInfo[1],
-			Repo:       repo,
-			Arch:       arch,
-			SourcePath: sourcePath,
+		for _, pkName := range strings.Split(pkgInfo, " ") {
+			pk := &pkg.Package{
+				Id:         pkgName,
+				Name:       pkName,
+				Version:    pkgInfo[1],
+				Release:    pkgInfo[2],
+				Repo:       repo,
+				Arch:       arch,
+				SourcePath: sourcePath,
+			}
+			pkgs = append(pkgs, pk)
+
+			pk.Print()
 		}
-		pkgs = append(pkgs, pk)
-
-		pk.Print()
 	}
 
 	return
