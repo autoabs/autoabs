@@ -1,14 +1,20 @@
 package pkg
 
 import (
+	"bufio"
 	"fmt"
+	"github.com/Sirupsen/logrus"
 	"github.com/autoabs/autoabs/config"
+	"github.com/autoabs/autoabs/constants"
 	"github.com/autoabs/autoabs/errortypes"
 	"github.com/autoabs/autoabs/utils"
 	"github.com/dropbox/godropbox/errors"
+	"io"
+	"io/ioutil"
 	"os"
 	"os/exec"
 	"path"
+	"strings"
 )
 
 type Package struct {
@@ -38,6 +44,152 @@ func (p *Package) RepoPath() string {
 func (p *Package) DatabasePath() string {
 	return path.Join(config.Config.RootPath, "repo", p.Repo, "os", p.Arch,
 		fmt.Sprintf("%s.db.tar.gz", p.Repo))
+}
+
+func (p *Package) BuildPath() string {
+	return path.Join(config.Config.RootPath, "builds",
+		p.Name+"-"+p.Repo+"-"+p.Arch+"-"+p.Version+"-"+p.Release)
+}
+
+func (p *Package) TmpPath() string {
+	return path.Join(config.Config.RootPath, "tmp",
+		p.Name+"-"+p.Repo+"-"+p.Arch+"-"+p.Version+"-"+p.Release)
+}
+
+func (p *Package) QueueBuild() (err error) {
+	buildPath := p.BuildPath()
+
+	err = utils.ExistsRemove(buildPath)
+	if err != nil {
+		return
+	}
+
+	err = utils.CopyAll(p.SourcePath, buildPath)
+	if err != nil {
+		return
+	}
+
+	return
+}
+
+func (p *Package) Build() (err error) {
+	buildPath := p.BuildPath()
+	tmpPath := p.TmpPath()
+
+	err = utils.ExistsRemove(tmpPath)
+	if err != nil {
+		return
+	}
+
+	err = utils.CopyAll(buildPath, tmpPath)
+	if err != nil {
+		return
+	}
+
+	cmd := exec.Command(
+		"/usr/bin/docker",
+		"run",
+		"--rm",
+		"-v", tmpPath+":/pkg",
+		"builder",
+	)
+
+	stdout, err := cmd.StdoutPipe()
+	if err != nil {
+		err = &errortypes.ExecError{
+			errors.Wrap(err, "pkg: Failed to get stdout"),
+		}
+		return
+	}
+
+	stderr, err := cmd.StderrPipe()
+	if err != nil {
+		err = &errortypes.ExecError{
+			errors.Wrap(err, "pkg: Failed to get stderr"),
+		}
+		return
+	}
+
+	go func() {
+		out := bufio.NewReader(stdout)
+		for {
+			line, _, err := out.ReadLine()
+			if err != nil {
+				if !strings.Contains(
+					err.Error(), "bad file descriptor") && err != io.EOF {
+
+					err = &errortypes.ReadError{
+						errors.Wrap(err, "profile: Failed to read stdout"),
+					}
+					logrus.WithFields(logrus.Fields{
+						"error": err,
+					}).Error("profile: Stdout error")
+				}
+
+				return
+			}
+
+			fmt.Println(string(line))
+		}
+	}()
+
+	go func() {
+		out := bufio.NewReader(stderr)
+		for {
+			line, _, err := out.ReadLine()
+			if err != nil {
+				if !strings.Contains(
+					err.Error(), "bad file descriptor") && err != io.EOF {
+
+					err = &errortypes.ReadError{
+						errors.Wrap(err, "profile: Failed to read stderr"),
+					}
+					logrus.WithFields(logrus.Fields{
+						"error": err,
+					}).Error("profile: Stderr error")
+				}
+
+				return
+			}
+
+			fmt.Println(string(line))
+		}
+	}()
+
+	err = cmd.Start()
+	if err != nil {
+		err = &errortypes.ExecError{
+			errors.Wrap(err, "pkg: Failed to build"),
+		}
+		return
+	}
+
+	err = cmd.Wait()
+	if err != nil {
+		err = &errortypes.ExecError{
+			errors.Wrap(err, "pkg: Build error"),
+		}
+		return
+	}
+
+	files, err := ioutil.ReadDir(tmpPath)
+	if err != nil {
+		err = &errortypes.ReadError{
+			errors.Wrapf(err, "pkg: Failed to read dir %s", tmpPath),
+		}
+		return
+	}
+
+	for _, file := range files {
+		if strings.HasSuffix(file.Name(), constants.PackageExt) {
+			err = p.Add(path.Join(tmpPath, file.Name()))
+			if err != nil {
+				return
+			}
+		}
+	}
+
+	return
 }
 
 func (p *Package) Add(pkgPath string) (err error) {
