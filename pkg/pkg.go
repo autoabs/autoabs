@@ -41,8 +41,8 @@ func (p *Package) Remove() {
 	}
 
 	exec.Command(
-		"repo-remove",
-		p.RepoPath(),
+		"/usr/bin/repo-remove",
+		p.DatabasePath(),
 		p.Path,
 	).Run()
 
