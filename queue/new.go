@@ -62,7 +62,7 @@ func scanNewRepos(pkgName, pth string) (pkgs []*pkg.Package, err error) {
 			"/bin/sh",
 			"-c",
 			fmt.Sprintf(
-				`sh -c 'source "%s"; echo ${pkgname[*]}:$pkgver:$pkgrel'`,
+				`source "%s"; echo ${pkgname[*]}:$pkgver:$pkgrel`,
 				pkgBuildPath,
 			),
 		)
