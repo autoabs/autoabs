@@ -15,7 +15,7 @@ type Queue struct {
 	updatePackages  []*pkg.Package
 }
 
-func (q *Queue) Queue() (err error) {
+func (q *Queue) Scan() (err error) {
 	q.curPackages = map[string]*pkg.Package{}
 	q.curPackagesKeys = set.NewSet()
 	q.newPackages = map[string]*pkg.Package{}
