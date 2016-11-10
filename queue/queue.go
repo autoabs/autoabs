@@ -65,7 +65,6 @@ func (q *Queue) Queue() (err error) {
 		}
 
 		if newPkg.Version != pk.Version || newPkg.Release != pk.Release {
-			pk.Previous = newPkg
 			q.updatePackages = append(q.updatePackages, pk)
 		}
 	}

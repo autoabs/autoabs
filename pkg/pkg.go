@@ -26,7 +26,6 @@ type Package struct {
 	Arch       string
 	Path       string
 	SourcePath string
-	Previous   *Package
 }
 
 func (p *Package) Key() string {
