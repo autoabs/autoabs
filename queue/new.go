@@ -69,7 +69,7 @@ func scanNewRepos(pkgName, pth string) (pkgs []*pkg.Package, err error) {
 		output, e := cmd.Output()
 		if e != nil {
 			err = errortypes.ExecError{
-				errors.Wrapf(err, "queue: Failed to get package version"),
+				errors.Wrapf(e, "queue: Failed to get package version"),
 			}
 			return
 		}
