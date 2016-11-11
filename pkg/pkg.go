@@ -32,6 +32,10 @@ func (p *Package) Key() string {
 	return p.Name + "-" + p.Repo + "-" + p.Arch
 }
 
+func (p *Package) IdKey() string {
+	return p.Id + "-" + p.Repo + "-" + p.Arch
+}
+
 func (p *Package) Print() {
 	fmt.Printf("%s %s-%s: %s %s %s\n",
 		p.Name, p.Version, p.Release, p.Repo, p.Arch, p.Path)
