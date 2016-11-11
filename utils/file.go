@@ -3,6 +3,7 @@ package utils
 import (
 	"github.com/autoabs/autoabs/errortypes"
 	"github.com/dropbox/godropbox/errors"
+	"io/ioutil"
 	"os"
 	"os/exec"
 )
@@ -129,6 +130,30 @@ func CopyAll(sourcePath, destPath string) (err error) {
 				sourcePath, destPath),
 		}
 		return
+	}
+
+	return
+}
+
+func ContainsDir(pth string) (hasDir bool, err error) {
+	exists, err := ExistsDir(pth)
+	if !exists {
+		return
+	}
+
+	entries, err := ioutil.ReadDir(pth)
+	if err != nil {
+		err = &errortypes.ReadError{
+			errors.Wrapf(err, "queue: Failed to read dir %s", pth),
+		}
+		return
+	}
+
+	for _, entry := range entries {
+		if entry.IsDir() {
+			hasDir = true
+			return
+		}
 	}
 
 	return
