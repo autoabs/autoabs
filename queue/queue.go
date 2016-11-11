@@ -1,8 +1,11 @@
 package queue
 
 import (
+	"github.com/autoabs/autoabs/config"
 	"github.com/autoabs/autoabs/pkg"
+	"github.com/autoabs/autoabs/utils"
 	"github.com/dropbox/godropbox/container/set"
+	"path"
 )
 
 type Queue struct {
@@ -79,10 +82,21 @@ func (q *Queue) Queue() (err error) {
 	}
 
 	for _, pk := range q.remPackages {
+		pk.Print()
 		pk.Remove()
 	}
 
+	queued := set.NewSet()
+
 	for _, pk := range q.addPackages {
+		key := pk.IdKey()
+		if queued.Contains(key) {
+			continue
+		}
+		queued.Add(key)
+
+		pk.Print()
+
 		err = pk.QueueBuild()
 		if err != nil {
 			return
@@ -90,6 +104,14 @@ func (q *Queue) Queue() (err error) {
 	}
 
 	for _, pk := range q.updatePackages {
+		key := pk.IdKey()
+		if queued.Contains(key) {
+			continue
+		}
+		queued.Add(key)
+
+		pk.Print()
+
 		err = pk.QueueBuild()
 		if err != nil {
 			return
