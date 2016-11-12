@@ -140,6 +140,11 @@ func (q *Queue) Build() (err error) {
 
 	for _, pk := range q.buildPackages {
 		pk.Print()
+
+		err = pk.Build()
+		if err != nil {
+			return
+		}
 	}
 
 	return
