@@ -101,11 +101,16 @@ func ExistsRemove(pth string) (err error) {
 }
 
 func Copy(sourcePath, destPath string) (err error) {
-	err = exec.Command(
+	cmd := exec.Command(
 		"/usr/bin/cp",
 		sourcePath,
 		destPath,
-	).Run()
+	)
+
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	err = cmd.Run()
 	if err != nil {
 		err = errortypes.ExecError{
 			errors.Wrapf(err, "package: Failed to copy %s to %s",
@@ -118,12 +123,17 @@ func Copy(sourcePath, destPath string) (err error) {
 }
 
 func CopyAll(sourcePath, destPath string) (err error) {
-	err = exec.Command(
+	cmd := exec.Command(
 		"/usr/bin/cp",
 		"-r",
 		sourcePath,
 		destPath,
-	).Run()
+	)
+
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	err = cmd.Run()
 	if err != nil {
 		err = errortypes.ExecError{
 			errors.Wrapf(err, "package: Failed to copy %s to %s",
