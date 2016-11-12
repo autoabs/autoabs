@@ -17,4 +17,9 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	err = que.Build()
+	if err != nil {
+		panic(err)
+	}
 }
