@@ -246,10 +246,19 @@ func (p *Package) Build() (err error) {
 		}
 	}
 
+	utils.ExistsRemove(buildPath)
+
 	return
 }
 
 func (p *Package) Add(pkgPath string) (err error) {
+	repoPath := p.RepoPath()
+
+	err = utils.ExistsMkdir(repoPath, 0755)
+	if err != nil {
+		return
+	}
+
 	err = utils.Copy(pkgPath, p.RepoPath())
 	if err != nil {
 		return
