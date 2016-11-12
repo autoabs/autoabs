@@ -264,11 +264,16 @@ func (p *Package) Add(pkgPath string) (err error) {
 		return
 	}
 
-	err = exec.Command(
+	cmd := exec.Command(
 		"/usr/bin/repo-add",
 		p.DatabasePath(),
 		pkgPath,
-	).Run()
+	)
+
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	err = cmd.Run()
 	if err != nil {
 		err = errortypes.ExecError{
 			errors.Wrapf(err, "package: Failed to add package"),
@@ -284,11 +289,14 @@ func (p *Package) Remove() {
 		return
 	}
 
-	exec.Command(
+	cmd := exec.Command(
 		"/usr/bin/repo-remove",
 		p.DatabasePath(),
 		p.Path,
-	).Run()
+	)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Run()
 
 	os.Remove(p.Path)
 	os.Remove(p.Path + ".sig")
