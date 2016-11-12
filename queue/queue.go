@@ -16,6 +16,7 @@ type Queue struct {
 	addPackages     []*pkg.Package
 	remPackages     []*pkg.Package
 	updatePackages  []*pkg.Package
+	buildPackages   []*pkg.Package
 }
 
 func (q *Queue) Scan() (err error) {
@@ -126,6 +127,19 @@ func (q *Queue) Queue() (err error) {
 		if err != nil {
 			return
 		}
+	}
+
+	return
+}
+
+func (q *Queue) Build() (err error) {
+	q.buildPackages, err = getBuildPackages()
+	if err != nil {
+		return
+	}
+
+	for _, pk := range q.buildPackages {
+		pk.Print()
 	}
 
 	return
