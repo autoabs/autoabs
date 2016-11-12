@@ -15,6 +15,7 @@ import (
 	"os/exec"
 	"path"
 	"strings"
+	"sync"
 )
 
 type Package struct {
@@ -65,6 +66,11 @@ func (p *Package) TmpPath() string {
 		p.Id+"-"+p.Repo+"-"+p.Arch+"-"+p.Version+"-"+p.Release)
 }
 
+func (p *Package) LogPath() string {
+	return path.Join(config.Config.RootPath, "logs",
+		p.Id+"-"+p.Repo+"-"+p.Arch+"-"+p.Version+"-"+p.Release)
+}
+
 func (p *Package) QueueBuild() (err error) {
 	buildPath := p.BuildPath()
 
@@ -84,6 +90,12 @@ func (p *Package) QueueBuild() (err error) {
 func (p *Package) Build() (err error) {
 	buildPath := p.BuildPath()
 	tmpPath := p.TmpPath()
+
+	defer utils.ExistsRemove(tmpPath)
+
+	logrus.WithFields(logrus.Fields{
+		"package": p.Id,
+	}).Info("profile: Building package")
 
 	err = utils.ExistsRemove(tmpPath)
 	if err != nil {
@@ -119,6 +131,26 @@ func (p *Package) Build() (err error) {
 		return
 	}
 
+	logPath := p.LogPath()
+	utils.ExistsRemove(logPath)
+
+	err = utils.ExistsMkdir(logPath, 0755)
+	if err != nil {
+		return
+	}
+
+	logPath = path.Join(logPath, "build.log")
+	logLock := sync.Mutex{}
+	logFile, err := os.OpenFile(logPath,
+		os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		err = &errortypes.WriteError{
+			errors.Wrapf(err, "pkg: Failed to open file %s", logPath),
+		}
+		return
+	}
+	defer logFile.Close()
+
 	go func() {
 		out := bufio.NewReader(stdout)
 		for {
@@ -138,7 +170,15 @@ func (p *Package) Build() (err error) {
 				return
 			}
 
-			fmt.Println(string(line))
+			logLock.Lock()
+			_, err = logFile.WriteString(string(line) + "\n")
+			if err != nil {
+				logrus.WithFields(logrus.Fields{
+					"error":    err,
+					"log_path": logPath,
+				}).Error("profile: Failed to write file")
+			}
+			logLock.Unlock()
 		}
 	}()
 
@@ -161,7 +201,15 @@ func (p *Package) Build() (err error) {
 				return
 			}
 
-			fmt.Println(string(line))
+			logLock.Lock()
+			_, err = logFile.WriteString(string(line) + "\n")
+			if err != nil {
+				logrus.WithFields(logrus.Fields{
+					"error":    err,
+					"log_path": logPath,
+				}).Error("profile:  Failed to write file")
+			}
+			logLock.Unlock()
 		}
 	}()
 
