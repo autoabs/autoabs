@@ -56,8 +56,6 @@ func scanCurPackages(repo, arch, pth string) (pkgs []*pkg.Package, err error) {
 			Path:    pkgPth,
 		}
 		pkgs = append(pkgs, pk)
-
-		pk.Print()
 	}
 
 	return

@@ -93,7 +93,6 @@ func (q *Queue) Queue() (err error) {
 	}
 
 	for _, pk := range q.remPackages {
-		pk.Print()
 		pk.Remove()
 	}
 
@@ -105,8 +104,6 @@ func (q *Queue) Queue() (err error) {
 			continue
 		}
 		queued.Add(key)
-
-		pk.Print()
 
 		err = pk.QueueBuild()
 		if err != nil {
@@ -120,8 +117,6 @@ func (q *Queue) Queue() (err error) {
 			continue
 		}
 		queued.Add(key)
-
-		pk.Print()
 
 		err = pk.QueueBuild()
 		if err != nil {

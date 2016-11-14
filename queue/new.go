@@ -88,8 +88,6 @@ func scanNewRepos(pkgName, pth string) (pkgs []*pkg.Package, err error) {
 				SourcePath: sourcePath,
 			}
 			pkgs = append(pkgs, pk)
-
-			pk.Print()
 		}
 	}
 
