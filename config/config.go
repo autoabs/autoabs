@@ -21,6 +21,7 @@ var (
 		"multilib",
 	)
 	targetArchsDefault = set.NewSet(
+		"any",
 		"x86_64",
 	)
 )
