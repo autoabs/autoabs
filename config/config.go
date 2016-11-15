@@ -12,7 +12,7 @@ import (
 var (
 	confPath           = "/etc/autoabs.json"
 	rootPathDefault    = "/autoabs"
-	serverPortDefault  = 80
+	serverPortDefault  = 9600
 	serverHostDefault  = "0.0.0.0"
 	targetReposDefault = set.NewSet(
 		"community",
