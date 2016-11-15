@@ -12,6 +12,7 @@ import (
 var (
 	confPath           = "/etc/autoabs.json"
 	rootPathDefault    = "/autoabs"
+	mongoUriDefault    = "mongodb://localhost:27017/autoabs"
 	serverPortDefault  = 9600
 	serverHostDefault  = "0.0.0.0"
 	targetReposDefault = set.NewSet(
@@ -32,6 +33,7 @@ type ConfigData struct {
 	path        string   `json:"path"`
 	loaded      bool     `json:"-"`
 	RootPath    string   `json:"root_path"`
+	MongoUri    string   `json:"mongo_uri"`
 	ServerPort  int      `json:"server_port"`
 	ServerHost  string   `json:"server_host"`
 	targetRepos []string `json:"target_repos"`
@@ -73,6 +75,10 @@ func (c *ConfigData) Load(path string) (err error) {
 
 	if c.RootPath == "" {
 		c.RootPath = rootPathDefault
+	}
+
+	if c.MongoUri == "" {
+		c.MongoUri = mongoUriDefault
 	}
 
 	if c.ServerPort == 0 {
