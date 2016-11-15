@@ -1,25 +1,26 @@
 package main
 
 import (
+	"flag"
+	"github.com/autoabs/autoabs/cmd"
 	"github.com/autoabs/autoabs/config"
-	"github.com/autoabs/autoabs/queue"
+	"github.com/autoabs/autoabs/requires"
 )
 
 func main() {
+	flag.Parse()
+
 	err := config.Load()
 	if err != nil {
 		panic(err)
 	}
 
-	que := &queue.Queue{}
+	requires.Init()
 
-	err = que.Queue()
-	if err != nil {
-		panic(err)
-	}
-
-	err = que.Build()
-	if err != nil {
-		panic(err)
+	switch flag.Arg(0) {
+	case "app":
+		cmd.App()
+	case "set":
+		cmd.Settings()
 	}
 }
