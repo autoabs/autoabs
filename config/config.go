@@ -3,6 +3,7 @@ package config
 import (
 	"encoding/json"
 	"github.com/autoabs/autoabs/errortypes"
+	"github.com/autoabs/autoabs/requires"
 	"github.com/dropbox/godropbox/container/set"
 	"github.com/dropbox/godropbox/errors"
 	"io/ioutil"
@@ -165,4 +166,15 @@ func Save() (err error) {
 	}
 
 	return
+}
+
+func init() {
+	module := requires.New("config")
+
+	module.Handler = func() {
+		err := Load()
+		if err != nil {
+			panic(err)
+		}
+	}
 }

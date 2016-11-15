@@ -3,17 +3,11 @@ package main
 import (
 	"flag"
 	"github.com/autoabs/autoabs/cmd"
-	"github.com/autoabs/autoabs/config"
 	"github.com/autoabs/autoabs/requires"
 )
 
 func main() {
 	flag.Parse()
-
-	err := config.Load()
-	if err != nil {
-		panic(err)
-	}
 
 	requires.Init()
 
