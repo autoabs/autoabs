@@ -19,8 +19,8 @@ import (
 )
 
 type Package struct {
-	Id         string
 	Name       string
+	SubName    string
 	Version    string
 	Release    string
 	Repo       string
@@ -30,16 +30,16 @@ type Package struct {
 }
 
 func (p *Package) Key() string {
-	return p.Name + "-" + p.Repo + "-" + p.Arch
+	return p.SubName + "-" + p.Repo + "-" + p.Arch
 }
 
 func (p *Package) IdKey() string {
-	return p.Id + "-" + p.Repo + "-" + p.Arch
+	return p.Name + "-" + p.Repo + "-" + p.Arch
 }
 
 func (p *Package) Print() {
-	fmt.Printf("Id: %s\n", p.Id)
-	fmt.Printf("  Name: %s\n", p.Name)
+	fmt.Printf("Id: %s\n", p.Name)
+	fmt.Printf("  Name: %s\n", p.SubName)
 	fmt.Printf("  Version: %s\n", p.Version)
 	fmt.Printf("  Release: %s\n", p.Release)
 	fmt.Printf("  Repo: %s\n", p.Repo)
@@ -94,7 +94,7 @@ func (p *Package) Build() (err error) {
 	defer utils.ExistsRemove(tmpPath)
 
 	logrus.WithFields(logrus.Fields{
-		"package": p.Id,
+		"package": p.Name,
 	}).Info("profile: Building package")
 
 	err = utils.ExistsRemove(tmpPath)
