@@ -8,8 +8,8 @@ import (
 type Build struct {
 	Id          bson.ObjectId   `bson:"_id"`
 	Name        string          `bson:"name"`
-	Start       time.Time       `bson:"start"`
-	Stop        time.Time       `bson:"stop"`
+	Start       time.Time       `bson:"start,omitempty"`
+	Stop        time.Time       `bson:"stop,omitempty"`
 	State       string          `bson:"state"`
 	Version     string          `bson:"version"`
 	Release     string          `bson:"release"`
