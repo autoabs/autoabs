@@ -1,11 +1,8 @@
 package queue
 
 import (
-	"github.com/autoabs/autoabs/config"
 	"github.com/autoabs/autoabs/pkg"
-	"github.com/autoabs/autoabs/utils"
 	"github.com/dropbox/godropbox/container/set"
-	"path"
 )
 
 type Queue struct {
@@ -77,16 +74,6 @@ func (q *Queue) Scan() (err error) {
 }
 
 func (q *Queue) Queue() (err error) {
-	hasDir, err := utils.ContainsDir(
-		path.Join(config.Config.RootPath, "builds"))
-	if err != nil {
-		return
-	}
-
-	if hasDir {
-		return
-	}
-
 	err = q.Scan()
 	if err != nil {
 		return
