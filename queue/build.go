@@ -39,18 +39,18 @@ func getBuildPackages() (pkgs []*pkg.Package, err error) {
 
 		name := entry.Name()
 		nameSpl := strings.Split(name, "-")
-		len := len(nameSpl)
+		ln := len(nameSpl)
 
-		if len < 4 {
+		if ln < 4 {
 			continue
 		}
 
 		pk := &pkg.Package{
-			Id:      strings.Join(nameSpl[:len-4], "-"),
-			Version: nameSpl[len-2],
-			Release: nameSpl[len-1],
-			Repo:    nameSpl[len-4],
-			Arch:    nameSpl[len-3],
+			Name:    strings.Join(nameSpl[:ln-4], "-"),
+			Version: nameSpl[ln-2],
+			Release: nameSpl[ln-1],
+			Repo:    nameSpl[ln-4],
+			Arch:    nameSpl[ln-3],
 		}
 
 		pkgs = append(pkgs, pk)

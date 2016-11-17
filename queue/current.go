@@ -37,20 +37,20 @@ func scanCurPackages(repo, arch, pth string) (pkgs []*pkg.Package, err error) {
 		pkgPth := path.Join(pth, name)
 
 		nameSpl := strings.Split(name, "-")
-		len := len(nameSpl)
+		ln := len(nameSpl)
 
-		if len < 4 {
+		if ln < 4 {
 			continue
 		}
 
-		if arch != strings.Split(nameSpl[len-1], ".")[0] {
+		if arch != strings.Split(nameSpl[ln-1], ".")[0] {
 			continue
 		}
 
 		pk := &pkg.Package{
-			SubName: strings.Join(nameSpl[:len-3], "-"),
-			Version: nameSpl[len-3],
-			Release: nameSpl[len-2],
+			SubName: strings.Join(nameSpl[:ln-3], "-"),
+			Version: nameSpl[ln-3],
+			Release: nameSpl[ln-2],
 			Repo:    repo,
 			Arch:    arch,
 			Path:    pkgPth,
