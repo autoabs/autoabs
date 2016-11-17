@@ -146,6 +146,24 @@ func addIndexes() (err error) {
 	db := GetDatabase()
 	defer db.Close()
 
+	coll := db.Builds()
+	err = coll.EnsureIndex(mgo.Index{
+		Key: []string{
+			"name",
+			"version",
+			"release",
+			"repo",
+			"arch",
+		},
+		Background: true,
+	})
+	if err != nil {
+		err = &IndexError{
+			errors.Wrap(err, "database: Index error"),
+		}
+		return
+	}
+
 	return
 }
 
