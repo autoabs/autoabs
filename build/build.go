@@ -16,5 +16,5 @@ type Build struct {
 	Repo        string          `bson:"core"`
 	Arch        string          `bson:"arch"`
 	PkgIds      []bson.ObjectId `bson:"pkg_ids"`
-	PkgBuildIds []bson.ObjectId `bson:"pkg_ids"`
+	PkgBuildIds []bson.ObjectId `bson:"pkg_build_ids"`
 }
