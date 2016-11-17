@@ -1,19 +1,24 @@
 package pkg
 
 import (
+	"archive/tar"
 	"bufio"
 	"fmt"
 	"github.com/Sirupsen/logrus"
+	"github.com/autoabs/autoabs/build"
 	"github.com/autoabs/autoabs/config"
 	"github.com/autoabs/autoabs/constants"
+	"github.com/autoabs/autoabs/database"
 	"github.com/autoabs/autoabs/errortypes"
 	"github.com/autoabs/autoabs/utils"
 	"github.com/dropbox/godropbox/errors"
+	"gopkg.in/mgo.v2/bson"
 	"io"
 	"io/ioutil"
 	"os"
 	"os/exec"
 	"path"
+	"path/filepath"
 	"strings"
 	"sync"
 )
@@ -72,15 +77,119 @@ func (p *Package) LogPath() string {
 }
 
 func (p *Package) QueueBuild() (err error) {
-	buildPath := p.BuildPath()
+	db := database.GetDatabase()
+	defer db.Close()
 
-	err = utils.ExistsRemove(buildPath)
+	coll := db.Builds()
+	gfs := db.PkgBuildGrid()
+	_ = coll
+
+	gf, err := gfs.Create("pkgbuild.tar")
 	if err != nil {
+		err = database.ParseError(err)
 		return
 	}
 
-	err = utils.CopyAll(p.SourcePath, buildPath)
+	gf.SetContentType("application/x-tar")
+	gfId := gf.Id().(bson.ObjectId)
+
+	bild := &build.Build{
+		Id:      bson.NewObjectId(),
+		Name:    p.Name,
+		State:   "pending",
+		Version: p.Version,
+		Release: p.Release,
+		Repo:    p.Repo,
+		Arch:    p.Arch,
+		PkgIds:  []bson.ObjectId{},
+		PkgBuildIds: []bson.ObjectId{
+			gfId,
+		},
+	}
+
+	resp, err := coll.Upsert(&bson.M{
+		"name":    p.Name,
+		"version": p.Version,
+		"release": p.Release,
+		"repo":    p.Repo,
+		"arch":    p.Arch,
+	}, &bson.M{
+		"$setOnInsert": bild,
+	})
 	if err != nil {
+		err = database.ParseError(err)
+		return
+	}
+
+	if resp.Matched != 0 {
+		return
+	}
+
+	arc := tar.NewWriter(gf)
+
+	ln := len(p.SourcePath) + 1
+	err = filepath.Walk(p.SourcePath, func(path string,
+		info os.FileInfo, err error) (e error) {
+
+		if info.IsDir() {
+			return
+		}
+
+		if p.SourcePath+"/" != path[:ln] {
+			return
+		}
+
+		name := path[ln:]
+
+		hdr := &tar.Header{
+			Name: name,
+			Mode: int64(info.Mode()),
+			Size: info.Size(),
+		}
+
+		e = arc.WriteHeader(hdr)
+		if e != nil {
+			e = &errortypes.WriteError{
+				errors.Wrap(e, "pkg: Failed to write tar header"),
+			}
+			return
+		}
+
+		file, e := os.Open(path)
+		if e != nil {
+			e = &errortypes.ReadError{
+				errors.Wrap(e, "pkg: Failed to open source file"),
+			}
+			return
+		}
+		defer file.Close()
+
+		_, e = io.Copy(arc, file)
+		if e != nil {
+			e = &errortypes.WriteError{
+				errors.Wrap(e, "pkg: Failed to read source file"),
+			}
+			return
+		}
+
+		println(path)
+
+		return
+	})
+
+	err = arc.Close()
+	if err != nil {
+		err = &errortypes.WriteError{
+			errors.Wrap(err, "pkg: Failed to close tar file"),
+		}
+		return
+	}
+
+	err = gf.Close()
+	if err != nil {
+		err = &errortypes.WriteError{
+			errors.Wrap(err, "pkg: Failed to close grid file"),
+		}
 		return
 	}
 
