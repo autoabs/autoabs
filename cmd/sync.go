@@ -1,6 +1,8 @@
 package cmd
 
-import "github.com/autoabs/autoabs/queue"
+import (
+	"github.com/autoabs/autoabs/queue"
+)
 
 func Sync() {
 	que := queue.Queue{}
