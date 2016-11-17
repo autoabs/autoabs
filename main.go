@@ -16,5 +16,7 @@ func main() {
 		cmd.App()
 	case "set":
 		cmd.Settings()
+	case "sync":
+		cmd.Sync()
 	}
 }
