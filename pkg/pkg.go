@@ -58,17 +58,17 @@ func (p *Package) DatabasePath() string {
 
 func (p *Package) BuildPath() string {
 	return path.Join(config.Config.RootPath, "builds",
-		p.Id+"-"+p.Repo+"-"+p.Arch+"-"+p.Version+"-"+p.Release)
+		p.Name+"-"+p.Repo+"-"+p.Arch+"-"+p.Version+"-"+p.Release)
 }
 
 func (p *Package) TmpPath() string {
 	return path.Join(config.Config.RootPath, "tmp",
-		p.Id+"-"+p.Repo+"-"+p.Arch+"-"+p.Version+"-"+p.Release)
+		p.Name+"-"+p.Repo+"-"+p.Arch+"-"+p.Version+"-"+p.Release)
 }
 
 func (p *Package) LogPath() string {
 	return path.Join(config.Config.RootPath, "logs",
-		p.Id+"-"+p.Repo+"-"+p.Arch+"-"+p.Version+"-"+p.Release)
+		p.Name+"-"+p.Repo+"-"+p.Arch+"-"+p.Version+"-"+p.Release)
 }
 
 func (p *Package) QueueBuild() (err error) {
