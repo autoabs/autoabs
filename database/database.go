@@ -46,6 +46,14 @@ func (d *Database) Builds() (coll *Collection) {
 	return
 }
 
+func (d *Database) PkgGrid() *mgo.GridFS {
+	return d.database.GridFS("pkg")
+}
+
+func (d *Database) PkgBuildGrid() *mgo.GridFS {
+	return d.database.GridFS("pkg_build")
+}
+
 func Connect() (err error) {
 	mgoUrl, err := url.Parse(config.Config.MongoUri)
 	if err != nil {
