@@ -93,17 +93,15 @@ func (p *Package) QueueBuild() (err error) {
 	gfId := gf.Id().(bson.ObjectId)
 
 	bild := &build.Build{
-		Id:      bson.NewObjectId(),
-		Name:    p.Name,
-		State:   "pending",
-		Version: p.Version,
-		Release: p.Release,
-		Repo:    p.Repo,
-		Arch:    p.Arch,
-		PkgIds:  []bson.ObjectId{},
-		PkgBuildIds: []bson.ObjectId{
-			gfId,
-		},
+		Id:         bson.NewObjectId(),
+		Name:       p.Name,
+		State:      "pending",
+		Version:    p.Version,
+		Release:    p.Release,
+		Repo:       p.Repo,
+		Arch:       p.Arch,
+		PkgIds:     []bson.ObjectId{},
+		PkgBuildId: gfId,
 	}
 
 	resp, err := coll.Upsert(&bson.M{
