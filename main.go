@@ -18,5 +18,7 @@ func main() {
 		cmd.Settings()
 	case "sync":
 		cmd.Sync()
+	case "build":
+		cmd.Build()
 	}
 }
