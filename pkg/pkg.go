@@ -148,8 +148,6 @@ func (p *Package) QueueBuild() (err error) {
 			return
 		}
 
-		println(path)
-
 		return
 	})
 
