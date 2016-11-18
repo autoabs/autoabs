@@ -136,6 +136,11 @@ func (q *Queue) Build() (err error) {
 }
 
 func (q *Queue) Clean() (err error) {
+	err = q.Scan()
+	if err != nil {
+		return
+	}
+
 	curPkgs, err := getCurPackages()
 	if err != nil {
 		return
