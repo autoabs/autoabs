@@ -2,15 +2,23 @@ package build
 
 import (
 	"archive/tar"
+	"bufio"
+	"fmt"
+	"github.com/Sirupsen/logrus"
 	"github.com/autoabs/autoabs/config"
+	"github.com/autoabs/autoabs/constants"
 	"github.com/autoabs/autoabs/database"
 	"github.com/autoabs/autoabs/errortypes"
 	"github.com/autoabs/autoabs/utils"
+	"github.com/dropbox/godropbox/container/set"
 	"github.com/dropbox/godropbox/errors"
 	"gopkg.in/mgo.v2/bson"
 	"io"
+	"io/ioutil"
 	"os"
+	"os/exec"
 	"path"
+	"strings"
 	"time"
 )
 
@@ -88,11 +96,247 @@ func (b *Build) extract(db *database.Database) (err error) {
 	return
 }
 
-func (b *Build) Build(db *database.Database) (err error) {
+func (b *Build) addPkg(db *database.Database, pkgPath string) (err error) {
+	gfs := db.PkgGrid()
+	coll := db.Builds()
+
+	_, name := path.Split(pkgPath)
+
+	gf, err := gfs.Create(name)
+	if err != nil {
+		err = database.ParseError(err)
+		return
+	}
+	gfId := gf.Id()
+
+	file, e := os.Open(pkgPath)
+	if e != nil {
+		e = &errortypes.ReadError{
+			errors.Wrap(e, "build: Failed to open build file"),
+		}
+		return
+	}
+	defer file.Close()
+
+	_, e = io.Copy(gf, file)
+	if e != nil {
+		e = &errortypes.WriteError{
+			errors.Wrap(e, "build: Failed to read source file"),
+		}
+		return
+	}
+
+	err = gf.Close()
+	if err != nil {
+		err = &errortypes.WriteError{
+			errors.Wrap(err, "build: Failed to close grid file"),
+		}
+		return
+	}
+
+	err = coll.UpdateId(b.Id, &bson.M{
+		"$push": &bson.M{
+			"pkg_ids": gfId,
+		},
+	})
+	if err != nil {
+		err = database.ParseError(err)
+		logrus.WithFields(logrus.Fields{
+			"error": err,
+		}).Error("build: Failed to add pkg id")
+		return
+	}
+
+	return
+}
+
+func (b *Build) build(db *database.Database) (err error) {
+	coll := db.Builds()
+	tmpPath := b.tmpPath()
+
+	err = utils.ExistsRemove(tmpPath)
+	if err != nil {
+		return
+	}
+
+	defer utils.ExistsRemove(tmpPath)
+
 	err = b.extract(db)
 	if err != nil {
 		return
 	}
+
+	cmd := exec.Command(
+		"/usr/bin/docker",
+		"run",
+		"--rm",
+		"-v", tmpPath+":/pkg",
+		constants.BuildImage,
+	)
+
+	stdout, err := cmd.StdoutPipe()
+	if err != nil {
+		err = &errortypes.ExecError{
+			errors.Wrap(err, "build: Failed to get stdout"),
+		}
+		return
+	}
+
+	stderr, err := cmd.StderrPipe()
+	if err != nil {
+		err = &errortypes.ExecError{
+			errors.Wrap(err, "build: Failed to get stderr"),
+		}
+		return
+	}
+
+	go func() {
+		defer stdout.Close()
+
+		out := bufio.NewReader(stdout)
+		for {
+			line, _, err := out.ReadLine()
+			if err != nil {
+				if !strings.Contains(
+					err.Error(), "bad file descriptor") && err != io.EOF {
+
+					err = &errortypes.ReadError{
+						errors.Wrap(err, "build: Failed to read stdout"),
+					}
+					logrus.WithFields(logrus.Fields{
+						"error": err,
+					}).Error("build: Stdout error")
+				}
+
+				return
+			}
+
+			fmt.Println(string(line))
+
+			err = coll.UpdateId(b.Id, &bson.M{
+				"$push": &bson.M{
+					"log": string(line),
+				},
+			})
+			if err != nil {
+				err = database.ParseError(err)
+				logrus.WithFields(logrus.Fields{
+					"error": err,
+				}).Error("build: Stdout push error")
+			}
+		}
+	}()
+
+	go func() {
+		defer stderr.Close()
+
+		out := bufio.NewReader(stderr)
+		for {
+			line, _, err := out.ReadLine()
+			if err != nil {
+				if !strings.Contains(
+					err.Error(), "bad file descriptor") && err != io.EOF {
+
+					err = &errortypes.ReadError{
+						errors.Wrap(err, "build: Failed to read stderr"),
+					}
+					logrus.WithFields(logrus.Fields{
+						"error": err,
+					}).Error("build: Stderr error")
+				}
+
+				return
+			}
+
+			fmt.Println(string(line))
+
+			err = coll.UpdateId(b.Id, &bson.M{
+				"$push": &bson.M{
+					"log": string(line),
+				},
+			})
+			if err != nil {
+				err = database.ParseError(err)
+				logrus.WithFields(logrus.Fields{
+					"error": err,
+				}).Error("build: Stderr push error")
+			}
+		}
+	}()
+
+	err = cmd.Start()
+	if err != nil {
+		err = &errortypes.ExecError{
+			errors.Wrap(err, "build: Failed to build"),
+		}
+		return
+	}
+
+	err = cmd.Wait()
+	if err != nil {
+		err = &errortypes.ExecError{
+			errors.Wrap(err, "build: Build error"),
+		}
+		return
+	}
+
+	files, err := ioutil.ReadDir(tmpPath)
+	if err != nil {
+		err = &errortypes.ReadError{
+			errors.Wrapf(err, "build: Failed to read dir %s", tmpPath),
+		}
+		return
+	}
+
+	for _, file := range files {
+		if strings.HasSuffix(file.Name(), constants.PackageExt) {
+			err = b.addPkg(db, path.Join(tmpPath, file.Name()))
+			if err != nil {
+				return
+			}
+		}
+	}
+
+	return
+}
+
+func (b *Build) Build(db *database.Database) (err error) {
+	coll := db.Builds()
+
+	b.State = "building"
+	err = coll.Update(&bson.M{
+		"_id":   b.Id,
+		"state": "pending",
+	}, &bson.M{
+		"$set": &bson.M{
+			"state": "building",
+		},
+	})
+	if err != nil {
+		err = database.ParseError(err)
+
+		switch err.(type) {
+		case *database.NotFoundError:
+			err = nil
+		}
+
+		return
+	}
+
+	err = b.build(db)
+	if err != nil {
+		logrus.WithFields(logrus.Fields{
+			"error": err,
+		}).Error("build: Build failed")
+
+		b.State = "failed"
+		coll.CommitFields(b.Id, b, set.NewSet("state"))
+
+		return
+	}
+
+	b.State = "completed"
+	coll.CommitFields(b.Id, b, set.NewSet("state"))
 
 	return
 }
