@@ -82,7 +82,6 @@ func (p *Package) QueueBuild() (err error) {
 
 	coll := db.Builds()
 	gfs := db.PkgBuildGrid()
-	_ = coll
 
 	gf, err := gfs.Create("pkgbuild.tar")
 	if err != nil {
