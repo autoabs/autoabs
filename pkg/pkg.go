@@ -42,16 +42,6 @@ func (p *Package) IdKey() string {
 	return p.Name + "-" + p.Repo + "-" + p.Arch
 }
 
-func (p *Package) Print() {
-	fmt.Printf("Id: %s\n", p.Name)
-	fmt.Printf("  Name: %s\n", p.SubName)
-	fmt.Printf("  Version: %s\n", p.Version)
-	fmt.Printf("  Release: %s\n", p.Release)
-	fmt.Printf("  Repo: %s\n", p.Repo)
-	fmt.Printf("  Arch: %s\n", p.Arch)
-	fmt.Printf("  Path: %s\n", p.Path)
-}
-
 func (p *Package) RepoPath() string {
 	return path.Join(config.Config.RootPath, "repo", p.Repo, "os", p.Arch)
 }
