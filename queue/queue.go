@@ -1,6 +1,8 @@
 package queue
 
 import (
+	"github.com/autoabs/autoabs/build"
+	"github.com/autoabs/autoabs/database"
 	"github.com/autoabs/autoabs/pkg"
 	"github.com/dropbox/godropbox/container/set"
 )
@@ -115,13 +117,16 @@ func (q *Queue) Queue() (err error) {
 }
 
 func (q *Queue) Build() (err error) {
-	q.buildPackages, err = getBuildPackages()
+	db := database.GetDatabase()
+	defer db.Close()
+
+	builds, err := build.GetQueuedBuilds(db)
 	if err != nil {
 		return
 	}
 
-	for _, pk := range q.buildPackages {
-		err = pk.Build()
+	for _, bild := range builds {
+		err = bild.Build(db)
 		if err != nil {
 			return
 		}
