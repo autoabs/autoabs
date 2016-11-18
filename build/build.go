@@ -62,7 +62,7 @@ func (b *Build) extract(db *database.Database) (err error) {
 		pth := path.Join(tmpPath, hdr.Name)
 		dirPth := path.Dir(pth)
 
-		err = utils.ExistsMakeDir(dirPth)
+		err = utils.ExistsMkdir(dirPth, 0700)
 		if err != nil {
 			return
 		}
