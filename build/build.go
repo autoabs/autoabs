@@ -24,6 +24,7 @@ type Build struct {
 	Release    string          `bson:"release"`
 	Repo       string          `bson:"core"`
 	Arch       string          `bson:"arch"`
+	Log        []string        `bson:"log,omitempty"`
 	PkgIds     []bson.ObjectId `bson:"pkg_ids"`
 	PkgBuildId bson.ObjectId   `bson:"pkg_build_id"`
 }
