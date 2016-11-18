@@ -7,12 +7,7 @@ import (
 func Sync() {
 	que := queue.Queue{}
 
-	err := que.Scan()
-	if err != nil {
-		panic(err)
-	}
-
-	err = que.Queue()
+	err := que.Queue()
 	if err != nil {
 		panic(err)
 	}
