@@ -338,7 +338,8 @@ func (b *Build) Build(db *database.Database) (err error) {
 	}
 
 	b.State = "completed"
-	coll.CommitFields(b.Id, b, set.NewSet("state"))
+	b.Stop = time.Now()
+	coll.CommitFields(b.Id, b, set.NewSet("state", "stop"))
 
 	return
 }
