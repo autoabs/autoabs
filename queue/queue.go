@@ -94,7 +94,7 @@ func (q *Queue) Queue() (err error) {
 		}
 		queued.Add(key)
 
-		err = pk.QueueBuild()
+		err = pk.QueueBuild(false)
 		if err != nil {
 			return
 		}
@@ -107,7 +107,7 @@ func (q *Queue) Queue() (err error) {
 		}
 		queued.Add(key)
 
-		err = pk.QueueBuild()
+		err = pk.QueueBuild(false)
 		if err != nil {
 			return
 		}

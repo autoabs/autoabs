@@ -55,7 +55,7 @@ func (p *Package) LogPath() string {
 		p.Name+"-"+p.Repo+"-"+p.Arch+"-"+p.Version+"-"+p.Release)
 }
 
-func (p *Package) QueueBuild() (err error) {
+func (p *Package) QueueBuild(force bool) (err error) {
 	db := database.GetDatabase()
 	defer db.Close()
 
@@ -83,22 +83,30 @@ func (p *Package) QueueBuild() (err error) {
 		PkgBuildId: gfId,
 	}
 
-	resp, err := coll.Upsert(&bson.M{
-		"name":    p.Name,
-		"version": p.Version,
-		"release": p.Release,
-		"repo":    p.Repo,
-		"arch":    p.Arch,
-	}, &bson.M{
-		"$setOnInsert": bild,
-	})
-	if err != nil {
-		err = database.ParseError(err)
-		return
-	}
+	if force {
+		err = coll.Insert(bild)
+		if err != nil {
+			err = database.ParseError(err)
+			return
+		}
+	} else {
+		resp, err := coll.Upsert(&bson.M{
+			"name":    p.Name,
+			"version": p.Version,
+			"release": p.Release,
+			"repo":    p.Repo,
+			"arch":    p.Arch,
+		}, &bson.M{
+			"$setOnInsert": bild,
+		})
+		if err != nil {
+			err = database.ParseError(err)
+			return
+		}
 
-	if resp.Matched != 0 {
-		return
+		if resp.Matched != 0 {
+			return
+		}
 	}
 
 	arc := tar.NewWriter(gf)
