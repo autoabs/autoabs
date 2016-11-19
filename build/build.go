@@ -310,6 +310,7 @@ func (b *Build) Build(db *database.Database) (err error) {
 	}, &bson.M{
 		"$set": &bson.M{
 			"state": "building",
+			"start": time.Now(),
 		},
 	})
 	if err != nil {
@@ -330,7 +331,8 @@ func (b *Build) Build(db *database.Database) (err error) {
 		}).Error("build: Build failed")
 
 		b.State = "failed"
-		coll.CommitFields(b.Id, b, set.NewSet("state"))
+		b.Stop = time.Now()
+		coll.CommitFields(b.Id, b, set.NewSet("state", "stop"))
 
 		return
 	}
