@@ -26,6 +26,7 @@ type ConfigData struct {
 	MongoUri   string `json:"mongo_uri"`
 	ServerPort int    `json:"server_port"`
 	ServerHost string `json:"server_host"`
+	SigKeyPath string `json:"sig_key_path"`
 }
 
 func (c *ConfigData) Load(path string) (err error) {
