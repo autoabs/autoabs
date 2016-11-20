@@ -9,6 +9,7 @@ import (
 	"github.com/autoabs/autoabs/constants"
 	"github.com/autoabs/autoabs/database"
 	"github.com/autoabs/autoabs/errortypes"
+	"github.com/autoabs/autoabs/signing"
 	"github.com/autoabs/autoabs/utils"
 	"github.com/dropbox/godropbox/container/set"
 	"github.com/dropbox/godropbox/errors"
@@ -96,7 +97,7 @@ func (b *Build) extract(db *database.Database) (err error) {
 	return
 }
 
-func (b *Build) addPkg(db *database.Database, pkgPath string) (err error) {
+func (b *Build) addFile(db *database.Database, pkgPath string) (err error) {
 	gfs := db.PkgGrid()
 	coll := db.Builds()
 
@@ -290,9 +291,23 @@ func (b *Build) build(db *database.Database) (err error) {
 
 	for _, file := range files {
 		if strings.HasSuffix(file.Name(), constants.PackageExt) {
-			err = b.addPkg(db, path.Join(tmpPath, file.Name()))
+			pkgPath := path.Join(tmpPath, file.Name())
+
+			err = b.addFile(db, pkgPath)
 			if err != nil {
 				return
+			}
+
+			if config.Config.SigKeyName != "" {
+				err = signing.SignPackage(pkgPath)
+				if err != nil {
+					return
+				}
+
+				err = b.addFile(db, pkgPath+".sig")
+				if err != nil {
+					return
+				}
 			}
 		}
 	}
