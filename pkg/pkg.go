@@ -90,7 +90,7 @@ func (p *Package) QueueBuild(force bool) (err error) {
 			return
 		}
 	} else {
-		resp, err := coll.Upsert(&bson.M{
+		resp, e := coll.Upsert(&bson.M{
 			"name":    p.Name,
 			"version": p.Version,
 			"release": p.Release,
@@ -99,8 +99,8 @@ func (p *Package) QueueBuild(force bool) (err error) {
 		}, &bson.M{
 			"$setOnInsert": bild,
 		})
-		if err != nil {
-			err = database.ParseError(err)
+		if e != nil {
+			err = database.ParseError(e)
 			return
 		}
 
