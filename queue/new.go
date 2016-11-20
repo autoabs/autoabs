@@ -5,6 +5,7 @@ import (
 	"github.com/autoabs/autoabs/config"
 	"github.com/autoabs/autoabs/errortypes"
 	"github.com/autoabs/autoabs/pkg"
+	"github.com/autoabs/autoabs/settings"
 	"github.com/autoabs/autoabs/utils"
 	"github.com/dropbox/godropbox/errors"
 	"io/ioutil"
@@ -39,9 +40,7 @@ func scanNewRepos(pkgName, pth string) (pkgs []*pkg.Package, err error) {
 		repo := split[0]
 		arch := split[1]
 
-		if !config.Config.TargetRepos.Contains(repo) ||
-			!config.Config.TargetArchs.Contains(arch) {
-
+		if !settings.System.HasRepo(repo) || !settings.System.HasArch(arch) {
 			continue
 		}
 
