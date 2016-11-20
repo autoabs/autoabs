@@ -20,5 +20,7 @@ func main() {
 		cmd.Sync()
 	case "build":
 		cmd.Build()
+	case "genkey":
+		cmd.GenKey()
 	}
 }
