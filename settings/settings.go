@@ -12,6 +12,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 	"reflect"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -142,6 +143,40 @@ func setDefaults(obj interface{}) {
 			}
 
 			fld.SetString(tag)
+		case reflect.Slice:
+			if fld.Len() != 0 {
+				break
+			}
+
+			sliceType := reflect.TypeOf(fld.Interface()).Elem()
+			vals := strings.Split(tag, ",")
+			n := len(vals)
+			slice := reflect.MakeSlice(reflect.SliceOf(sliceType), n, n)
+
+			switch sliceType.Kind() {
+			case reflect.Bool:
+				for i, val := range vals {
+					parVal, err := strconv.ParseBool(val)
+					if err != nil {
+						panic(err)
+					}
+					slice.Index(i).SetBool(parVal)
+				}
+			case reflect.Int:
+				for i, val := range vals {
+					parVal, err := strconv.Atoi(val)
+					if err != nil {
+						panic(err)
+					}
+					slice.Index(i).SetInt(int64(parVal))
+				}
+			case reflect.String:
+				for i, val := range vals {
+					slice.Index(i).SetString(val)
+				}
+			}
+
+			fld.Set(slice)
 		}
 	}
 
