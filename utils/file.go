@@ -100,6 +100,30 @@ func ExistsRemove(pth string) (err error) {
 	return
 }
 
+func Remove(path string) (err error) {
+	err = os.Remove(path)
+	if err != nil {
+		err = &errortypes.WriteError{
+			errors.Wrapf(err, "utils: Failed to remove '%s'", path),
+		}
+		return
+	}
+
+	return
+}
+
+func RemoveAll(path string) (err error) {
+	err = os.RemoveAll(path)
+	if err != nil {
+		err = &errortypes.WriteError{
+			errors.Wrapf(err, "utils: Failed to remove '%s'", path),
+		}
+		return
+	}
+
+	return
+}
+
 func Copy(sourcePath, destPath string) (err error) {
 	cmd := exec.Command(
 		"/usr/bin/cp",
@@ -164,6 +188,36 @@ func ContainsDir(pth string) (hasDir bool, err error) {
 			hasDir = true
 			return
 		}
+	}
+
+	return
+}
+
+func Create(path string) (file *os.File, err error) {
+	file, err = os.Create(path)
+	if err != nil {
+		err = &errortypes.WriteError{
+			errors.Wrapf(err, "utils: Failed to create '%s'", path),
+		}
+		return
+	}
+
+	return
+}
+
+func CreateWrite(path string, data string) (err error) {
+	file, err := Create(path)
+	if err != nil {
+		return
+	}
+	defer file.Close()
+
+	_, err = file.WriteString(data)
+	if err != nil {
+		err = &errortypes.WriteError{
+			errors.Wrapf(err, "utils: Failed to write to file '%s'", path),
+		}
+		return
 	}
 
 	return
