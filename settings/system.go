@@ -9,5 +9,7 @@ func init() {
 }
 
 type system struct {
-	Id string `bson:"_id"`
+	Id          string   `bson:"_id"`
+	TargetRepos []string `bson:"target_repos" default:"community,core,extra,multilib"`
+	TargetArchs []string `bson:"target_archs" default:"any,x86_64"`
 }
