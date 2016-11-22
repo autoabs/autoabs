@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/autoabs/autoabs/errortypes"
 	"github.com/autoabs/autoabs/requires"
+	"github.com/autoabs/autoabs/utils"
 	"github.com/dropbox/godropbox/errors"
 	"io/ioutil"
 	"os"
@@ -24,6 +25,7 @@ type ConfigData struct {
 	loaded     bool   `json:"-"`
 	RootPath   string `json:"root_path"`
 	MongoUri   string `json:"mongo_uri"`
+	ServerName string `json:"server_name"`
 	ServerPort int    `json:"server_port"`
 	ServerHost string `json:"server_host"`
 	SigKeyName string `json:"sig_key_name"`
@@ -66,6 +68,10 @@ func (c *ConfigData) Load(path string) (err error) {
 
 	if c.MongoUri == "" {
 		c.MongoUri = mongoUriDefault
+	}
+
+	if c.ServerName == "" {
+		c.ServerName = utils.RandName()
 	}
 
 	if c.ServerPort == 0 {
