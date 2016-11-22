@@ -387,4 +387,6 @@ func (b *Build) Retry(db *database.Database) (err error) {
 	}
 	b.State = "pending"
 	b.Builder = ""
+
+	return
 }
