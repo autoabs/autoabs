@@ -3,9 +3,6 @@ package utils
 import (
 	"fmt"
 	"math/rand"
-	"math/big"
-	"github.com/Sirupsen/logrus"
-	"time"
 )
 
 var (
