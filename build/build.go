@@ -361,3 +361,30 @@ func (b *Build) Build(db *database.Database) (err error) {
 
 	return
 }
+
+func (b *Build) Retry(db *database.Database) (err error) {
+	coll := db.Builds()
+
+	b.State = "pending"
+	b.Builder = ""
+	err = coll.Update(&bson.M{
+		"_id":   b.Id,
+		"state": "failed",
+	}, &bson.M{
+		"$set": &bson.M{
+			"state":   "pending",
+			"builder": "",
+			"start":   time.Now(),
+		},
+	})
+	if err != nil {
+		err = database.ParseError(err)
+
+		switch err.(type) {
+		case *database.NotFoundError:
+			err = nil
+		}
+
+		return
+	}
+}
