@@ -390,3 +390,32 @@ func (b *Build) Retry(db *database.Database) (err error) {
 
 	return
 }
+
+func (b *Build) Remove(db *database.Database) (err error) {
+	gfs := db.PkgGrid()
+	coll := db.Builds()
+
+	if b.PkgBuildId != "" {
+		err = gfs.RemoveId(b.PkgBuildId)
+		if err != nil {
+			err = database.ParseError(err)
+			return
+		}
+	}
+
+	for _, gfId := range b.PkgIds {
+		err = gfs.RemoveId(gfId)
+		if err != nil {
+			err = database.ParseError(err)
+			return
+		}
+	}
+
+	err = coll.RemoveId(b.Id)
+	if err != nil {
+		err = database.ParseError(err)
+		return
+	}
+
+	return
+}
