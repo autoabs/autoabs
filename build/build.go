@@ -319,8 +319,6 @@ func (b *Build) build(db *database.Database) (err error) {
 func (b *Build) Build(db *database.Database) (err error) {
 	coll := db.Builds()
 
-	b.State = "building"
-	b.Builder = config.Config.ServerName
 	err = coll.Update(&bson.M{
 		"_id":   b.Id,
 		"state": "pending",
@@ -341,6 +339,8 @@ func (b *Build) Build(db *database.Database) (err error) {
 
 		return
 	}
+	b.State = "building"
+	b.Builder = config.Config.ServerName
 
 	err = b.build(db)
 	if err != nil {
@@ -365,8 +365,6 @@ func (b *Build) Build(db *database.Database) (err error) {
 func (b *Build) Retry(db *database.Database) (err error) {
 	coll := db.Builds()
 
-	b.State = "pending"
-	b.Builder = ""
 	err = coll.Update(&bson.M{
 		"_id":   b.Id,
 		"state": "failed",
@@ -387,4 +385,6 @@ func (b *Build) Retry(db *database.Database) (err error) {
 
 		return
 	}
+	b.State = "pending"
+	b.Builder = ""
 }
