@@ -320,13 +320,15 @@ func (b *Build) Build(db *database.Database) (err error) {
 	coll := db.Builds()
 
 	b.State = "building"
+	b.Builder = config.Config.ServerName
 	err = coll.Update(&bson.M{
 		"_id":   b.Id,
 		"state": "pending",
 	}, &bson.M{
 		"$set": &bson.M{
-			"state": "building",
-			"start": time.Now(),
+			"state":   "building",
+			"builder": config.Config.ServerName,
+			"start":   time.Now(),
 		},
 	})
 	if err != nil {
