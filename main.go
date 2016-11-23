@@ -28,6 +28,9 @@ func main() {
 		case "build":
 			cmd.Build()
 			return
+		case "retry":
+			cmd.RetryFailed()
+			return
 		case "clear":
 			switch flag.Arg(2) {
 			case "all":

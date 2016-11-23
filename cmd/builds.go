@@ -23,6 +23,13 @@ func Build() {
 	}
 }
 
+func RetryFailed() {
+	err := build.RetryFailed()
+	if err != nil {
+		panic(err)
+	}
+}
+
 func ClearAll() {
 	err := build.ClearAll()
 	if err != nil {

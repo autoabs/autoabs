@@ -28,6 +28,26 @@ func GetQueued(db *database.Database) (builds []*Build, err error) {
 	return
 }
 
+func RetryFailed() (err error) {
+	db := database.GetDatabase()
+	defer db.Close()
+	coll := db.Builds()
+
+	cursor := coll.Find(&bson.M{
+		"state": "failed",
+	}).Iter()
+
+	bild := &Build{}
+	for cursor.Next(bild) {
+		err = bild.Retry(db)
+		if err != nil {
+			return
+		}
+	}
+
+	return
+}
+
 func ClearAll() (err error) {
 	db := database.GetDatabase()
 	defer db.Close()
