@@ -3,12 +3,16 @@ package handlers
 import (
 	"fmt"
 	"github.com/Sirupsen/logrus"
+	"github.com/autoabs/autoabs/constants"
 	"github.com/autoabs/autoabs/database"
+	"github.com/autoabs/autoabs/static"
 	"github.com/autoabs/autoabs/utils"
 	"github.com/dropbox/godropbox/errors"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
+
+var store *static.Store
 
 // Limit size of request body
 func Limiter(c *gin.Context) {
@@ -40,6 +44,12 @@ func Recovery(c *gin.Context) {
 
 // Register all endpoint handlers
 func Register(engine *gin.Engine) {
+	var err error
+	store, err = static.NewStore(constants.StaticRoot)
+	if err != nil {
+		panic(err)
+	}
+
 	engine.Use(Limiter)
 	engine.Use(Recovery)
 
@@ -47,6 +57,11 @@ func Register(engine *gin.Engine) {
 	dbGroup.Use(Database)
 
 	engine.GET("/check", checkGet)
+
+	engine.GET("/", staticIndexGet)
+	engine.GET("/app/*path", staticAppGet)
+	engine.GET("/styles/*path", staticStylesGet)
+	engine.GET("/vendor/*path", staticVendorGet)
 
 	dbGroup.GET("/builds", buildsGet)
 }
