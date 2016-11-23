@@ -400,6 +400,12 @@ func (b *Build) Remove(db *database.Database) (err error) {
 		err = pkgBuildGfs.RemoveId(b.PkgBuildId)
 		if err != nil {
 			err = database.ParseError(err)
+
+			switch err.(type) {
+			case *database.NotFoundError:
+				err = nil
+			}
+
 			return
 		}
 	}
@@ -408,6 +414,12 @@ func (b *Build) Remove(db *database.Database) (err error) {
 		err = pkgGfs.RemoveId(gfId)
 		if err != nil {
 			err = database.ParseError(err)
+
+			switch err.(type) {
+			case *database.NotFoundError:
+				err = nil
+			}
+
 			return
 		}
 	}
@@ -415,6 +427,12 @@ func (b *Build) Remove(db *database.Database) (err error) {
 	err = coll.RemoveId(b.Id)
 	if err != nil {
 		err = database.ParseError(err)
+
+		switch err.(type) {
+		case *database.NotFoundError:
+			err = nil
+		}
+
 		return
 	}
 
