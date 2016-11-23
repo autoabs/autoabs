@@ -24,19 +24,19 @@ import (
 )
 
 type Build struct {
-	Id         bson.ObjectId   `bson:"_id"`
-	Name       string          `bson:"name"`
-	Builder    string          `bson:"builder"`
-	Start      time.Time       `bson:"start,omitempty"`
-	Stop       time.Time       `bson:"stop,omitempty"`
-	State      string          `bson:"state"`
-	Version    string          `bson:"version"`
-	Release    string          `bson:"release"`
-	Repo       string          `bson:"core"`
-	Arch       string          `bson:"arch"`
-	Log        []string        `bson:"log,omitempty"`
-	PkgIds     []bson.ObjectId `bson:"pkg_ids"`
-	PkgBuildId bson.ObjectId   `bson:"pkg_build_id"`
+	Id         bson.ObjectId   `bson:"_id" json:"id"`
+	Name       string          `bson:"name" json:"name"`
+	Builder    string          `bson:"builder" json:"builder"`
+	Start      time.Time       `bson:"start,omitempty" json:"start,omitempty"`
+	Stop       time.Time       `bson:"stop,omitempty" json:"stop,omitempty"`
+	State      string          `bson:"state" json:"state"`
+	Version    string          `bson:"version" json:"version"`
+	Release    string          `bson:"release" json:"release"`
+	Repo       string          `bson:"core" json:"core"`
+	Arch       string          `bson:"arch" json:"arch"`
+	Log        []string        `bson:"log,omitempty" json:"log"`
+	PkgIds     []bson.ObjectId `bson:"pkg_ids" json:"-"`
+	PkgBuildId bson.ObjectId   `bson:"pkg_build_id" json:"-"`
 }
 
 func (b *Build) tmpPath() string {
