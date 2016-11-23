@@ -5,7 +5,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-func GetQueuedBuilds(db *database.Database) (builds []*Build, err error) {
+func GetQueued(db *database.Database) (builds []*Build, err error) {
 	builds = []*Build{}
 	coll := db.Builds()
 
@@ -28,7 +28,7 @@ func GetQueuedBuilds(db *database.Database) (builds []*Build, err error) {
 	return
 }
 
-func ClearAllBuilds() (err error) {
+func ClearAll() (err error) {
 	db := database.GetDatabase()
 	defer db.Close()
 	coll := db.Builds()
@@ -46,7 +46,7 @@ func ClearAllBuilds() (err error) {
 	return
 }
 
-func ClearPendingBuilds() (err error) {
+func ClearPending() (err error) {
 	db := database.GetDatabase()
 	defer db.Close()
 	coll := db.Builds()
@@ -66,7 +66,7 @@ func ClearPendingBuilds() (err error) {
 	return
 }
 
-func ClearFailedBuilds() (err error) {
+func ClearFailed() (err error) {
 	db := database.GetDatabase()
 	defer db.Close()
 	coll := db.Builds()

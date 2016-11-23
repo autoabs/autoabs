@@ -24,21 +24,21 @@ func Build() {
 }
 
 func ClearAll() {
-	err := build.ClearAllBuilds()
+	err := build.ClearAll()
 	if err != nil {
 		panic(err)
 	}
 }
 
 func ClearPending() {
-	err := build.ClearPendingBuilds()
+	err := build.ClearPending()
 	if err != nil {
 		panic(err)
 	}
 }
 
 func ClearFailed() {
-	err := build.ClearFailedBuilds()
+	err := build.ClearFailed()
 	if err != nil {
 		panic(err)
 	}

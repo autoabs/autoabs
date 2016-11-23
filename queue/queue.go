@@ -120,7 +120,7 @@ func (q *Queue) Build() (err error) {
 	db := database.GetDatabase()
 	defer db.Close()
 
-	builds, err := build.GetQueuedBuilds(db)
+	builds, err := build.GetQueued(db)
 	if err != nil {
 		return
 	}
