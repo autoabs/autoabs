@@ -1,12 +1,9 @@
 package handlers
 
 import (
-	"fmt"
 	"github.com/autoabs/autoabs/constants"
 	"github.com/autoabs/autoabs/static"
-	"github.com/autoabs/autoabs/utils"
 	"github.com/gin-gonic/gin"
-	"path/filepath"
 	"strings"
 )
 
@@ -52,42 +49,17 @@ func staticVendorGet(c *gin.Context) {
 	staticPath(c, "/vendor"+c.Params.ByName("path"))
 }
 
-func staticLivePath(c *gin.Context, pth string) {
-	pth = filepath.Join(constants.StaticRoot, filepath.FromSlash(
-		filepath.Clean("/"+pth)))
-
+func staticLiveGet(c *gin.Context) {
 	c.Writer.Header().Add("Cache-Control",
 		"no-cache, no-store, must-revalidate")
 	c.Writer.Header().Add("Pragma", "no-cache")
 	c.Writer.Header().Add("Expires", "0")
 
-	exists, err := utils.ExistsFile(pth)
-	if err != nil {
-		c.AbortWithError(500, err)
-		return
-	}
-
-	if !exists {
-		c.AbortWithError(404, err)
-		return
+	pth := c.Params.ByName("path")
+	if pth == "" {
+		pth = "index.html"
 	}
 
 	c.Writer.Header().Add("Content-Type", static.GetMimeType(pth))
 	fileServer.ServeHTTP(c.Writer, c.Request)
-}
-
-func staticLiveIndexGet(c *gin.Context) {
-	staticLivePath(c, "/index.html")
-}
-
-func staticLiveAppGet(c *gin.Context) {
-	staticLivePath(c, "/app"+c.Params.ByName("path"))
-}
-
-func staticLiveStylesGet(c *gin.Context) {
-	staticLivePath(c, "/styles"+c.Params.ByName("path"))
-}
-
-func staticLiveVendorGet(c *gin.Context) {
-	staticLivePath(c, "/vendor"+c.Params.ByName("path"))
 }

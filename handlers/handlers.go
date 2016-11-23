@@ -13,7 +13,7 @@ import (
 )
 
 var (
-	store *static.Store
+	store      *static.Store
 	fileServer http.Handler
 )
 
@@ -57,12 +57,12 @@ func Register(engine *gin.Engine) {
 
 	if constants.StaticLive {
 		fs := gin.Dir(constants.StaticRoot, false)
-		fileServer = http.StripPrefix("/", http.FileServer(fs))
+		fileServer = http.FileServer(fs)
 
-		engine.GET("/", staticLiveIndexGet)
-		engine.GET("/app/*path", staticLiveAppGet)
-		engine.GET("/styles/*path", staticLiveStylesGet)
-		engine.GET("/vendor/*path", staticLiveVendorGet)
+		engine.GET("/", staticLiveGet)
+		engine.GET("/app/*path", staticLiveGet)
+		engine.GET("/styles/*path", staticLiveGet)
+		engine.GET("/vendor/*path", staticLiveGet)
 	} else {
 		var err error
 		store, err = static.NewStore(constants.StaticRoot)
