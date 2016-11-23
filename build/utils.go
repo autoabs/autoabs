@@ -27,3 +27,21 @@ func GetQueuedBuilds(db *database.Database) (builds []*Build, err error) {
 
 	return
 }
+
+func ClearAllBuilds() (err error) {
+	db := database.GetDatabase()
+	defer db.Close()
+	coll := db.Builds()
+
+	cursor := coll.Find(&bson.M{}).Iter()
+
+	bild := &Build{}
+	for cursor.Next(bild) {
+		err = bild.Remove(db)
+		if err != nil {
+			return
+		}
+	}
+
+	return
+}
