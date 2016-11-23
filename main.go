@@ -22,6 +22,15 @@ func main() {
 			cmd.Sync()
 		case "build":
 			cmd.Build()
+		case "clear":
+			switch flag.Arg(2) {
+			case "all":
+				cmd.ClearAll()
+			case "pending":
+				cmd.ClearPending()
+			case "failed":
+				cmd.ClearFailed()
+			}
 		}
 	case "genkey":
 		cmd.GenKey()
