@@ -5,7 +5,7 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
-func GetAll(db *database.Database) (builds []*Build, err error) {
+func GetAllJson(db *database.Database) (builds []*Build, err error) {
 	builds = []*Build{}
 	coll := db.Builds()
 
@@ -13,6 +13,7 @@ func GetAll(db *database.Database) (builds []*Build, err error) {
 
 	bild := &Build{}
 	for cursor.Next(bild) {
+		bild.Jsonify()
 		builds = append(builds, bild)
 		bild = &Build{}
 	}

@@ -27,8 +27,10 @@ type Build struct {
 	Id         bson.ObjectId   `bson:"_id" json:"id"`
 	Name       string          `bson:"name" json:"name"`
 	Builder    string          `bson:"builder" json:"builder"`
-	Start      time.Time       `bson:"start,omitempty" json:"start,omitempty"`
-	Stop       time.Time       `bson:"stop,omitempty" json:"stop,omitempty"`
+	Start      time.Time       `bson:"start,omitempty" json:"-"`
+	StartJson  int64           `bson:"-" json:"start"`
+	Stop       time.Time       `bson:"stop,omitempty" json:"-"`
+	StopJson   int64           `bson:"-" json:"stop"`
 	State      string          `bson:"state" json:"state"`
 	Version    string          `bson:"version" json:"version"`
 	Release    string          `bson:"release" json:"release"`
@@ -37,6 +39,20 @@ type Build struct {
 	Log        []string        `bson:"log,omitempty" json:"log"`
 	PkgIds     []bson.ObjectId `bson:"pkg_ids" json:"-"`
 	PkgBuildId bson.ObjectId   `bson:"pkg_build_id" json:"-"`
+}
+
+func (b *Build) Jsonify() {
+	if !b.Start.IsZero() {
+		b.StartJson = b.Start.Unix()
+	} else {
+		b.StartJson = 0
+	}
+
+	if !b.Stop.IsZero() {
+		b.StopJson = b.Stop.Unix()
+	} else {
+		b.StopJson = 0
+	}
 }
 
 func (b *Build) tmpPath() string {
