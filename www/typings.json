@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "flux": "registry:npm/flux#2.1.1+20160601175240",
+    "react-dom": "registry:npm/react-dom#15.0.1+20160826174104"
+  },
+  "globalDependencies": {
+    "jquery": "registry:dt/jquery#1.10.0+20160929162922",
+    "node": "registry:dt/node#6.0.0+20161019125345",
+    "polymer": "registry:dt/polymer#1.1.6+20160922133320",
+    "react": "registry:dt/react#0.14.0+20161008064207",
+    "superagent": "registry:dt/superagent#2.0.0+20160906143408",
+    "webcomponents.js": "registry:dt/webcomponents.js#0.6.0+20160728153134"
+  }
+}

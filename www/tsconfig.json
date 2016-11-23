@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "noImplicitAny": true,
+    "removeComments": true,
+    "sourceMap": false,
+    "jsx": "react"
+  }
+}
