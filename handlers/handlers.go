@@ -47,4 +47,6 @@ func Register(engine *gin.Engine) {
 	dbGroup.Use(Database)
 
 	engine.GET("/check", checkGet)
+
+	dbGroup.GET("/builds", buildsGet)
 }
