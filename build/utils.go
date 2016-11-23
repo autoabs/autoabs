@@ -5,6 +5,27 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+func GetAll(db *database.Database) (builds []*Build, err error) {
+	builds = []*Build{}
+	coll := db.Builds()
+
+	cursor := coll.Find(&bson.M{}).Iter()
+
+	bild := &Build{}
+	for cursor.Next(bild) {
+		builds = append(builds, bild)
+		bild = &Build{}
+	}
+
+	err = cursor.Close()
+	if err != nil {
+		err = database.ParseError(err)
+		return
+	}
+
+	return
+}
+
 func GetQueued(db *database.Database) (builds []*Build, err error) {
 	builds = []*Build{}
 	coll := db.Builds()
