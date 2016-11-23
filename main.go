@@ -16,10 +16,13 @@ func main() {
 		cmd.App()
 	case "set":
 		cmd.Settings()
-	case "sync":
-		cmd.Sync()
-	case "build":
-		cmd.Build()
+	case "builds":
+		switch flag.Arg(1) {
+		case "sync":
+			cmd.Sync()
+		case "build":
+			cmd.Build()
+		}
 	case "genkey":
 		cmd.GenKey()
 	}
