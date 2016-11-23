@@ -5,6 +5,7 @@ import (
 )
 
 const (
+	StaticLive  = true
 	StaticRoot  = "www"
 	StaticCache = false
 	PackageExt  = "pkg.tar.xz"

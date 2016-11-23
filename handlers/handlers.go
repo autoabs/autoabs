@@ -12,7 +12,10 @@ import (
 	"net/http"
 )
 
-var store *static.Store
+var (
+	store *static.Store
+	fileServer http.Handler
+)
 
 // Limit size of request body
 func Limiter(c *gin.Context) {
@@ -44,12 +47,6 @@ func Recovery(c *gin.Context) {
 
 // Register all endpoint handlers
 func Register(engine *gin.Engine) {
-	var err error
-	store, err = static.NewStore(constants.StaticRoot)
-	if err != nil {
-		panic(err)
-	}
-
 	engine.Use(Limiter)
 	engine.Use(Recovery)
 
@@ -58,10 +55,26 @@ func Register(engine *gin.Engine) {
 
 	engine.GET("/check", checkGet)
 
-	engine.GET("/", staticIndexGet)
-	engine.GET("/app/*path", staticAppGet)
-	engine.GET("/styles/*path", staticStylesGet)
-	engine.GET("/vendor/*path", staticVendorGet)
+	if constants.StaticLive {
+		fs := gin.Dir(constants.StaticRoot, false)
+		fileServer = http.StripPrefix("/", http.FileServer(fs))
+
+		engine.GET("/", staticLiveIndexGet)
+		engine.GET("/app/*path", staticLiveAppGet)
+		engine.GET("/styles/*path", staticLiveStylesGet)
+		engine.GET("/vendor/*path", staticLiveVendorGet)
+	} else {
+		var err error
+		store, err = static.NewStore(constants.StaticRoot)
+		if err != nil {
+			panic(err)
+		}
+
+		engine.GET("/", staticIndexGet)
+		engine.GET("/app/*path", staticAppGet)
+		engine.GET("/styles/*path", staticStylesGet)
+		engine.GET("/vendor/*path", staticVendorGet)
+	}
 
 	dbGroup.GET("/builds", buildsGet)
 }
