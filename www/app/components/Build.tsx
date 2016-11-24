@@ -11,9 +11,16 @@ const css = {
 	card: {
 		flexBasis: 0,
 		flexGrow: 1,
-		minWidth: '200px',
-		maxWidth: '300px',
+		minWidth: '300px',
+		maxWidth: '450px',
 		margin: '5px',
+	} as React.CSSProperties,
+	launch: {
+		color: '#7f7f7f',
+		margin: '1px 1px 0 0',
+	} as React.CSSProperties,
+	content: {
+		paddingRight: '0',
 	} as React.CSSProperties,
 	name: {
 		fontSize: '20px',
@@ -30,6 +37,9 @@ const css = {
 	} as React.CSSProperties,
 	actions: {
 		justifyContent: 'center',
+	} as React.CSSProperties,
+	logs: {
+		color: '#607d8b',
 	} as React.CSSProperties,
 	pause: {
 		display: 'none',
@@ -61,14 +71,17 @@ export default class Build extends React.Component<Props, null> {
 		}
 
 		return <paper-card style={css.card} alt={build.name}>
-			<div className="card-content">
-				<div className="layout vertical">
-					<div className="layout horizontal">
-						<div style={css.name}>{build.name}</div>
-						<div style={css.version}>{build.version}-{build.release}</div>
+			<div className="layout horizontal">
+				<div style={css.content} className="card-content flex">
+					<div className="layout vertical">
+						<div className="layout horizontal">
+							<div style={css.name}>{build.name}</div>
+							<div style={css.version}>{build.version}-{build.release}</div>
+						</div>
+						<div style={css.repo}>{build.repo} - {build.arch}</div>
 					</div>
-					<div style={css.repo}>{build.repo} - {build.arch}</div>
 				</div>
+				<paper-icon-button style={css.launch} icon="launch"/>
 			</div>
 			<div style={css.actions} className="card-actions layout horizontal">
 				<paper-button style={css.pause}>Pause</paper-button>
