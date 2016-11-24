@@ -53,7 +53,6 @@ export default class Build extends React.Component<Props, null> {
 
 		let start = '-';
 		if (build.start !== "0001-01-01T00:00:00Z") {
-			console.log(build.start);
 			start = MiscUtils.formatDate(new Date(build.start));
 		}
 		let stop = '-';
