@@ -1,9 +1,9 @@
 /// <reference path="References.d.ts"/>
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import Builds from './components/Builds';
+import Main from './components/Main';
 
 ReactDOM.render(
-	<Builds title="AutoABS"/>,
+	<Main title="AutoABS"/>,
 	document.getElementById('app')
 );

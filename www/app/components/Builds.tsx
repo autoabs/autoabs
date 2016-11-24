@@ -5,10 +5,6 @@ import BuildStore from '../stores/BuildStore';
 import * as BuildUtils from '../utils/BuildUtils';
 import Build from './Build';
 
-interface Props {
-	title: string;
-}
-
 interface State {
 	builds: BuildTypes.Builds;
 }
@@ -20,24 +16,16 @@ function getState(): State {
 }
 
 const css = {
-	headerBox: {
-		color: '#fff',
-		width: '100%',
-	} as React.CSSProperties,
-	header: {
-		margin: '4px',
-		fontSize: '24px',
-	} as React.CSSProperties,
 	builds: {
 		display: 'flex',
 		flexDirection: 'row',
 		flexWrap: 'wrap',
 		padding: '5px',
-	}
+	} as React.CSSProperties,
 };
 
-export default class Builds extends React.Component<Props, State> {
-	constructor(props: Props, context: any) {
+export default class Builds extends React.Component<null, State> {
+	constructor(props: any, context: any) {
 		super(props, context);
 		BuildUtils.init();
 		this.state = getState();
@@ -63,17 +51,8 @@ export default class Builds extends React.Component<Props, State> {
 			buildsDom.push(<Build key={key} build={builds[key]}/>);
 		}
 
-		return <div>
-			<paper-toolbar class="title">
-				<div className="layout horizontal" style={css.headerBox}>
-					<div className="flex" style={css.header}>
-						{this.props.title}
-					</div>
-				</div>
-			</paper-toolbar>
-			<div style={css.builds}>
-				{buildsDom}
-			</div>
+		return <div style={css.builds}>
+			{buildsDom}
 		</div>;
 	}
 }
