@@ -6,7 +6,6 @@ import (
 	"compress/gzip"
 	"crypto/md5"
 	"encoding/base32"
-	"fmt"
 	"github.com/autoabs/autoabs/errortypes"
 	"github.com/dropbox/godropbox/errors"
 	"io/ioutil"
@@ -89,8 +88,6 @@ func (s *Store) addDir(dir string) (err error) {
 			Data: data,
 		}
 
-		fmt.Println(fullPath)
-
 		s.Files[fullPath] = file
 	}
 
@@ -124,4 +121,8 @@ func NewStore(root string) (store *Store, err error) {
 	store.parseFiles()
 
 	return
+}
+
+func GetMimeType(name string) string {
+	return mimeTypes[path.Ext(name)]
 }
