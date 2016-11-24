@@ -8,11 +8,42 @@ interface Props {
 }
 
 const css = {
-	box: {
-		display: 'table-row',
+	card: {
+		flexBasis: 0,
+		flexGrow: 1,
+		minWidth: '200px',
+		maxWidth: '300px',
+		margin: '5px',
 	} as React.CSSProperties,
-	field: {
-		display: 'table-cell',
+	name: {
+		fontSize: '20px',
+	} as React.CSSProperties,
+	version: {
+		fontSize: '14px',
+		margin: '6px 0 0 7px',
+		color: '#919191',
+	} as React.CSSProperties,
+	repo: {
+		fontSize: '12px',
+		marginTop: '7px',
+		color: '#919191',
+	} as React.CSSProperties,
+	actions: {
+		justifyContent: 'center',
+	} as React.CSSProperties,
+	pause: {
+		display: 'none',
+		color: '#03a9f4',
+	} as React.CSSProperties,
+	resume: {
+		display: 'none',
+		color: '#4caf50',
+	} as React.CSSProperties,
+	retry: {
+		color: '#ab47bc',
+	} as React.CSSProperties,
+	remove: {
+		color: '#f44336',
 	} as React.CSSProperties,
 };
 
@@ -30,16 +61,22 @@ export default class Build extends React.Component<Props, null> {
 			stop = MiscUtils.formatDate(new Date(build.stop));
 		}
 
-		return <div style={css.box}>
-			<div style={css.field}>{build.id}</div>
-			<div style={css.field}>{build.name}</div>
-			<div style={css.field}>{build.state}</div>
-			<div style={css.field}>{build.version}</div>
-			<div style={css.field}>{build.release}</div>
-			<div style={css.field}>{build.repo}</div>
-			<div style={css.field}>{build.arch}</div>
-			<div style={css.field}>{start}</div>
-			<div style={css.field}>{stop}</div>
-		</div>;
+		return <paper-card style={css.card} alt={build.name}>
+			<div className="card-content">
+				<div className="layout vertical">
+					<div className="layout horizontal">
+						<div style={css.name}>{build.name}</div>
+						<div style={css.version}>{build.version}-{build.release}</div>
+					</div>
+					<div style={css.repo}>{build.repo} - {build.arch}</div>
+				</div>
+			</div>
+			<div style={css.actions} className="card-actions layout horizontal">
+				<paper-button style={css.pause}>Pause</paper-button>
+				<paper-button style={css.resume}>Resume</paper-button>
+				<paper-button style={css.retry}>Retry</paper-button>
+				<paper-button style={css.remove}>Remove</paper-button>
+			</div>
+		</paper-card>;
 	}
 }
