@@ -3,6 +3,7 @@ import * as React from 'react';
 import * as BuildTypes from '../types/BuildTypes'
 import BuildStore from '../stores/BuildStore';
 import * as BuildUtils from '../utils/BuildUtils';
+import Build from './Build';
 
 interface Props {
 	title: string;
@@ -22,11 +23,22 @@ const css = {
 	headerBox: {
 		color: '#fff',
 		width: '100%',
-	},
+	} as React.CSSProperties,
 	header: {
 		margin: '4px',
 		fontSize: '24px',
-	},
+	} as React.CSSProperties,
+	builds: {
+		display: 'table',
+		width: '100%',
+	} as React.CSSProperties,
+	buildsHeader: {
+		display: 'table-row',
+	} as React.CSSProperties,
+	buildsHeaderField: {
+		fontWeight: 800,
+		display: 'table-cell',
+	} as React.CSSProperties,
 };
 
 export default class Builds extends React.Component<Props, State> {
@@ -53,7 +65,7 @@ export default class Builds extends React.Component<Props, State> {
 
 		let buildsDom: JSX.Element[] = [];
 		for (let key in builds) {
-			buildsDom.push(<li key={key}>{builds[key].name}</li>);
+			buildsDom.push(<Build key={key} build={builds[key]}/>);
 		}
 
 		return <div>
@@ -64,9 +76,20 @@ export default class Builds extends React.Component<Props, State> {
 					</div>
 				</div>
 			</paper-toolbar>
-			<ul>
+			<div style={css.builds}>
+				<div style={css.buildsHeader}>
+					<div style={css.buildsHeaderField}>ID</div>
+					<div style={css.buildsHeaderField}>NAME</div>
+					<div style={css.buildsHeaderField}>STATE</div>
+					<div style={css.buildsHeaderField}>VERSION</div>
+					<div style={css.buildsHeaderField}>RELEASE</div>
+					<div style={css.buildsHeaderField}>REPO</div>
+					<div style={css.buildsHeaderField}>ARCH</div>
+					<div style={css.buildsHeaderField}>START</div>
+					<div style={css.buildsHeaderField}>STOP</div>
+				</div>
 				{buildsDom}
-			</ul>
+			</div>
 		</div>;
 	}
 }
