@@ -9,7 +9,7 @@ import (
 func buildsGet(c *gin.Context) {
 	db := c.MustGet("db").(*database.Database)
 
-	builds, err := build.GetAllJson(db)
+	builds, err := build.GetAll(db)
 	if err != nil {
 		return
 	}
