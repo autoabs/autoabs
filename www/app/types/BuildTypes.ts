@@ -9,8 +9,8 @@ export interface Build {
 	id: string;
 	name?: string;
 	builder?: string;
-	start?: Date;
-	stop?: Date;
+	start?: string;
+	stop?: string;
 	state?: string;
 	version?: string;
 	release?: string;
