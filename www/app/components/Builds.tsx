@@ -29,16 +29,11 @@ const css = {
 		fontSize: '24px',
 	} as React.CSSProperties,
 	builds: {
-		display: 'table',
-		width: '100%',
-	} as React.CSSProperties,
-	buildsHeader: {
-		display: 'table-row',
-	} as React.CSSProperties,
-	buildsHeaderField: {
-		fontWeight: 800,
-		display: 'table-cell',
-	} as React.CSSProperties,
+		display: 'flex',
+		flexDirection: 'row',
+		flexWrap: 'wrap',
+		padding: '5px',
+	}
 };
 
 export default class Builds extends React.Component<Props, State> {
@@ -77,17 +72,6 @@ export default class Builds extends React.Component<Props, State> {
 				</div>
 			</paper-toolbar>
 			<div style={css.builds}>
-				<div style={css.buildsHeader}>
-					<div style={css.buildsHeaderField}>ID</div>
-					<div style={css.buildsHeaderField}>NAME</div>
-					<div style={css.buildsHeaderField}>STATE</div>
-					<div style={css.buildsHeaderField}>VERSION</div>
-					<div style={css.buildsHeaderField}>RELEASE</div>
-					<div style={css.buildsHeaderField}>REPO</div>
-					<div style={css.buildsHeaderField}>ARCH</div>
-					<div style={css.buildsHeaderField}>START</div>
-					<div style={css.buildsHeaderField}>STOP</div>
-				</div>
 				{buildsDom}
 			</div>
 		</div>;
