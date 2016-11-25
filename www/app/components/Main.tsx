@@ -1,26 +1,14 @@
 /// <reference path="../References.d.ts"/>
 import * as React from 'react';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import Builds from './Builds';
 
-interface Props {
-	title: string;
-}
-
-const css = {
-	header: {
-		color: '#fff',
-		marginLeft: '4px',
-		fontSize: '24px',
-	} as React.CSSProperties,
-};
-
-export default class Main extends React.Component<Props, null> {
+export default class Main extends React.Component<void, void> {
 	render(): JSX.Element {
-		return <div>
-			<paper-toolbar>
-				<div className="title" style={css.header}>{this.props.title}</div>
-			</paper-toolbar>
+		return <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
 			<Builds/>
-		</div>;
+		</MuiThemeProvider>;
 	}
 }

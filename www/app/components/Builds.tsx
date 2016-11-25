@@ -1,5 +1,6 @@
 /// <reference path="../References.d.ts"/>
 import * as React from 'react';
+import AppBar from 'material-ui/AppBar';
 import * as BuildTypes from '../types/BuildTypes'
 import BuildStore from '../stores/BuildStore';
 import * as BuildUtils from '../utils/BuildUtils';
@@ -53,8 +54,11 @@ export default class Builds extends React.Component<null, State> {
 			buildsDom.push(<Build key={key} build={builds[key]}/>);
 		}
 
-		return <div style={css.builds}>
-			{buildsDom}
+		return <div>
+			<AppBar title="AutoABS"/>
+			<div style={css.builds}>
+				{buildsDom}
+			</div>
 		</div>;
 	}
 }

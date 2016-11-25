@@ -1,5 +1,9 @@
 /// <reference path="../References.d.ts"/>
 import * as React from 'react';
+import Card from 'material-ui/Card';
+import CardText from 'material-ui/Card';
+import CardActions from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
 import * as BuildTypes from '../types/BuildTypes';
 import * as MiscUtils from '../utils/MiscUtils';
 
@@ -19,7 +23,7 @@ const css = {
 		margin: '1px 1px 0 0',
 	} as React.CSSProperties,
 	content: {
-		paddingRight: '0',
+		padding: '10px',
 	} as React.CSSProperties,
 	name: {
 		fontSize: '20px',
@@ -69,8 +73,8 @@ export default class Build extends React.Component<Props, null> {
 			stop = MiscUtils.formatDate(new Date(build.stop));
 		}
 
-		return <paper-card style={css.card} alt={build.name}>
-			<div className="layout horizontal">
+		return <Card style={css.card}>
+			<CardText className="layout horizontal">
 				<div style={css.content} className="card-content flex">
 					<div className="layout vertical">
 						<div className="layout horizontal">
@@ -80,14 +84,13 @@ export default class Build extends React.Component<Props, null> {
 						<div style={css.repo}>{build.repo} - {build.arch}</div>
 					</div>
 				</div>
-				<paper-icon-button style={css.launch} icon="launch"/>
-			</div>
-			<div style={css.actions} className="card-actions layout horizontal">
-				<paper-button style={css.pause}>Pause</paper-button>
-				<paper-button style={css.resume}>Resume</paper-button>
-				<paper-button style={css.retry}>Retry</paper-button>
-				<paper-button style={css.remove}>Remove</paper-button>
-			</div>
-		</paper-card>;
+			</CardText>
+			<CardActions style={css.actions} className="layout horizontal">
+				<FlatButton style={css.pause} label="Pause"/>
+				<FlatButton style={css.resume} label="Resume"/>
+				<FlatButton style={css.retry} label="Retry"/>
+				<FlatButton style={css.remove} label="Remove"/>
+			</CardActions>
+		</Card>;
 	}
 }

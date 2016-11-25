@@ -9,61 +9,16 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
 
     <link rel="stylesheet" type="text/css" href="styles/global.css"/>
+    <link rel="stylesheet" type="text/css"
+      href="node_modules/@blueprintjs/core/dist/blueprint.css"/>
 
-    <script src="vendor/traceur/traceur.js"></script>
-    <script src="vendor/traceur/BrowserSystem.js"></script>
-    <script src="vendor/traceur/bootstrap.js"></script>
-    <script src="vendor/webcomponentsjs/webcomponents-lite.min.js"></script>
-    <script src="vendor/systemjs/system.js"></script>
-    <script src="vendor/react/react.js"></script>
-    <script type="module">
-      System.config({
-        baseURL: './app/',
-        defaultJSExtensions: true,
-        paths: {
-          'react': '../vendor/react/react',
-          'react-dom': '../vendor/react/react-dom',
-          'react-faux-dom': '../vendor/react-faux-dom/ReactFauxDOM.min',
-          'chartjs': '../vendor/chartjs/Chart.bundle',
-          'jquery': '../vendor/jquery/jquery',
-          'events': '../vendor/events/events',
-          'flux': '../vendor/flux/Flux',
-          'superagent': '../vendor/superagent/superagent',
-          'reduce': '../vendor/reduce/reduce',
-          'emitter': '../vendor/emitter/emitter'
-        }
-      });
-    </script>
-
-    <link rel="import" href="vendor/polymer/polymer.html">
-
-    <link rel="import"
-      href="vendor/iron-icons/iron-icons.html">
-    <link rel="import"
-      href="vendor/iron-flex-layout/classes/iron-flex-layout.html">
-
-    <link rel="import"
-      href="vendor/paper-toolbar/paper-toolbar.html">
-    <link rel="import"
-      href="vendor/paper-icon-button/paper-icon-button.html">
-    <link rel="import"
-      href="vendor/paper-input/paper-input.html">
-    <link rel="import"
-      href="vendor/paper-checkbox/paper-checkbox.html">
-    <link rel="import"
-      href="vendor/paper-button/paper-button.html">
-    <link rel="import"
-      href="vendor/paper-card/paper-card.html">
-
-    <link rel="import"
-      href="vendor/google-map/google-map.html">
-    <link rel="import"
-      href="vendor/google-map/google-map-marker.html">
+    <script src="jspm_packages/system.js"></script>
+    <script src="config.js"></script>
   </head>
   <body>
     <div id="app"></div>
-    <script type="module">
-      System.import('App');
+    <script>
+      System.import('app/App.js');
     </script>
   </body>
 </html>

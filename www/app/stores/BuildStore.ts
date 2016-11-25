@@ -1,10 +1,10 @@
 /// <reference path="../References.d.ts"/>
 import Dispatcher from '../dispatcher/Dispatcher';
-import EventEmitter from 'events';
+import * as Events from 'events';
 import * as BuildTypes from '../types/BuildTypes';
 import * as GlobalTypes from '../types/GlobalTypes';
 
-class _BuildStore extends EventEmitter {
+class _BuildStore extends Events.EventEmitter {
 	_state: BuildTypes.Builds = {};
 	token: string;
 
