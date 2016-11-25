@@ -9,8 +9,7 @@ interface Props {
 
 const css = {
 	card: {
-		flexBasis: 0,
-		flexGrow: 1,
+		flex: '1 0 auto',
 		minWidth: '300px',
 		maxWidth: '450px',
 		margin: '5px',
