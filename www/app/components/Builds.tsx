@@ -17,6 +17,8 @@ function getState(): State {
 
 const css = {
 	builds: {
+		width: '100%',
+		flex: 1,
 		display: 'flex',
 		flexDirection: 'row',
 		flexWrap: 'wrap',
