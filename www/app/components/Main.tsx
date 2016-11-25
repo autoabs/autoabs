@@ -7,12 +7,9 @@ interface Props {
 }
 
 const css = {
-	headerBox: {
-		color: '#fff',
-		width: '100%',
-	} as React.CSSProperties,
 	header: {
-		margin: '4px',
+		color: '#fff',
+		marginLeft: '4px',
 		fontSize: '24px',
 	} as React.CSSProperties,
 };
@@ -20,12 +17,8 @@ const css = {
 export default class Main extends React.Component<Props, null> {
 	render(): JSX.Element {
 		return <div>
-			<paper-toolbar class="title">
-				<div className="layout horizontal" style={css.headerBox}>
-					<div className="flex" style={css.header}>
-						{this.props.title}
-					</div>
-				</div>
+			<paper-toolbar>
+				<div className="title" style={css.header}>{this.props.title}</div>
 			</paper-toolbar>
 			<Builds/>
 		</div>;
