@@ -37,6 +37,10 @@ func staticIndexGet(c *gin.Context) {
 	staticPath(c, "/index.html")
 }
 
+func staticConfigGet(c *gin.Context) {
+	staticPath(c, "/config.js")
+}
+
 func staticAppGet(c *gin.Context) {
 	staticPath(c, "/app"+c.Params.ByName("path"))
 }
@@ -57,7 +61,11 @@ func staticLiveGet(c *gin.Context) {
 
 	pth := c.Params.ByName("path")
 	if pth == "" {
-		pth = "index.html"
+		if c.Request.URL.Path == "/config.js" {
+			pth = "config.js"
+		} else {
+			pth = "index.html"
+		}
 	}
 
 	c.Writer.Header().Add("Content-Type", static.GetMimeType(pth))
