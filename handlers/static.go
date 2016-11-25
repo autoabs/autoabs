@@ -23,6 +23,7 @@ func staticPath(c *gin.Context, pth string) {
 		c.Writer.Header().Add("Cache-Control",
 			"no-cache, no-store, must-revalidate")
 		c.Writer.Header().Add("Pragma", "no-cache")
+		c.Writer.Header().Add("Expires", "0")
 	}
 
 	if strings.Contains(c.Request.Header.Get("Accept-Encoding"), "gzip") {
