@@ -1,11 +1,10 @@
 ### autoabs-www
 
-Requires [typings](https://github.com/typings/typings)
+Requires [jspm](https://www.npmjs.com/package/jspm)
 
 ```
-wget https://raw.githubusercontent.com/powur/powur/master/powur.py
-python2 powur.py install
-typings install
+npm install
+jspm install
 tsc
 ```
 
