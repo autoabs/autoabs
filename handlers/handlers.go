@@ -60,9 +60,11 @@ func Register(engine *gin.Engine) {
 		fileServer = http.FileServer(fs)
 
 		engine.GET("/", staticLiveGet)
+		engine.GET("/config.js", staticLiveGet)
 		engine.GET("/app/*path", staticLiveGet)
 		engine.GET("/styles/*path", staticLiveGet)
-		engine.GET("/vendor/*path", staticLiveGet)
+		engine.GET("/node_modules/*path", staticLiveGet)
+		engine.GET("/jspm_packages/*path", staticLiveGet)
 	} else {
 		var err error
 		store, err = static.NewStore(constants.StaticRoot)
@@ -71,6 +73,7 @@ func Register(engine *gin.Engine) {
 		}
 
 		engine.GET("/", staticIndexGet)
+		engine.GET("/config.js", staticConfigGet)
 		engine.GET("/app/*path", staticAppGet)
 		engine.GET("/styles/*path", staticStylesGet)
 		engine.GET("/vendor/*path", staticVendorGet)
