@@ -4,6 +4,7 @@ import Card from 'material-ui/Card';
 import CardText from 'material-ui/Card';
 import CardActions from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
+import IconButton from 'material-ui/IconButton';
 import * as BuildTypes from '../types/BuildTypes';
 import * as MiscUtils from '../utils/MiscUtils';
 
@@ -19,11 +20,11 @@ const css = {
 		margin: '5px',
 	} as React.CSSProperties,
 	launch: {
-		color: '#7f7f7f',
+		color: '#fdfdfd',
 		margin: '1px 1px 0 0',
 	} as React.CSSProperties,
 	content: {
-		padding: '10px',
+		padding: '10px 0 10px 10px',
 	} as React.CSSProperties,
 	name: {
 		fontSize: '20px',
@@ -39,6 +40,7 @@ const css = {
 		color: '#919191',
 	} as React.CSSProperties,
 	actions: {
+		padding: '5px 0',
 		justifyContent: 'center',
 	} as React.CSSProperties,
 	logs: {
@@ -74,14 +76,21 @@ export default class Build extends React.Component<Props, null> {
 		}
 
 		return <Card style={css.card}>
-			<CardText className="layout horizontal">
-				<div style={css.content} className="card-content flex">
-					<div className="layout vertical">
-						<div className="layout horizontal">
-							<div style={css.name}>{build.name}</div>
-							<div style={css.version}>{build.version}-{build.release}</div>
+			<CardText>
+				<div className="layout horizontal">
+					<div style={css.content} className="card-content flex">
+						<div className="layout vertical">
+							<div className="layout horizontal">
+								<div style={css.name}>{build.name}</div>
+								<div style={css.version}>{build.version}-{build.release}</div>
+							</div>
+							<div style={css.repo}>{build.repo} - {build.arch}</div>
 						</div>
-						<div style={css.repo}>{build.repo} - {build.arch}</div>
+					</div>
+					<div>
+						<IconButton style={css.launch}>
+							<i className="material-icons">flip_to_front</i>
+						</IconButton>
 					</div>
 				</div>
 			</CardText>
