@@ -1,11 +1,7 @@
 /// <reference path="../References.d.ts"/>
 import * as React from 'react';
-import styles from '../Styles';
-import Card from 'material-ui/Card';
-import CardText from 'material-ui/Card';
-import CardActions from 'material-ui/Card';
-import FlatButton from 'material-ui/FlatButton';
-import IconButton from 'material-ui/IconButton';
+import * as Mui from 'material-ui';
+import Styles from '../Styles';
 import * as BuildTypes from '../types/BuildTypes';
 import * as MiscUtils from '../utils/MiscUtils';
 
@@ -21,7 +17,7 @@ const css = {
 		margin: '5px',
 	} as React.CSSProperties,
 	launch: {
-		color: styles.colors.color,
+		color: Styles.colors.color,
 		margin: '1px 1px 0 0',
 	} as React.CSSProperties,
 	content: {
@@ -33,12 +29,12 @@ const css = {
 	version: {
 		fontSize: '14px',
 		margin: '6px 0 0 7px',
-		color: styles.colors.fadeColor,
+		color: Styles.colors.fadeColor,
 	} as React.CSSProperties,
 	repo: {
 		fontSize: '12px',
 		marginTop: '7px',
-		color: styles.colors.fadeColor,
+		color: Styles.colors.fadeColor,
 	} as React.CSSProperties,
 	actions: {
 		padding: '5px 0',
@@ -73,31 +69,35 @@ export default class Build extends React.Component<Props, null> {
 			stop = MiscUtils.formatDate(new Date(build.stop));
 		}
 
-		return <Card style={css.card}>
-			<CardText>
+		return <Mui.Card style={css.card}>
+			<Mui.CardText>
 				<div className="layout horizontal">
 					<div style={css.content} className="card-content flex">
 						<div className="layout vertical">
 							<div className="layout horizontal">
 								<div style={css.name}>{build.name}</div>
-								<div style={css.version}>{build.version}-{build.release}</div>
+								<div style={css.version}>
+									{build.version}-{build.release}
+								</div>
 							</div>
 							<div style={css.repo}>{build.repo} - {build.arch}</div>
 						</div>
 					</div>
 					<div>
-						<IconButton style={css.launch}>
+						<Mui.IconButton style={css.launch}>
 							<i className="material-icons">flip_to_front</i>
-						</IconButton>
+						</Mui.IconButton>
 					</div>
 				</div>
-			</CardText>
-			<CardActions style={css.actions} className="layout horizontal">
-				<FlatButton style={css.pause} label="Pause"/>
-				<FlatButton style={css.resume} label="Resume"/>
-				<FlatButton style={css.retry} label="Retry"/>
-				<FlatButton style={css.remove} label="Remove"/>
-			</CardActions>
-		</Card>;
+			</Mui.CardText>
+			<Mui.CardActions style={css.actions}>
+				<div className="layout horizontal">
+					<Mui.FlatButton style={css.pause} label="Pause"/>
+					<Mui.FlatButton style={css.resume} label="Resume"/>
+					<Mui.FlatButton style={css.retry} label="Retry"/>
+					<Mui.FlatButton style={css.remove} label="Remove"/>
+				</div>
+			</Mui.CardActions>
+		</Mui.Card>;
 	}
 }

@@ -4,7 +4,7 @@ import * as Events from 'events';
 import * as BuildTypes from '../types/BuildTypes';
 import * as GlobalTypes from '../types/GlobalTypes';
 
-class _BuildStore extends Events.EventEmitter {
+class BuildStore extends Events.EventEmitter {
 	_state: BuildTypes.Builds = {};
 	token: string;
 
@@ -24,32 +24,33 @@ class _BuildStore extends Events.EventEmitter {
 		this.removeListener(GlobalTypes.CHANGE, callback);
 	}
 }
-let BuildStore = new _BuildStore();
-export default BuildStore;
+
+let buildStore = new BuildStore();
+export default buildStore;
 
 function loading(): void {
-	BuildStore._state = {
+	buildStore._state = {
 		'loading': {
 			'id': 'loading',
 		},
 	};
-	BuildStore.emitChange();
+	buildStore.emitChange();
 }
 
 function load(data: BuildTypes.Build[]): void {
-	BuildStore._state = {};
+	buildStore._state = {};
 	for (let item of data) {
-		BuildStore._state[item.id] = item;
+		buildStore._state[item.id] = item;
 	}
-	BuildStore.emitChange();
+	buildStore.emitChange();
 }
 
 function remove(id: string): void {
-	delete BuildStore._state[id];
-	BuildStore.emitChange();
+	delete buildStore._state[id];
+	buildStore.emitChange();
 }
 
-BuildStore.token = Dispatcher.register(function(
+buildStore.token = Dispatcher.register(function(
 		action: BuildTypes.BuildDispatch): void {
 	switch (action.type) {
 		case BuildTypes.LOADING:
