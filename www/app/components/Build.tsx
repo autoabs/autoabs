@@ -1,5 +1,6 @@
 /// <reference path="../References.d.ts"/>
 import * as React from 'react';
+import styles from '../Styles';
 import Card from 'material-ui/Card';
 import CardText from 'material-ui/Card';
 import CardActions from 'material-ui/Card';
@@ -20,7 +21,7 @@ const css = {
 		margin: '5px',
 	} as React.CSSProperties,
 	launch: {
-		color: '#fdfdfd',
+		color: styles.colors.color,
 		margin: '1px 1px 0 0',
 	} as React.CSSProperties,
 	content: {
@@ -32,33 +33,30 @@ const css = {
 	version: {
 		fontSize: '14px',
 		margin: '6px 0 0 7px',
-		color: '#919191',
+		color: styles.colors.fadeColor,
 	} as React.CSSProperties,
 	repo: {
 		fontSize: '12px',
 		marginTop: '7px',
-		color: '#919191',
+		color: styles.colors.fadeColor,
 	} as React.CSSProperties,
 	actions: {
 		padding: '5px 0',
 		justifyContent: 'center',
 	} as React.CSSProperties,
-	logs: {
-		color: '#607d8b',
-	} as React.CSSProperties,
 	pause: {
 		display: 'none',
-		color: '#03a9f4',
+		color: styles.colors.blue500,
 	} as React.CSSProperties,
 	resume: {
 		display: 'none',
-		color: '#4caf50',
+		color: styles.colors.green500,
 	} as React.CSSProperties,
 	retry: {
-		color: '#ab47bc',
+		color: styles.colors.pink400,
 	} as React.CSSProperties,
 	remove: {
-		color: '#f44336',
+		color: styles.colors.red500,
 	} as React.CSSProperties,
 };
 
