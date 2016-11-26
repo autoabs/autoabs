@@ -2,4 +2,4 @@
 *.map
 node_modules/*
 jspm_packages/*
-powur.py
+dist/static/*
