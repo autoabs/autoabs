@@ -30,7 +30,7 @@ const css = {
 export default class Builds extends React.Component<null, State> {
 	constructor(props: any, context: any) {
 		super(props, context);
-		BuildUtils.init();
+		BuildUtils.load();
 		this.state = getState();
 	}
 

@@ -2,8 +2,13 @@
 import * as SuperAgent from 'superagent';
 import * as BuildActions from '../actions/BuildActions';
 
-export function init(): Promise<string> {
-	BuildActions.loading();
+let loaded = false;
+
+export function load(): Promise<string> {
+	if (!loaded) {
+		BuildActions.loading();
+	}
+	loaded = true;
 
 	return new Promise<string>((resolve, reject): void => {
 		SuperAgent
