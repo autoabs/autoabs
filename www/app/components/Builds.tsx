@@ -1,6 +1,6 @@
 /// <reference path="../References.d.ts"/>
 import * as React from 'react';
-import * as Mui from 'material-ui';
+import AppBar from 'material-ui/AppBar'
 import * as BuildTypes from '../types/BuildTypes'
 import BuildStore from '../stores/BuildStore';
 import * as BuildUtils from '../utils/BuildUtils';
@@ -55,7 +55,7 @@ export default class Builds extends React.Component<null, State> {
 		}
 
 		return <div>
-			<Mui.AppBar title="AutoABS"/>
+			<AppBar title="AutoABS"/>
 			<div style={css.builds}>
 				{buildsDom}
 			</div>

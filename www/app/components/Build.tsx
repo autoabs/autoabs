@@ -1,12 +1,21 @@
 /// <reference path="../References.d.ts"/>
 import * as React from 'react';
-import * as Mui from 'material-ui';
+import Card from 'material-ui/Card';
+import CardText from 'material-ui/Card';
+import CardActions from 'material-ui/Card';
+import FlatButton from 'material-ui/FlatButton';
+import IconButton from 'material-ui/IconButton';
+import Dialog from 'material-ui/Dialog';
 import Styles from '../Styles';
 import * as BuildTypes from '../types/BuildTypes';
 import * as MiscUtils from '../utils/MiscUtils';
 
 interface Props {
 	build: BuildTypes.Build;
+}
+
+interface State {
+	dialog: boolean;
 }
 
 const css = {
@@ -37,26 +46,47 @@ const css = {
 		color: Styles.colors.fadeColor,
 	} as React.CSSProperties,
 	actions: {
+		display: 'flex',
+		flexDirection: 'row',
 		padding: '5px 0',
 		justifyContent: 'center',
 	} as React.CSSProperties,
 	pause: {
 		display: 'none',
-		color: styles.colors.blue500,
+		color: Styles.colors.blue500,
 	} as React.CSSProperties,
 	resume: {
 		display: 'none',
-		color: styles.colors.green500,
+		color: Styles.colors.green500,
 	} as React.CSSProperties,
 	retry: {
-		color: styles.colors.pink400,
+		color: Styles.colors.pink400,
 	} as React.CSSProperties,
 	remove: {
-		color: styles.colors.red500,
+		color: Styles.colors.red500,
 	} as React.CSSProperties,
 };
 
-export default class Build extends React.Component<Props, null> {
+export default class Build extends React.Component<Props, State> {
+	constructor(props: Props, context: any) {
+		super(props, context);
+		this.state = {
+			dialog: false,
+		};
+	}
+
+	openDialog(): void {
+		this.setState({
+			dialog: true,
+		});
+	}
+
+	closeDialog(): void {
+		this.setState({
+			dialog: false,
+		});
+	}
+
 	render(): JSX.Element {
 		let build = this.props.build;
 
@@ -69,35 +99,46 @@ export default class Build extends React.Component<Props, null> {
 			stop = MiscUtils.formatDate(new Date(build.stop));
 		}
 
-		return <Mui.Card style={css.card}>
-			<Mui.CardText>
+		const actions = [
+			<FlatButton
+				label="Close"
+				primary={true}
+				onTouchTap={() => this.closeDialog()}
+			/>
+		];
+
+		return <Card style={css.card}>
+			<CardText>
 				<div className="layout horizontal">
 					<div style={css.content} className="card-content flex">
 						<div className="layout vertical">
 							<div className="layout horizontal">
 								<div style={css.name}>{build.name}</div>
-								<div style={css.version}>
-									{build.version}-{build.release}
-								</div>
+								<div style={css.version}>{build.version}-{build.release}</div>
 							</div>
 							<div style={css.repo}>{build.repo} - {build.arch}</div>
 						</div>
 					</div>
 					<div>
-						<Mui.IconButton style={css.launch}>
+						<IconButton style={css.launch}
+								onClick={() => this.openDialog()}>
 							<i className="material-icons">flip_to_front</i>
-						</Mui.IconButton>
+						</IconButton>
 					</div>
 				</div>
-			</Mui.CardText>
-			<Mui.CardActions style={css.actions}>
-				<div className="layout horizontal">
-					<Mui.FlatButton style={css.pause} label="Pause"/>
-					<Mui.FlatButton style={css.resume} label="Resume"/>
-					<Mui.FlatButton style={css.retry} label="Retry"/>
-					<Mui.FlatButton style={css.remove} label="Remove"/>
-				</div>
-			</Mui.CardActions>
-		</Mui.Card>;
+			</CardText>
+			<CardActions style={css.actions}>
+				<FlatButton style={css.pause} label="Pause"/>
+				<FlatButton style={css.resume} label="Resume"/>
+				<FlatButton style={css.retry} label="Retry"/>
+				<FlatButton style={css.remove} label="Remove"/>
+			</CardActions>
+			<Dialog
+				title={`Builds Logs - ${build.name}`}
+				modal={true}
+				actions={actions}
+				open={this.state.dialog}
+			>Test dialog</Dialog>
+		</Card>;
 	}
 }
