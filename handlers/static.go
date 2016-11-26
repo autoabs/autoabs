@@ -38,23 +38,11 @@ func staticIndexGet(c *gin.Context) {
 	staticPath(c, "/index.html")
 }
 
-func staticConfigGet(c *gin.Context) {
-	staticPath(c, "/config.js")
+func staticGet(c *gin.Context) {
+	staticPath(c, "/static"+c.Params.ByName("path"))
 }
 
-func staticAppGet(c *gin.Context) {
-	staticPath(c, "/app"+c.Params.ByName("path"))
-}
-
-func staticStylesGet(c *gin.Context) {
-	staticPath(c, "/styles"+c.Params.ByName("path"))
-}
-
-func staticVendorGet(c *gin.Context) {
-	staticPath(c, "/vendor"+c.Params.ByName("path"))
-}
-
-func staticLiveGet(c *gin.Context) {
+func staticTestingGet(c *gin.Context) {
 	c.Writer.Header().Add("Cache-Control",
 		"no-cache, no-store, must-revalidate")
 	c.Writer.Header().Add("Pragma", "no-cache")
@@ -64,6 +52,8 @@ func staticLiveGet(c *gin.Context) {
 	if pth == "" {
 		if c.Request.URL.Path == "/config.js" {
 			pth = "config.js"
+		} else if c.Request.URL.Path == "/build.js" {
+			pth = "build.js"
 		} else {
 			pth = "index.html"
 		}

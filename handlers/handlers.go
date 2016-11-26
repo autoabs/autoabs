@@ -55,17 +55,7 @@ func Register(engine *gin.Engine) {
 
 	engine.GET("/check", checkGet)
 
-	if constants.StaticLive {
-		fs := gin.Dir(constants.StaticRoot, false)
-		fileServer = http.FileServer(fs)
-
-		engine.GET("/", staticLiveGet)
-		engine.GET("/config.js", staticLiveGet)
-		engine.GET("/app/*path", staticLiveGet)
-		engine.GET("/styles/*path", staticLiveGet)
-		engine.GET("/node_modules/*path", staticLiveGet)
-		engine.GET("/jspm_packages/*path", staticLiveGet)
-	} else {
+	if constants.Production {
 		var err error
 		store, err = static.NewStore(constants.StaticRoot)
 		if err != nil {
@@ -73,10 +63,19 @@ func Register(engine *gin.Engine) {
 		}
 
 		engine.GET("/", staticIndexGet)
-		engine.GET("/config.js", staticConfigGet)
-		engine.GET("/app/*path", staticAppGet)
-		engine.GET("/styles/*path", staticStylesGet)
-		engine.GET("/vendor/*path", staticVendorGet)
+		engine.GET("/static/*path", staticGet)
+	} else {
+		fs := gin.Dir(constants.StaticTestingRoot, false)
+		fileServer = http.FileServer(fs)
+
+		engine.GET("/", staticTestingGet)
+		engine.GET("/config.js", staticTestingGet)
+		engine.GET("/build.js", staticTestingGet)
+		engine.GET("/app/*path", staticTestingGet)
+		engine.GET("/dist/*path", staticTestingGet)
+		engine.GET("/styles/*path", staticTestingGet)
+		engine.GET("/node_modules/*path", staticTestingGet)
+		engine.GET("/jspm_packages/*path", staticTestingGet)
 	}
 
 	dbGroup.GET("/builds", buildsGet)
