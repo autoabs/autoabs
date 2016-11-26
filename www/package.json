@@ -12,6 +12,7 @@
     "@types/react-addons-test-utils": "^0.14.15",
     "@types/react-addons-transition-group": "^0.14.17",
     "@types/react-dom": "^0.14.17",
+    "@types/react-tap-event-plugin": "0.0.30",
     "@types/superagent": "^2.0.35",
     "events": "^1.1.1",
     "flux": "^3.1.0",
@@ -20,6 +21,7 @@
     "react": "^15.4.1",
     "react-addons-css-transition-group": "^15.0.1",
     "react-dom": "^15.0.1",
+    "react-tap-event-plugin": "^2.0.1",
     "superagent": "^3.0.0"
   },
   "jspm": {
@@ -31,6 +33,7 @@
       "material-ui": "npm:material-ui@^0.16.4",
       "react": "npm:react@^15.4.1",
       "react-dom": "npm:react-dom@^15.4.1",
+      "react-tap-event-plugin": "npm:react-tap-event-plugin@^2.0.1",
       "superagent": "npm:superagent@^3.0.0"
     },
     "devDependencies": {
