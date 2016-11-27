@@ -75,13 +75,13 @@ export default class Build extends React.Component<Props, State> {
 		};
 	}
 
-	openDialog(): void {
+	openDialog = (): void => {
 		this.setState({
 			dialog: true,
 		});
 	}
 
-	closeDialog(): void {
+	closeDialog = (): void => {
 		this.setState({
 			dialog: false,
 		});
@@ -103,7 +103,7 @@ export default class Build extends React.Component<Props, State> {
 			<FlatButton
 				label="Close"
 				primary={true}
-				onTouchTap={() => this.closeDialog()}
+				onTouchTap={this.closeDialog}
 			/>,
 		];
 
@@ -121,7 +121,7 @@ export default class Build extends React.Component<Props, State> {
 					</div>
 					<div>
 						<IconButton style={css.launch}
-								onClick={() => this.openDialog()}>
+								onClick={this.openDialog}>
 							<i className="material-icons">flip_to_front</i>
 						</IconButton>
 					</div>

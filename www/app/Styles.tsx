@@ -552,7 +552,7 @@ darkStyles.theme.appBar.color = '#383838';
 darkStyles.theme.appBar.textColor = '#fff';
 
 
-export let styles: Styles = lightStyles;
+export let styles: Styles = darkStyles;
 export default styles
 
 export function setTheme(theme: string): void {

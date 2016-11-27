@@ -35,14 +35,14 @@ export default class Builds extends React.Component<null, State> {
 	}
 
 	componentDidMount(): void {
-		BuildStore.addChangeListener(this._onChange);
+		BuildStore.addChangeListener(this.onChange);
 	}
 
 	componentWillUnmount(): void {
-		BuildStore.removeChangeListener(this._onChange);
+		BuildStore.removeChangeListener(this.onChange);
 	}
 
-	_onChange(): void {
+	onChange = (): void => {
 		this.setState(getState());
 	}
 
