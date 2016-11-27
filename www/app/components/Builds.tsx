@@ -42,7 +42,7 @@ export default class Builds extends React.Component<null, State> {
 		BuildStore.removeChangeListener(this._onChange);
 	}
 
-	_onChange = (): void => {
+	_onChange(): void {
 		this.setState(getState());
 	}
 
