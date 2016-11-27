@@ -1,7 +1,7 @@
 /// <reference path="../References.d.ts"/>
 import * as React from 'react';
-import AppBar from 'material-ui/AppBar'
-import * as BuildTypes from '../types/BuildTypes'
+import AppBar from 'material-ui/AppBar';
+import * as BuildTypes from '../types/BuildTypes';
 import BuildStore from '../stores/BuildStore';
 import * as BuildActions from '../actions/BuildActions';
 import Build from './Build';
@@ -44,13 +44,16 @@ export default class Builds extends React.Component<null, State> {
 
 	_onChange = (): void => {
 		this.setState(getState());
-	};
+	}
 
 	render(): JSX.Element {
 		let builds = this.state.builds;
 
 		let buildsDom: JSX.Element[] = [];
 		for (let key in builds) {
+			if (!builds.hasOwnProperty(key)) {
+				continue;
+			}
 			buildsDom.push(<Build key={key} build={builds[key]}/>);
 		}
 

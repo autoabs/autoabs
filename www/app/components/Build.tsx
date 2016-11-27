@@ -91,11 +91,11 @@ export default class Build extends React.Component<Props, State> {
 		let build = this.props.build;
 
 		let start = '-';
-		if (build.start !== "0001-01-01T00:00:00Z") {
+		if (build.start !== '0001-01-01T00:00:00Z') {
 			start = MiscUtils.formatDate(new Date(build.start));
 		}
 		let stop = '-';
-		if (build.stop !== "0001-01-01T00:00:00Z") {
+		if (build.stop !== '0001-01-01T00:00:00Z') {
 			stop = MiscUtils.formatDate(new Date(build.stop));
 		}
 
@@ -104,7 +104,7 @@ export default class Build extends React.Component<Props, State> {
 				label="Close"
 				primary={true}
 				onTouchTap={() => this.closeDialog()}
-			/>
+			/>,
 		];
 
 		return <Card style={css.card}>

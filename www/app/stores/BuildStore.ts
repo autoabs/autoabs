@@ -18,7 +18,7 @@ class BuildStore extends Events.EventEmitter {
 	}
 
 	emitChange(): void {
-		this.emit(GlobalTypes.CHANGE)
+		this.emit(GlobalTypes.CHANGE);
 	}
 
 	addChangeListener(callback: () => void): void {

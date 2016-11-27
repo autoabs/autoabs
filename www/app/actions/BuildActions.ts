@@ -26,11 +26,11 @@ export function sync(): Promise<string> {
 					type: BuildTypes.SYNC,
 					data: {
 						builds: res.body,
-					}
+					},
 				});
 
 				resolve();
-			})
+			});
 	});
 }
 

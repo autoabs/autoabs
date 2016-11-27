@@ -5,7 +5,7 @@ export function uuid(): string {
 
 export function zeroPad(num: number, width: number): string {
 	if (num < Math.pow(10, width)) {
-		return ('0'.repeat(width-1) + num).slice(-width);
+		return ('0'.repeat(width - 1) + num).slice(-width);
 	}
 	return num.toString();
 }
