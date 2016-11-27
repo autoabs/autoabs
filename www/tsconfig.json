@@ -6,7 +6,7 @@
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "removeComments": true,
-    "sourceMap": false,
+    "sourceMap": true,
     "jsx": "react"
   },
   "exclude": [
