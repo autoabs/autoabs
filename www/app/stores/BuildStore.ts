@@ -5,7 +5,7 @@ import * as BuildTypes from '../types/BuildTypes';
 import * as GlobalTypes from '../types/GlobalTypes';
 
 class BuildStore extends Events.EventEmitter {
-	_state: BuildTypes.Builds = {};
+	_state: BuildTypes.Builds = [];
 	_loadingState: boolean;
 	_token = Dispatcher.register((this._callback).bind(this));
 
@@ -44,15 +44,17 @@ class BuildStore extends Events.EventEmitter {
 	}
 
 	_sync(data: BuildTypes.Build[]): void {
-		this._state = {};
-		for (let item of data) {
-			this._state[item.id] = item;
-		}
+		this._state = data;
 		this.emitChange();
 	}
 
 	_remove(id: string): void {
-		delete this._state[id];
+		for (let i = 0; i < this._state.length; i++) {
+			if (this._state[i].id === id) {
+				this._state.splice(i, 1);
+				break;
+			}
+		}
 		this.emitChange();
 	}
 

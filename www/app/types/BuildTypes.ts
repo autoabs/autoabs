@@ -18,7 +18,7 @@ export interface Build {
 	log?: string[];
 }
 
-export type Builds = {[key: string]: Build};
+export type Builds = Build[];
 
 export interface BuildDispatch {
 	type: Symbol;
