@@ -37,7 +37,7 @@ const css = {
 	} as React.CSSProperties,
 	version: {
 		fontSize: '14px',
-		margin: '6px 0 0 7px',
+		margin: '5px 0 0 7px',
 		color: Styles.colors.fadeColor,
 	} as React.CSSProperties,
 	repo: {
