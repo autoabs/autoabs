@@ -50,11 +50,9 @@ export default class Builds extends React.Component<null, State> {
 		let builds = this.state.builds;
 
 		let buildsDom: JSX.Element[] = [];
-		for (let key in builds) {
-			if (!builds.hasOwnProperty(key)) {
-				continue;
-			}
-			buildsDom.push(<Build key={key} build={builds[key]}/>);
+		for (let i = 0; i < builds.length; i++) {
+			let build = builds[i];
+			buildsDom.push(<Build key={build.id} build={build}/>);
 		}
 
 		return <div>
