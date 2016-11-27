@@ -9,6 +9,18 @@ sed -i 's|lib/node/index.js|lib/client.js|g' jspm_packages/npm/superagent@*.js
 tsc --watch
 ```
 
+#### lint
+
+```
+tslint -c tslint.json app/**/*.ts*
+```
+
+#### clean
+
+```
+find app/ -name "*.js*" -delete
+```
+
 #### production
 
 ```
