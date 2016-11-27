@@ -1,0 +1,20 @@
+{
+  "extends": "tslint:latest",
+  "rules": {
+    "object-literal-sort-keys": false,
+    "object-literal-shorthand": false,
+    "no-reference": false,
+    "switch-default": false,
+    "interface-name": false,
+    "ordered-imports": false,
+    "member-access": [],
+    "indent": [true, "tabs"],
+    "quotemark": [true, "single", "jsx-double", "avoid-escape"],
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-leading-underscore"
+    ]
+  }
+}
