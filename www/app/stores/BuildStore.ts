@@ -6,10 +6,15 @@ import * as GlobalTypes from '../types/GlobalTypes';
 
 class BuildStore extends Events.EventEmitter {
 	_state: BuildTypes.Builds = {};
-	token: string;
+	_loadingState: boolean;
+	_token = Dispatcher.register((this._callback).bind(this));
 
 	get builds(): BuildTypes.Builds {
 		return this._state;
+	}
+
+	get loading(): boolean {
+		return this._loadingState;
 	}
 
 	emitChange(): void {
@@ -23,46 +28,53 @@ class BuildStore extends Events.EventEmitter {
 	removeChangeListener(callback: () => void): void {
 		this.removeListener(GlobalTypes.CHANGE, callback);
 	}
-}
 
-let buildStore = new BuildStore();
-export default buildStore;
-
-function loading(): void {
-	buildStore._state = {
-		'loading': {
-			'id': 'loading',
-		},
-	};
-	buildStore.emitChange();
-}
-
-function load(data: BuildTypes.Build[]): void {
-	buildStore._state = {};
-	for (let item of data) {
-		buildStore._state[item.id] = item;
+	_loading(): void {
+		if (this._loadingState !== true) {
+			this._loadingState = true;
+			this.emitChange();
+		}
 	}
-	buildStore.emitChange();
-}
 
-function remove(id: string): void {
-	delete buildStore._state[id];
-	buildStore.emitChange();
-}
-
-buildStore.token = Dispatcher.register(function(
-		action: BuildTypes.BuildDispatch): void {
-	switch (action.type) {
-		case BuildTypes.LOADING:
-			loading();
-			break;
-
-		case BuildTypes.LOAD:
-			load(action.data.builds);
-			break;
-
-		case BuildTypes.REMOVE:
-			remove(action.data.id);
-			break;
+	_loaded(): void {
+		if (this._loadingState !== false) {
+			this._loadingState = false;
+			this.emitChange();
+		}
 	}
-});
+
+	_sync(data: BuildTypes.Build[]): void {
+		this._state = {};
+		for (let item of data) {
+			this._state[item.id] = item;
+		}
+		this.emitChange();
+	}
+
+	_remove(id: string): void {
+		delete this._state[id];
+		this.emitChange();
+	}
+
+	_callback(action: BuildTypes.BuildDispatch): void {
+		switch (action.type) {
+			case BuildTypes.LOADING:
+				this._loading();
+				break;
+
+			case BuildTypes.LOADED:
+				this._loaded();
+				break;
+
+			case BuildTypes.SYNC:
+				this._sync(action.data.builds);
+				break;
+
+			case BuildTypes.REMOVE:
+				this._remove(action.data.id);
+				break;
+		}
+	}
+}
+
+export default new BuildStore();

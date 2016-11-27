@@ -1,19 +1,36 @@
 /// <reference path="../References.d.ts"/>
+import * as SuperAgent from 'superagent';
 import Dispatcher from '../dispatcher/Dispatcher';
 import * as BuildTypes from '../types/BuildTypes';
 
-export function loading(): void {
+export function sync(): Promise<string> {
 	Dispatcher.dispatch({
 		type: BuildTypes.LOADING,
 	});
-}
 
-export function load(builds: BuildTypes.Build[]): void {
-	Dispatcher.dispatch({
-		type: BuildTypes.LOAD,
-		data: {
-			builds: builds,
-		},
+	return new Promise<string>((resolve, reject): void => {
+		SuperAgent
+			.get('/builds')
+			.set('Accept', 'application/json')
+			.end((err: any, res: SuperAgent.Response): void => {
+				Dispatcher.dispatch({
+					type: BuildTypes.LOADED,
+				});
+
+				if (err) {
+					reject(err);
+					return;
+				}
+
+				Dispatcher.dispatch({
+					type: BuildTypes.SYNC,
+					data: {
+						builds: res.body,
+					}
+				});
+
+				resolve();
+			})
 	});
 }
 

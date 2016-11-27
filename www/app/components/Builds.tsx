@@ -3,7 +3,7 @@ import * as React from 'react';
 import AppBar from 'material-ui/AppBar'
 import * as BuildTypes from '../types/BuildTypes'
 import BuildStore from '../stores/BuildStore';
-import * as BuildUtils from '../utils/BuildUtils';
+import * as BuildActions from '../actions/BuildActions';
 import Build from './Build';
 
 interface State {
@@ -30,7 +30,7 @@ const css = {
 export default class Builds extends React.Component<null, State> {
 	constructor(props: any, context: any) {
 		super(props, context);
-		BuildUtils.load();
+		BuildActions.sync();
 		this.state = getState();
 	}
 

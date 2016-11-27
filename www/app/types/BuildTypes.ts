@@ -1,9 +1,8 @@
 /// <reference path="../References.d.ts"/>
 export const LOADING = Symbol('build.loading');
-export const LOAD = Symbol('build.load');
-export const CREATE = Symbol('build.create');
+export const LOADED = Symbol('build.loaded');
+export const SYNC = Symbol('build.sync');
 export const REMOVE = Symbol('build.remove');
-export const UPDATE = Symbol('build.update');
 
 export interface Build {
 	id: string;
