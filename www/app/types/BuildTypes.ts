@@ -23,8 +23,8 @@ export type Builds = Build[];
 export interface BuildDispatch {
 	type: Symbol;
 	data?: {
-		id: string;
-		content: string;
-		builds: Build[];
+		id?: string;
+		content?: string;
+		builds?: Build[];
 	};
 }
