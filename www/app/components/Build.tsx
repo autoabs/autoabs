@@ -7,6 +7,7 @@ import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
 import Dialog from 'material-ui/Dialog';
 import Styles from '../Styles';
+import * as BuildActions from '../actions/BuildActions';
 import * as BuildTypes from '../types/BuildTypes';
 import * as MiscUtils from '../utils/MiscUtils';
 
@@ -87,6 +88,10 @@ export default class Build extends React.Component<Props, State> {
 		});
 	}
 
+	onRemove = (): void => {
+		BuildActions.remove(this.props.build.id);
+	}
+
 	render(): JSX.Element {
 		let build = this.props.build;
 
@@ -131,7 +136,8 @@ export default class Build extends React.Component<Props, State> {
 				<FlatButton style={css.pause} label="Pause"/>
 				<FlatButton style={css.resume} label="Resume"/>
 				<FlatButton style={css.retry} label="Retry"/>
-				<FlatButton style={css.remove} label="Remove"/>
+				<FlatButton style={css.remove} label="Remove"
+					onTouchTap={this.onRemove}/>
 			</CardActions>
 			<Dialog
 				title={`Builds Logs - ${build.name}`}
