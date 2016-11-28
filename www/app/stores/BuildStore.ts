@@ -6,6 +6,7 @@ import * as GlobalTypes from '../types/GlobalTypes';
 
 class BuildStore extends Events.EventEmitter {
 	_state: BuildTypes.Builds = [];
+	_map: {[key: string]: number} = {};
 	_loadingState: boolean;
 	_token = Dispatcher.register((this._callback).bind(this));
 
@@ -44,17 +45,27 @@ class BuildStore extends Events.EventEmitter {
 	}
 
 	_sync(data: BuildTypes.Build[]): void {
+		this._map = {};
+		for (let i = 0; i < data.length; i++) {
+			this._map[data[i].id] = i;
+		}
 		this._state = data;
 		this.emitChange();
 	}
 
 	_remove(id: string): void {
-		for (let i = 0; i < this._state.length; i++) {
-			if (this._state[i].id === id) {
-				this._state.splice(i, 1);
-				break;
-			}
+		let n = this._map[id];
+		if (n === undefined) {
+			return;
 		}
+		delete this._map[id];
+
+		this._state.splice(n, 1);
+
+		for (let i = n; i < this._state.length; i++) {
+			this._map[this._state[i].id] = i;
+		}
+
 		this.emitChange();
 	}
 
