@@ -23,8 +23,8 @@ interface State {
 const css = {
 	card: {
 		flex: '1 0 auto',
-		minWidth: '300px',
-		maxWidth: '450px',
+		minWidth: '250px',
+		maxWidth: '600px',
 		margin: '5px',
 	} as React.CSSProperties,
 	launch: {
