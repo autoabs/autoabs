@@ -1,6 +1,7 @@
 /// <reference path="../References.d.ts"/>
 import * as SuperAgent from 'superagent';
 import Dispatcher from '../dispatcher/Dispatcher';
+import * as Alert from '../Alert';
 import * as BuildTypes from '../types/BuildTypes';
 
 export function sync(): Promise<string> {
@@ -41,4 +42,6 @@ export function remove(id: string): void {
 			id: id,
 		},
 	});
+
+	Alert.info('Build successfully removed');
 }
