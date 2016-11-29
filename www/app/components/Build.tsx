@@ -108,35 +108,53 @@ export default class Build extends React.Component<Props, State> {
 		switch (build.state) {
 			case 'building':
 				actions = [
-					<FlatButton style={css.skip} label="Skip"/>,
+					<ConfirmButton key="skip" style={css.skip} label="Skip"
+						progressColor={css.skip.color}
+					/>,
 				];
 				break;
 			case 'pending':
 				actions = [
-					<FlatButton style={css.skip} label="Skip"/>,
-					<FlatButton style={css.remove}
-						label="Remove" onTouchTap={this.onRemove}/>,
+					<ConfirmButton key="skip" style={css.skip} label="Skip"
+						progressColor={css.skip.color}
+					/>,
+					<ConfirmButton key="remove" style={css.remove} label="Remove"
+						progressColor={css.remove.color}
+						onConfirm={this.onRemove}
+					/>,
 				];
 				break;
 			case 'failed':
 				actions = [
-					<FlatButton style={css.retry} label="Retry"/>,
-					<FlatButton style={css.remove}
-						label="Remove" onTouchTap={this.onRemove}/>,
+					<ConfirmButton key="retry" style={css.retry} label="Retry"
+						progressColor={css.retry.color}
+					/>,
+					<ConfirmButton key="remove" style={css.remove} label="Remove"
+						progressColor={css.remove.color}
+						onConfirm={this.onRemove}
+					/>,
 				];
 				break;
 			case 'completed':
 				actions = [
-					<FlatButton style={css.retry} label="Retry"/>,
-					<FlatButton style={css.remove}
-						label="Remove" onTouchTap={this.onRemove}/>,
+					<ConfirmButton key="retry" style={css.retry} label="Retry"
+						progressColor={css.retry.color}
+					/>,
+					<ConfirmButton key="remove" style={css.remove} label="Remove"
+						progressColor={css.remove.color}
+						onConfirm={this.onRemove}
+					/>,
 				];
 				break;
 			case 'skipped':
 				actions = [
-					<FlatButton style={css.retry} label="Retry"/>,
-					<FlatButton style={css.remove}
-						label="Remove" onTouchTap={this.onRemove}/>,
+					<ConfirmButton key="retry" style={css.retry} label="Retry"
+						progressColor={css.retry.color}
+					/>,
+					<ConfirmButton key="remove" style={css.remove} label="Remove"
+						progressColor={css.remove.color}
+						onConfirm={this.onRemove}
+					/>,
 				];
 				break;
 		}
