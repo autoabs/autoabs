@@ -52,16 +52,14 @@ const css = {
 		padding: '5px 0',
 		justifyContent: 'center',
 	} as React.CSSProperties,
-	pause: {
-		display: 'none',
-		color: Styles.colors.blue500,
+	skip: {
+		color: Styles.colors.yellow400,
 	} as React.CSSProperties,
 	resume: {
-		display: 'none',
 		color: Styles.colors.green500,
 	} as React.CSSProperties,
 	retry: {
-		color: Styles.colors.pink400,
+		color: Styles.colors.blue500,
 	} as React.CSSProperties,
 	remove: {
 		color: Styles.colors.red500,
@@ -104,7 +102,45 @@ export default class Build extends React.Component<Props, State> {
 			stop = MiscUtils.formatDate(new Date(build.stop));
 		}
 
-		const actions = [
+		let actions: JSX.Element[];
+
+		switch (build.state) {
+			case "building":
+				actions = [
+					<FlatButton style={css.skip} label="Skip"/>,
+				];
+				break;
+			case "pending":
+				actions = [
+					<FlatButton style={css.skip} label="Skip"/>,
+					<FlatButton style={css.remove}
+						label="Remove" onTouchTap={this.onRemove}/>,
+				];
+				break;
+			case "failed":
+				actions = [
+					<FlatButton style={css.retry} label="Retry"/>,
+					<FlatButton style={css.remove}
+						label="Remove" onTouchTap={this.onRemove}/>,
+				];
+				break;
+			case "completed":
+				actions = [
+					<FlatButton style={css.retry} label="Retry"/>,
+					<FlatButton style={css.remove}
+						label="Remove" onTouchTap={this.onRemove}/>,
+				];
+				break;
+			case "skipped":
+				actions = [
+					<FlatButton style={css.retry} label="Retry"/>,
+					<FlatButton style={css.remove}
+						label="Remove" onTouchTap={this.onRemove}/>,
+				];
+				break;
+		}
+
+		let dialogActions = [
 			<FlatButton
 				label="Close"
 				primary={true}
@@ -133,16 +169,12 @@ export default class Build extends React.Component<Props, State> {
 				</div>
 			</CardText>
 			<CardActions style={css.actions}>
-				<FlatButton style={css.pause} label="Pause"/>
-				<FlatButton style={css.resume} label="Resume"/>
-				<FlatButton style={css.retry} label="Retry"/>
-				<FlatButton style={css.remove} label="Remove"
-					onTouchTap={this.onRemove}/>
+				{actions}
 			</CardActions>
 			<Dialog
 				title={`Builds Logs - ${build.name}`}
 				modal={true}
-				actions={actions}
+				actions={dialogActions}
 				open={this.state.dialog}
 			>Test dialog</Dialog>
 		</Card>;
