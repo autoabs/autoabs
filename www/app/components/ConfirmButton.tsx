@@ -2,7 +2,6 @@
 import * as React from 'react';
 import FlatButton from 'material-ui/FlatButton';
 import LinearProgress from 'material-ui/LinearProgress';
-import Styles from '../Styles';
 import * as MiscUtils from '../utils/MiscUtils';
 
 interface Props {
