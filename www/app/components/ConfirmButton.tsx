@@ -5,11 +5,11 @@ import LinearProgress from 'material-ui/LinearProgress';
 import * as MiscUtils from '../utils/MiscUtils';
 
 interface Props {
-	style?: React.CSSProperties,
-	label?: string,
-	disabled?: boolean,
-	progressColor?: string,
-	onConfirm?: () => void,
+	style?: React.CSSProperties;
+	label?: string;
+	disabled?: boolean;
+	progressColor?: string;
+	onConfirm?: () => void;
 }
 
 interface State {
