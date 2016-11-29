@@ -7,6 +7,7 @@ import * as MiscUtils from '../utils/MiscUtils';
 interface Props {
 	style?: React.CSSProperties;
 	label?: string;
+	primary?: boolean;
 	disabled?: boolean;
 	progressColor?: string;
 	onConfirm?: () => void;
@@ -111,8 +112,8 @@ export default class ConfirmButton extends React.Component<Props, State> {
 			<FlatButton
 				style={this.props.style}
 				label={label}
+				primary={this.props.primary}
 				disabled={this.props.disabled}
-				primary={true}
 				onMouseDown={this.confirm}
 				onMouseUp={this.clearConfirm}
 			/>
