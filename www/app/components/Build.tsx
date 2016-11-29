@@ -7,6 +7,7 @@ import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
 import Dialog from 'material-ui/Dialog';
 import Styles from '../Styles';
+import ConfirmButton from './ConfirmButton';
 import * as BuildActions from '../actions/BuildActions';
 import * as BuildTypes from '../types/BuildTypes';
 import * as MiscUtils from '../utils/MiscUtils';
@@ -105,33 +106,33 @@ export default class Build extends React.Component<Props, State> {
 		let actions: JSX.Element[];
 
 		switch (build.state) {
-			case "building":
+			case 'building':
 				actions = [
 					<FlatButton style={css.skip} label="Skip"/>,
 				];
 				break;
-			case "pending":
+			case 'pending':
 				actions = [
 					<FlatButton style={css.skip} label="Skip"/>,
 					<FlatButton style={css.remove}
 						label="Remove" onTouchTap={this.onRemove}/>,
 				];
 				break;
-			case "failed":
+			case 'failed':
 				actions = [
 					<FlatButton style={css.retry} label="Retry"/>,
 					<FlatButton style={css.remove}
 						label="Remove" onTouchTap={this.onRemove}/>,
 				];
 				break;
-			case "completed":
+			case 'completed':
 				actions = [
 					<FlatButton style={css.retry} label="Retry"/>,
 					<FlatButton style={css.remove}
 						label="Remove" onTouchTap={this.onRemove}/>,
 				];
 				break;
-			case "skipped":
+			case 'skipped':
 				actions = [
 					<FlatButton style={css.retry} label="Retry"/>,
 					<FlatButton style={css.remove}
