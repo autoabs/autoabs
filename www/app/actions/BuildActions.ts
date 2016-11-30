@@ -19,6 +19,7 @@ export function sync(): Promise<string> {
 				});
 
 				if (err) {
+					Alert.error(err);
 					reject(err);
 					return;
 				}
