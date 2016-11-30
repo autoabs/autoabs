@@ -133,6 +133,7 @@ export default class ConfirmButton extends React.Component<Props, State> {
 			confirmElem = <Dialog
 				title="Confirm"
 				modal={true}
+				open={this.state.dialog}
 				actions={[
 					<FlatButton
 						label="Cancel"
@@ -145,7 +146,6 @@ export default class ConfirmButton extends React.Component<Props, State> {
 						onTouchTap={this.closeDialogConfirm}
 					/>,
 				]}
-				open={this.state.dialog}
 			/>;
 		} else {
 			if (this.state.confirming) {
