@@ -169,6 +169,7 @@ export default class ConfirmButton extends React.Component<Props, State> {
 				disabled={this.props.disabled}
 				onMouseDown={Constants.mobile ? undefined : this.confirm}
 				onMouseUp={Constants.mobile ? undefined : this.clearConfirm}
+				onMouseLeave={Constants.mobile ? undefined : this.clearConfirm}
 				onTouchTap={Constants.mobile ? this.openDialog : undefined}
 			/>
 			{confirmElem}
