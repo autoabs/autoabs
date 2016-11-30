@@ -362,7 +362,7 @@ func (b *Build) Build(db *database.Database) (err error) {
 	return
 }
 
-func (b *Build) Skip(db *database.Database) (err error) {
+func (b *Build) Inactivate(db *database.Database) (err error) {
 	coll := db.Builds()
 
 	err = coll.Update(&bson.M{
@@ -370,7 +370,7 @@ func (b *Build) Skip(db *database.Database) (err error) {
 		"state": "failed",
 	}, &bson.M{
 		"$set": &bson.M{
-			"state":   "skipped",
+			"state":   "inactive",
 			"builder": "",
 			"start":   time.Now(),
 		},
@@ -385,7 +385,7 @@ func (b *Build) Skip(db *database.Database) (err error) {
 
 		return
 	}
-	b.State = "skipped"
+	b.State = "inactive"
 	b.Builder = ""
 
 	return
