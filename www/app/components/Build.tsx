@@ -195,7 +195,7 @@ export default class Build extends React.Component<Props, State> {
 				modal={true}
 				actions={dialogActions}
 				open={this.state.dialog}
-			>Test dialog</Dialog>
+			>{build.log}</Dialog>
 		</Card>;
 	}
 }
