@@ -63,8 +63,8 @@ func (b *Build) extract(db *database.Database) (err error) {
 			break
 		}
 		if e != nil {
-			e = &errortypes.ReadError{
-				errors.Wrap(err, "build: Failed to read tar header"),
+			err = &errortypes.ReadError{
+				errors.Wrap(e, "build: Failed to read tar header"),
 			}
 			return
 		}
@@ -83,14 +83,22 @@ func (b *Build) extract(db *database.Database) (err error) {
 			os.FileMode(hdr.Mode),
 		)
 		if e != nil {
-			e = &errortypes.WriteError{
-				errors.Wrap(err, "build: Failed to write tar file"),
+			err = &errortypes.WriteError{
+				errors.Wrap(e, "build: Failed to open tar file"),
 			}
 			return
 		}
 
 		_, err = io.Copy(file, arc)
 		if err != nil {
+			return
+		}
+
+		err = file.Close()
+		if err != nil {
+			err = &errortypes.WriteError{
+				errors.Wrap(err, "build: Failed to write tar file"),
+			}
 			return
 		}
 	}
