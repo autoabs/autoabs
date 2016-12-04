@@ -54,10 +54,7 @@ func (p *Package) LogPath() string {
 		p.Name+"-"+p.Repo+"-"+p.Arch+"-"+p.Version+"-"+p.Release)
 }
 
-func (p *Package) QueueBuild(force bool) (err error) {
-	db := database.GetDatabase()
-	defer db.Close()
-
+func (p *Package) QueueBuild(db *database.Database, force bool) (err error) {
 	coll := db.Builds()
 	gfs := db.PkgBuildGrid()
 

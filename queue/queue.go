@@ -76,6 +76,9 @@ func (q *Queue) Scan() (err error) {
 }
 
 func (q *Queue) Sync() (err error) {
+	db := database.GetDatabase()
+	defer db.Close()
+
 	err = q.Scan()
 	if err != nil {
 		return
@@ -94,7 +97,7 @@ func (q *Queue) Sync() (err error) {
 		}
 		queued.Add(key)
 
-		err = pk.QueueBuild(false)
+		err = pk.QueueBuild(db, false)
 		if err != nil {
 			return
 		}
@@ -107,7 +110,7 @@ func (q *Queue) Sync() (err error) {
 		}
 		queued.Add(key)
 
-		err = pk.QueueBuild(false)
+		err = pk.QueueBuild(db, false)
 		if err != nil {
 			return
 		}
