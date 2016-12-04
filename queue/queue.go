@@ -135,6 +135,25 @@ func (q *Queue) Build() (err error) {
 	return
 }
 
+func (q *Queue) Upload() (err error) {
+	db := database.GetDatabase()
+	defer db.Close()
+
+	builds, err := build.GetCompleted(db)
+	if err != nil {
+		return
+	}
+
+	for _, bild := range builds {
+		err = bild.Upload(db)
+		if err != nil {
+			return
+		}
+	}
+
+	return
+}
+
 func (q *Queue) Clean() (err error) {
 	err = q.Scan()
 	if err != nil {
