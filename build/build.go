@@ -44,6 +44,15 @@ func (b *Build) tmpPath() string {
 		b.Name+"-"+b.Repo+"-"+b.Arch+"-"+b.Version+"-"+b.Release)
 }
 
+func (b *Build) repoPath() string {
+	return path.Join(config.Config.RootPath, "repo", b.Repo, "os", b.Arch)
+}
+
+func (b *Build) databasePath() string {
+	return path.Join(config.Config.RootPath, "repo", b.Repo, "os", b.Arch,
+		fmt.Sprintf("%s.db.tar.gz", b.Repo))
+}
+
 func (b *Build) extract(db *database.Database) (err error) {
 	tmpPath := b.tmpPath()
 
@@ -472,6 +481,81 @@ func (b *Build) Remove(db *database.Database) (err error) {
 
 		return
 	}
+
+	return
+}
+
+func (b *Build) Upload(db *database.Database) (err error) {
+	repoPath := b.repoPath()
+	coll := db.Builds()
+	gfs := db.PkgGrid()
+
+	if b.State != "completed" {
+		return
+	}
+
+	err = utils.ExistsMkdir(repoPath, 0755)
+	if err != nil {
+		return
+	}
+
+	pkgPaths := []string{}
+
+	for _, pkgId := range b.PkgIds {
+		gf, e := gfs.OpenId(pkgId)
+		if e != nil {
+			err = database.ParseError(e)
+			return
+		}
+
+		pth := path.Join(repoPath, gf.Name())
+		file, e := os.Create(pth)
+		if e != nil {
+			e = &errortypes.WriteError{
+				errors.Wrap(err, "build: Failed to open pkg file"),
+			}
+			return
+		}
+
+		_, err = io.Copy(file, gf)
+		if err != nil {
+			return
+		}
+
+		err = file.Close()
+		if err != nil {
+			err = &errortypes.WriteError{
+				errors.Wrap(err, "build: Failed to write pkg file"),
+			}
+			return
+		}
+
+		if strings.HasSuffix(pth, constants.PackageExt) {
+			pkgPaths = append(pkgPaths, pth)
+		}
+	}
+
+	for _, pkgPath := range pkgPaths {
+		cmd := exec.Command(
+			"/usr/bin/repo-add",
+			b.databasePath(),
+			pkgPath,
+		)
+
+		cmd.Stdout = os.Stdout
+		cmd.Stderr = os.Stderr
+
+		err = cmd.Run()
+		if err != nil {
+			err = errortypes.ExecError{
+				errors.Wrapf(err, "build: Failed to add package"),
+			}
+			return
+		}
+	}
+
+	b.State = "uploaded"
+	coll.CommitFields(b.Id, b, set.NewSet("state"))
 
 	return
 }
