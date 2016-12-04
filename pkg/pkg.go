@@ -114,6 +114,13 @@ func (p *Package) QueueBuild(force bool) (err error) {
 	err = filepath.Walk(p.SourcePath, func(path string,
 		info os.FileInfo, err error) (e error) {
 
+		if err != nil {
+			e = &errortypes.WriteError{
+				errors.Wrap(err, "pkg: Failed to read pkg directory"),
+			}
+			return
+		}
+
 		if info.IsDir() {
 			return
 		}
@@ -157,6 +164,9 @@ func (p *Package) QueueBuild(force bool) (err error) {
 
 		return
 	})
+	if err != nil {
+		return
+	}
 
 	err = arc.Close()
 	if err != nil {
