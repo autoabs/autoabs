@@ -7,7 +7,6 @@ import (
 	"github.com/autoabs/autoabs/config"
 	"github.com/autoabs/autoabs/database"
 	"github.com/autoabs/autoabs/errortypes"
-	"github.com/autoabs/autoabs/utils"
 	"github.com/dropbox/godropbox/errors"
 	"gopkg.in/mgo.v2/bson"
 	"io"
@@ -171,39 +170,6 @@ func (p *Package) QueueBuild(force bool) (err error) {
 	if err != nil {
 		err = &errortypes.WriteError{
 			errors.Wrap(err, "pkg: Failed to close grid file"),
-		}
-		return
-	}
-
-	return
-}
-
-func (p *Package) Add(pkgPath string) (err error) {
-	repoPath := p.RepoPath()
-
-	err = utils.ExistsMkdir(repoPath, 0755)
-	if err != nil {
-		return
-	}
-
-	err = utils.Copy(pkgPath, p.RepoPath())
-	if err != nil {
-		return
-	}
-
-	cmd := exec.Command(
-		"/usr/bin/repo-add",
-		p.DatabasePath(),
-		pkgPath,
-	)
-
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-
-	err = cmd.Run()
-	if err != nil {
-		err = errortypes.ExecError{
-			errors.Wrapf(err, "package: Failed to add package"),
 		}
 		return
 	}
