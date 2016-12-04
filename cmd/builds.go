@@ -23,6 +23,24 @@ func Build() {
 	}
 }
 
+func Upload() {
+	que := queue.Queue{}
+
+	err := que.Upload()
+	if err != nil {
+		panic(err)
+	}
+}
+
+func Clean() {
+	que := queue.Queue{}
+
+	err := que.Clean()
+	if err != nil {
+		panic(err)
+	}
+}
+
 func RetryFailed() {
 	err := build.RetryFailed()
 	if err != nil {

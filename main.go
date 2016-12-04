@@ -28,6 +28,12 @@ func main() {
 		case "build":
 			cmd.Build()
 			return
+		case "upload":
+			cmd.Upload()
+			return
+		case "clean":
+			cmd.Clean()
+			return
 		case "retry":
 			cmd.RetryFailed()
 			return
