@@ -33,6 +33,7 @@ type Build struct {
 	Version    string          `bson:"version" json:"version"`
 	Release    string          `bson:"release" json:"release"`
 	Repo       string          `bson:"repo" json:"repo"`
+	Uploaded   bool            `bson:"uploaded" json:"uploaded"`
 	Arch       string          `bson:"arch" json:"arch"`
 	Log        []string        `bson:"log,omitempty" json:"log"`
 	PkgIds     []bson.ObjectId `bson:"pkg_ids" json:"-"`
@@ -485,12 +486,12 @@ func (b *Build) Remove(db *database.Database) (err error) {
 	return
 }
 
-func (b *Build) Upload(db *database.Database) (err error) {
+func (b *Build) Upload(db *database.Database, force bool) (err error) {
 	repoPath := b.repoPath()
 	coll := db.Builds()
 	gfs := db.PkgGrid()
 
-	if b.State != "completed" {
+	if b.Uploaded && !force {
 		return
 	}
 
@@ -554,8 +555,8 @@ func (b *Build) Upload(db *database.Database) (err error) {
 		}
 	}
 
-	b.State = "uploaded"
-	coll.CommitFields(b.Id, b, set.NewSet("state"))
+	b.Uploaded = true
+	coll.CommitFields(b.Id, b, set.NewSet("uploaded"))
 
 	return
 }
