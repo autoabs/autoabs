@@ -49,12 +49,12 @@ func GetQueued(db *database.Database) (builds []*Build, err error) {
 	return
 }
 
-func GetCompleted(db *database.Database) (builds []*Build, err error) {
+func GetReady(db *database.Database) (builds []*Build, err error) {
 	builds = []*Build{}
 	coll := db.Builds()
 
 	cursor := coll.Find(&bson.M{
-		"state": "completed",
+		"uploaded": false,
 	}).Iter()
 
 	bild := &Build{}

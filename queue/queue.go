@@ -139,13 +139,13 @@ func (q *Queue) Upload() (err error) {
 	db := database.GetDatabase()
 	defer db.Close()
 
-	builds, err := build.GetCompleted(db)
+	builds, err := build.GetReady(db)
 	if err != nil {
 		return
 	}
 
 	for _, bild := range builds {
-		err = bild.Upload(db)
+		err = bild.Upload(db, false)
 		if err != nil {
 			return
 		}
