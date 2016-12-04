@@ -166,12 +166,8 @@ func (q *Queue) Clean() (err error) {
 	}
 
 	for _, pk := range curPkgs {
-		newPkg, ok := q.newPackages[pk.Key()]
+		_, ok := q.newPackages[pk.Key()]
 		if !ok {
-			continue
-		}
-
-		if newPkg.Version != pk.Version || newPkg.Release != pk.Release {
 			pk.Remove()
 		}
 	}
