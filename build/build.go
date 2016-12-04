@@ -32,7 +32,7 @@ type Build struct {
 	State      string          `bson:"state" json:"state"`
 	Version    string          `bson:"version" json:"version"`
 	Release    string          `bson:"release" json:"release"`
-	Repo       string          `bson:"core" json:"repo"`
+	Repo       string          `bson:"repo" json:"repo"`
 	Arch       string          `bson:"arch" json:"arch"`
 	Log        []string        `bson:"log,omitempty" json:"log"`
 	PkgIds     []bson.ObjectId `bson:"pkg_ids" json:"-"`
