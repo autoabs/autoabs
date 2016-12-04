@@ -182,7 +182,7 @@ export default class Build extends React.Component<Props, State> {
 					<div>
 						<IconButton style={css.launch}
 								onClick={this.openDialog}>
-							<i className="material-icons">format_align_justify</i>
+							<i className="material-icons">receipt</i>
 						</IconButton>
 					</div>
 				</div>
