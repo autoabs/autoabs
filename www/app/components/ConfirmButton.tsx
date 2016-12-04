@@ -75,8 +75,15 @@ export default class ConfirmButton extends React.Component<Props, State> {
 		}
 	}
 
-	confirm = (): void => {
+	confirm = (evt: React.MouseEvent<{}>): void => {
 		let confirmId = MiscUtils.uuid();
+
+		if (evt.shiftKey) {
+			if (this.props.onConfirm) {
+				this.props.onConfirm();
+			}
+			return;
+		}
 
 		this.setState(Object.assign({}, this.state, {
 			confirming: confirmId,
