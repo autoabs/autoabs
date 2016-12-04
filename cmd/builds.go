@@ -8,7 +8,7 @@ import (
 func Sync() {
 	que := queue.Queue{}
 
-	err := que.Queue()
+	err := que.Sync()
 	if err != nil {
 		panic(err)
 	}

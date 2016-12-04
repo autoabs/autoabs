@@ -75,7 +75,7 @@ func (q *Queue) Scan() (err error) {
 	return
 }
 
-func (q *Queue) Queue() (err error) {
+func (q *Queue) Sync() (err error) {
 	err = q.Scan()
 	if err != nil {
 		return
