@@ -34,6 +34,7 @@ type Build struct {
 	Version    string          `bson:"version" json:"version"`
 	Release    string          `bson:"release" json:"release"`
 	Repo       string          `bson:"repo" json:"repo"`
+	RepoState  string          `bson:"repo_state" json:"repo_state"`
 	Uploaded   bool            `bson:"uploaded" json:"uploaded"`
 	Arch       string          `bson:"arch" json:"arch"`
 	Log        []string        `bson:"log,omitempty" json:"log"`
