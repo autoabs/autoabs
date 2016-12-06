@@ -186,6 +186,30 @@ func (p *Package) QueueBuild(db *database.Database, force bool) (err error) {
 	return
 }
 
+func (p *Package) SyncState(db *database.Database, stateId bson.ObjectId) (
+	err error) {
+
+	coll := db.Builds()
+
+	err = coll.Update(&bson.M{
+		"sub_names": p.SubName,
+		"version":   p.Version,
+		"release":   p.Release,
+		"repo":      p.Repo,
+		"arch":      p.Arch,
+	}, &bson.M{
+		"$set": &bson.M{
+			"repo_state": stateId,
+		},
+	})
+	if err != nil {
+		err = database.ParseError(err)
+		return
+	}
+
+	return
+}
+
 func (p *Package) Remove() {
 	if p.Path == "" {
 		return

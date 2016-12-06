@@ -5,6 +5,7 @@ import (
 	"github.com/autoabs/autoabs/database"
 	"github.com/autoabs/autoabs/pkg"
 	"github.com/dropbox/godropbox/container/set"
+	"gopkg.in/mgo.v2/bson"
 )
 
 type Queue struct {
@@ -114,6 +115,42 @@ func (q *Queue) Sync() (err error) {
 		if err != nil {
 			return
 		}
+	}
+
+	return
+}
+
+func (q *Queue) SyncState() (err error) {
+	stateId := bson.NewObjectId()
+	db := database.GetDatabase()
+	defer db.Close()
+
+	err = q.Scan()
+	if err != nil {
+		return
+	}
+
+	for _, pk := range q.curPackages {
+		err = pk.SyncState(db, stateId)
+		if err != nil {
+			return
+		}
+	}
+
+	coll := db.Builds()
+
+	_, err = coll.UpdateAll(&bson.M{
+		"repo_state": &bson.M{
+			"$ne": stateId,
+		},
+	}, &bson.M{
+		"$set": &bson.M{
+			"repo_state": nil,
+		},
+	})
+	if err != nil {
+		err = database.ParseError(err)
+		return
 	}
 
 	return
