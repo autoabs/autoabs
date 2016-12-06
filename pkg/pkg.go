@@ -71,6 +71,7 @@ func (p *Package) QueueBuild(db *database.Database, force bool) (err error) {
 	bild := &build.Build{
 		Id:         bson.NewObjectId(),
 		Name:       p.Name,
+		SubNames:   p.SubNames,
 		State:      "pending",
 		Version:    p.Version,
 		Release:    p.Release,

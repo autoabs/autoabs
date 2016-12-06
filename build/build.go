@@ -26,6 +26,7 @@ import (
 type Build struct {
 	Id         bson.ObjectId   `bson:"_id" json:"id"`
 	Name       string          `bson:"name" json:"name"`
+	SubNames   []string        `bson:"sub_names" json:"sub_names"`
 	Builder    string          `bson:"builder" json:"builder"`
 	Start      time.Time       `bson:"start,omitempty" json:"start,omitempty"`
 	Stop       time.Time       `bson:"stop,omitempty" json:"stop,omitempty"`
