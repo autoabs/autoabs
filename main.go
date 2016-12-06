@@ -25,6 +25,9 @@ func main() {
 		case "sync":
 			cmd.Sync()
 			return
+		case "sync-state":
+			cmd.SyncState()
+			return
 		case "build":
 			cmd.Build()
 			return

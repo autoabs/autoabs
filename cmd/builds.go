@@ -14,6 +14,15 @@ func Sync() {
 	}
 }
 
+func SyncState() {
+	que := queue.Queue{}
+
+	err := que.SyncState()
+	if err != nil {
+		panic(err)
+	}
+}
+
 func Build() {
 	que := queue.Queue{}
 
