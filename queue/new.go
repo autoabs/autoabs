@@ -76,10 +76,13 @@ func scanNewRepos(pkgName, pth string) (pkgs []*pkg.Package, err error) {
 
 		pkgInfo := strings.Split(strings.TrimSpace(string(output)), ":")
 
-		for _, pkName := range strings.Split(pkgInfo[0], " ") {
+		subNames := strings.Split(pkgInfo[0], " ")
+
+		for _, subName := range subNames {
 			pk := &pkg.Package{
 				Name:       pkgName,
-				SubName:    pkName,
+				SubName:    subName,
+				SubNames:   subNames,
 				Version:    pkgInfo[1],
 				Release:    pkgInfo[2],
 				Repo:       repo,

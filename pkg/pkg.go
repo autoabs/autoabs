@@ -19,6 +19,7 @@ import (
 type Package struct {
 	Name       string
 	SubName    string
+	SubNames   []string
 	Version    string
 	Release    string
 	Repo       string
