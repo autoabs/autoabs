@@ -157,6 +157,13 @@ export default class Build extends React.Component<Props, State> {
 					/>,
 				];
 				break;
+			case 'archived':
+				actions = [
+					<ConfirmButton key="retry" style={css.retry} label="Retry"
+						progressColor={css.retry.color}
+					/>,
+				];
+				break;
 		}
 
 		let dialogActions = [
