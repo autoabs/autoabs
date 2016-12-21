@@ -62,7 +62,7 @@ const css = {
 	retry: {
 		color: Styles.colors.blue500,
 	} as React.CSSProperties,
-	remove: {
+	archive: {
 		color: Styles.colors.red500,
 	} as React.CSSProperties,
 };
@@ -87,8 +87,7 @@ export default class Build extends React.Component<Props, State> {
 		});
 	}
 
-	onRemove = (): void => {
-		BuildActions.remove(this.props.build.id);
+	onArchive = (): void => {
 	}
 
 	render(): JSX.Element {
@@ -118,9 +117,9 @@ export default class Build extends React.Component<Props, State> {
 					<ConfirmButton key="skip" style={css.skip} label="Skip"
 						progressColor={css.skip.color}
 					/>,
-					<ConfirmButton key="remove" style={css.remove} label="Remove"
-						progressColor={css.remove.color}
-						onConfirm={this.onRemove}
+					<ConfirmButton key="archive" style={css.archive} label="Archive"
+						progressColor={css.archive.color}
+						onConfirm={this.onArchive}
 					/>,
 				];
 				break;
@@ -129,9 +128,9 @@ export default class Build extends React.Component<Props, State> {
 					<ConfirmButton key="retry" style={css.retry} label="Retry"
 						progressColor={css.retry.color}
 					/>,
-					<ConfirmButton key="remove" style={css.remove} label="Remove"
-						progressColor={css.remove.color}
-						onConfirm={this.onRemove}
+					<ConfirmButton key="archive" style={css.archive} label="Archive"
+						progressColor={css.archive.color}
+						onConfirm={this.onArchive}
 					/>,
 				];
 				break;
@@ -140,9 +139,9 @@ export default class Build extends React.Component<Props, State> {
 					<ConfirmButton key="retry" style={css.retry} label="Retry"
 						progressColor={css.retry.color}
 					/>,
-					<ConfirmButton key="remove" style={css.remove} label="Remove"
-						progressColor={css.remove.color}
-						onConfirm={this.onRemove}
+					<ConfirmButton key="archive" style={css.archive} label="Archive"
+						progressColor={css.archive.color}
+						onConfirm={this.onArchive}
 					/>,
 				];
 				break;
