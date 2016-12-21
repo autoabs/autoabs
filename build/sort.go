@@ -10,6 +10,7 @@ var stateRank = map[string]int{
 	"failed":    3,
 	"completed": 4,
 	"inactive":  4,
+	"archived":  4,
 }
 
 type buildsSort struct {
