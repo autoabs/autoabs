@@ -55,21 +55,24 @@ export default class ConfirmButton extends React.Component<Props, State> {
 	}
 
 	openDialog = (): void => {
-		this.setState(Object.assign({}, this.state, {
+		this.setState({
+			...this.state,
 			dialog: true,
-		}));
+		});
 	}
 
 	closeDialog = (): void => {
-		this.setState(Object.assign({}, this.state, {
+		this.setState({
+			...this.state,
 			dialog: false,
-		}));
+		});
 	}
 
 	closeDialogConfirm = (): void => {
-		this.setState(Object.assign({}, this.state, {
+		this.setState({
+			...this.state,
 			dialog: false,
-		}));
+		});
 		if (this.props.onConfirm) {
 			this.props.onConfirm();
 		}
@@ -85,9 +88,10 @@ export default class ConfirmButton extends React.Component<Props, State> {
 			return;
 		}
 
-		this.setState(Object.assign({}, this.state, {
+		this.setState({
+			...this.state,
 			confirming: confirmId,
-		}));
+		});
 
 		let i = 10;
 		let id = setInterval(() => {
@@ -95,10 +99,11 @@ export default class ConfirmButton extends React.Component<Props, State> {
 				clearInterval(id);
 				setTimeout(() => {
 					if (this.state.confirming === confirmId) {
-						this.setState(Object.assign({}, this.state, {
+						this.setState({
+							...this.state,
 							confirm: 0,
 							confirming: null,
-						}));
+						});
 						if (this.props.onConfirm) {
 							this.props.onConfirm();
 						}
@@ -107,17 +112,19 @@ export default class ConfirmButton extends React.Component<Props, State> {
 				return;
 			} else if (!this.state.confirming) {
 				clearInterval(id);
-				this.setState(Object.assign({}, this.state, {
+				this.setState({
+					...this.state,
 					confirm: 0,
 					confirming: null,
-				}));
+				});
 				return;
 			}
 
 			if (i % 10 === 0) {
-				this.setState(Object.assign({}, this.state, {
+				this.setState({
+					...this.state,
 					confirm: i / 10,
-				}));
+				});
 			}
 
 			i += 1;
@@ -125,10 +132,11 @@ export default class ConfirmButton extends React.Component<Props, State> {
 	}
 
 	clearConfirm = (): void => {
-		this.setState(Object.assign({}, this.state, {
+		this.setState({
+			...this.state,
 			confirm: 0,
 			confirming: null,
-		}));
+		});
 	}
 
 	render(): JSX.Element {

@@ -528,11 +528,12 @@ interface Styles {
 
 
 let lightStyles = {
-	colors: Object.assign({
+	colors: {
+		...colors,
 		color: 'rgba(0, 0, 0, 0.87)',
 		fadeColor: '#919191',
 		background: '#fff',
-	}, colors),
+	},
 	theme: MuiStyles.getMuiTheme(MuiStyles.lightBaseTheme),
 };
 
@@ -540,11 +541,12 @@ lightStyles.theme.appBar.color = '#08c';
 
 
 let darkStyles = {
-	colors: Object.assign({
+	colors: {
+		...colors,
 		color: '#fff',
 		fadeColor: '#919191',
 		background: '#1d1d1d',
-	}, colors),
+	},
 	theme: MuiStyles.getMuiTheme(MuiStyles.darkBaseTheme),
 };
 
