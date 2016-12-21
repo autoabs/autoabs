@@ -382,35 +382,6 @@ func (b *Build) Build(db *database.Database) (err error) {
 	return
 }
 
-func (b *Build) Inactivate(db *database.Database) (err error) {
-	coll := db.Builds()
-
-	err = coll.Update(&bson.M{
-		"_id":   b.Id,
-		"state": "failed",
-	}, &bson.M{
-		"$set": &bson.M{
-			"state":   "inactive",
-			"builder": "",
-			"start":   time.Now(),
-		},
-	})
-	if err != nil {
-		err = database.ParseError(err)
-
-		switch err.(type) {
-		case *database.NotFoundError:
-			err = nil
-		}
-
-		return
-	}
-	b.State = "inactive"
-	b.Builder = ""
-
-	return
-}
-
 func (b *Build) Archive(db *database.Database) (err error) {
 	coll := db.Builds()
 

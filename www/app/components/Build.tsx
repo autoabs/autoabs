@@ -146,17 +146,6 @@ export default class Build extends React.Component<Props, State> {
 					/>,
 				];
 				break;
-			case 'inactive':
-				actions = [
-					<ConfirmButton key="retry" style={css.retry} label="Retry"
-						progressColor={css.retry.color}
-					/>,
-					<ConfirmButton key="remove" style={css.remove} label="Remove"
-						progressColor={css.remove.color}
-						onConfirm={this.onRemove}
-					/>,
-				];
-				break;
 			case 'archived':
 				actions = [
 					<ConfirmButton key="retry" style={css.retry} label="Retry"
