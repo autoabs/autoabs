@@ -386,7 +386,7 @@ func (b *Build) Archive(db *database.Database) (err error) {
 	coll := db.Builds()
 
 	err = coll.Update(&bson.M{
-		"_id":   b.Id,
+		"_id": b.Id,
 	}, &bson.M{
 		"$set": &bson.M{
 			"state":   "archived",
