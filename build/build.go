@@ -422,7 +422,6 @@ func (b *Build) Archive(db *database.Database) (err error) {
 			"state":      "archived",
 			"builder":    "",
 			"repo_state": nil,
-			"start":      time.Now(),
 		},
 	})
 	if err != nil {
@@ -444,6 +443,7 @@ func (b *Build) Archive(db *database.Database) (err error) {
 
 func (b *Build) Retry(db *database.Database) (err error) {
 	coll := db.Builds()
+	start := time.Now()
 
 	err = coll.Update(&bson.M{
 		"_id":   b.Id,
@@ -452,7 +452,7 @@ func (b *Build) Retry(db *database.Database) (err error) {
 		"$set": &bson.M{
 			"state":   "pending",
 			"builder": "",
-			"start":   time.Now(),
+			"start":   start,
 		},
 	})
 	if err != nil {
@@ -467,6 +467,7 @@ func (b *Build) Retry(db *database.Database) (err error) {
 	}
 	b.State = "pending"
 	b.Builder = ""
+	b.Start = start
 
 	return
 }
