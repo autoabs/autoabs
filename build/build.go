@@ -383,15 +383,46 @@ func (b *Build) Build(db *database.Database) (err error) {
 }
 
 func (b *Build) Archive(db *database.Database) (err error) {
+	pkgGfs := db.PkgGrid()
+	pkgBuildGfs := db.PkgBuildGrid()
 	coll := db.Builds()
+
+	if b.PkgBuildId != "" {
+		err = pkgBuildGfs.RemoveId(b.PkgBuildId)
+		if err != nil {
+			err = database.ParseError(err)
+
+			switch err.(type) {
+			case *database.NotFoundError:
+				err = nil
+			}
+
+			return
+		}
+	}
+
+	for _, gfId := range b.PkgIds {
+		err = pkgGfs.RemoveId(gfId)
+		if err != nil {
+			err = database.ParseError(err)
+
+			switch err.(type) {
+			case *database.NotFoundError:
+				err = nil
+			}
+
+			return
+		}
+	}
 
 	err = coll.Update(&bson.M{
 		"_id": b.Id,
 	}, &bson.M{
 		"$set": &bson.M{
-			"state":   "archived",
-			"builder": "",
-			"start":   time.Now(),
+			"state":      "archived",
+			"builder":    "",
+			"repo_state": "",
+			"start":      time.Now(),
 		},
 	})
 	if err != nil {
@@ -406,6 +437,7 @@ func (b *Build) Archive(db *database.Database) (err error) {
 	}
 	b.State = "archived"
 	b.Builder = ""
+	b.RepoState = ""
 
 	return
 }
