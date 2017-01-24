@@ -23,9 +23,9 @@ func (s *fileSender) Parse(entry *logrus.Entry) {
 	fileLock.Lock()
 	defer fileLock.Unlock()
 
-	path := path.Join(config.Config.RootPath, "system.log")
+	pth := path.Join(config.Config.RootPath, "system.log")
 
-	file, err := os.OpenFile(path, os.O_CREATE|os.O_CREATE|os.O_WRONLY, 0644)
+	file, err := os.OpenFile(pth, os.O_CREATE|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		err = &errortypes.WriteError{
 			errors.Wrap(err, "logger: Failed to write entry"),
