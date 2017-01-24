@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/Sirupsen/logrus"
 	"github.com/autoabs/autoabs/colorize"
+	"time"
 )
 
 var (
@@ -12,8 +13,12 @@ var (
 )
 
 func format(entry *logrus.Entry) (output []byte) {
-	msg := fmt.Sprintf("%s %s %s", formatLevel(entry.Level), blueArrow,
-		entry.Message)
+	msg := fmt.Sprintf("%s%s %s %s",
+		formatTime(entry.Time),
+		formatLevel(entry.Level),
+		blueArrow,
+		entry.Message,
+	)
 
 	var errStr string
 	for key, val := range entry.Data {
@@ -65,6 +70,14 @@ func formatPlain(entry *logrus.Entry) (output []byte) {
 	output = []byte(msg)
 
 	return
+}
+
+func formatTime(timestamp time.Time) (str string) {
+	return colorize.ColorString(
+		timestamp.Format("[2006-01-02 15:04:05]"),
+		colorize.Bold,
+		colorize.None,
+	)
 }
 
 func formatLevel(lvl logrus.Level) (str string) {
