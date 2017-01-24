@@ -28,14 +28,14 @@ func main() {
 		case "sync-state":
 			cmd.SyncState()
 			return
-		case "build":
-			cmd.Build()
-			return
 		case "upload":
 			cmd.Upload()
 			return
 		case "clean":
 			cmd.Clean()
+			return
+		case "build":
+			cmd.Build()
 			return
 		case "retry":
 			cmd.RetryFailed()
