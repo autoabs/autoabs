@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/autoabs/autoabs/cmd"
+	"github.com/autoabs/autoabs/logger"
 	"github.com/autoabs/autoabs/requires"
 	"os"
 )
@@ -12,6 +13,7 @@ func main() {
 	flag.Parse()
 
 	requires.Init()
+	logger.Init()
 
 	switch flag.Arg(0) {
 	case "app":
