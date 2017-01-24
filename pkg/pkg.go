@@ -204,6 +204,12 @@ func (p *Package) SyncState(db *database.Database, stateId bson.ObjectId) (
 	})
 	if err != nil {
 		err = database.ParseError(err)
+
+		switch err.(type) {
+		case *database.NotFoundError:
+			err = nil
+		}
+
 		return
 	}
 
