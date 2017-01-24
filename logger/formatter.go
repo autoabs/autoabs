@@ -47,7 +47,12 @@ func format(entry *logrus.Entry) (output []byte) {
 }
 
 func formatPlain(entry *logrus.Entry) (output []byte) {
-	msg := fmt.Sprintf("%s ▶ %s", formatLevelPlain(entry.Level), entry.Message)
+	msg := fmt.Sprintf("%s%s %s %s",
+		entry.Time.Format("[2006-01-02 15:04:05]"),
+		formatLevelPlain(entry.Level),
+		blueArrow,
+		entry.Message,
+	)
 
 	var errStr string
 	for key, val := range entry.Data {
