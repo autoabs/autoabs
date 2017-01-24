@@ -107,16 +107,17 @@ export default class Build extends React.Component<Props, State> {
 		switch (build.state) {
 			case 'building':
 				actions = [
-					<ConfirmButton key="skip" style={css.skip} label="Skip"
-						progressColor={css.skip.color}
+					<ConfirmButton key="retry" style={css.retry} label="Retry"
+						progressColor={css.retry.color}
+					/>,
+					<ConfirmButton key="archive" style={css.archive} label="Archive"
+						progressColor={css.archive.color}
+						onConfirm={this.onArchive}
 					/>,
 				];
 				break;
 			case 'pending':
 				actions = [
-					<ConfirmButton key="skip" style={css.skip} label="Skip"
-						progressColor={css.skip.color}
-					/>,
 					<ConfirmButton key="archive" style={css.archive} label="Archive"
 						progressColor={css.archive.color}
 						onConfirm={this.onArchive}
