@@ -1,7 +1,6 @@
 package logger
 
 import (
-	"fmt"
 	"github.com/Sirupsen/logrus"
 	"github.com/autoabs/autoabs/config"
 	"github.com/autoabs/autoabs/errortypes"
@@ -25,12 +24,11 @@ func (s *fileSender) Parse(entry *logrus.Entry) {
 
 	pth := path.Join(config.Config.RootPath, "system.log")
 
-	file, err := os.OpenFile(pth, os.O_CREATE|os.O_CREATE|os.O_WRONLY, 0644)
+	file, err := os.OpenFile(pth, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
 	if err != nil {
 		err = &errortypes.WriteError{
 			errors.Wrap(err, "logger: Failed to write entry"),
 		}
-		fmt.Println(err.Error())
 		return
 	}
 	defer file.Close()
