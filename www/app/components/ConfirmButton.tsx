@@ -128,7 +128,7 @@ export default class ConfirmButton extends React.Component<Props, State> {
 			}
 
 			i += 1;
-		}, 8);
+		}, 3);
 	}
 
 	clearConfirm = (): void => {
