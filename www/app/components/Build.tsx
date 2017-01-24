@@ -59,7 +59,7 @@ const css = {
 	resume: {
 		color: Styles.colors.green500,
 	} as React.CSSProperties,
-	retry: {
+	rebuild: {
 		color: Styles.colors.blue500,
 	} as React.CSSProperties,
 	archive: {
@@ -107,8 +107,8 @@ export default class Build extends React.Component<Props, State> {
 		switch (build.state) {
 			case 'building':
 				actions = [
-					<ConfirmButton key="retry" style={css.retry} label="Retry"
-						progressColor={css.retry.color}
+					<ConfirmButton key="rebuild" style={css.rebuild} label="Rebuild"
+						progressColor={css.rebuild.color}
 					/>,
 					<ConfirmButton key="archive" style={css.archive} label="Archive"
 						progressColor={css.archive.color}
@@ -126,8 +126,8 @@ export default class Build extends React.Component<Props, State> {
 				break;
 			case 'failed':
 				actions = [
-					<ConfirmButton key="retry" style={css.retry} label="Retry"
-						progressColor={css.retry.color}
+					<ConfirmButton key="rebuild" style={css.rebuild} label="Rebuild"
+						progressColor={css.rebuild.color}
 					/>,
 					<ConfirmButton key="archive" style={css.archive} label="Archive"
 						progressColor={css.archive.color}
@@ -137,8 +137,8 @@ export default class Build extends React.Component<Props, State> {
 				break;
 			case 'completed':
 				actions = [
-					<ConfirmButton key="retry" style={css.retry} label="Retry"
-						progressColor={css.retry.color}
+					<ConfirmButton key="rebuild" style={css.rebuild} label="Rebuild"
+						progressColor={css.rebuild.color}
 					/>,
 					<ConfirmButton key="archive" style={css.archive} label="Archive"
 						progressColor={css.archive.color}
@@ -148,8 +148,8 @@ export default class Build extends React.Component<Props, State> {
 				break;
 			case 'archived':
 				actions = [
-					<ConfirmButton key="retry" style={css.retry} label="Retry"
-						progressColor={css.retry.color}
+					<ConfirmButton key="rebuild" style={css.rebuild} label="Rebuild"
+						progressColor={css.rebuild.color}
 					/>,
 				];
 				break;
