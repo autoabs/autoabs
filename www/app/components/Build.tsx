@@ -65,6 +65,10 @@ const css = {
 	archive: {
 		color: Styles.colors.red500,
 	} as React.CSSProperties,
+	buildLog: {
+		width: '100%',
+		maxWidth: '100%',
+	} as React.CSSProperties,
 	buildLogOutput: {
 		fontSize: '10px',
 		width: '100%',
@@ -200,6 +204,7 @@ export default class Build extends React.Component<Props, State> {
 				modal={true}
 				actions={dialogActions}
 				open={this.state.dialog}
+				contentStyle={css.buildLog}
 			><pre style={css.buildLogOutput}>{build.log.join('\n')}</pre></Dialog>
 		</Card>;
 	}
