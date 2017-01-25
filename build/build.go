@@ -21,6 +21,7 @@ import (
 	"path"
 	"strings"
 	"time"
+	"sync"
 )
 
 type Build struct {
@@ -212,7 +213,11 @@ func (b *Build) build(db *database.Database) (err error) {
 		return
 	}
 
+	outputWait := sync.WaitGroup{}
+	outputWait.Add(2)
+
 	go func() {
+		defer outputWait.Done()
 		defer stdout.Close()
 
 		out := bufio.NewReader(stdout)
@@ -250,6 +255,7 @@ func (b *Build) build(db *database.Database) (err error) {
 	}()
 
 	go func() {
+		defer outputWait.Done()
 		defer stderr.Close()
 
 		out := bufio.NewReader(stderr)
@@ -285,6 +291,8 @@ func (b *Build) build(db *database.Database) (err error) {
 			}
 		}
 	}()
+
+	defer outputWait.Wait()
 
 	err = cmd.Start()
 	if err != nil {
