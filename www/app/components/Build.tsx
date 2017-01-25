@@ -65,6 +65,15 @@ const css = {
 	archive: {
 		color: Styles.colors.red500,
 	} as React.CSSProperties,
+	buildLogOutput: {
+		fontSize: '10px',
+		width: '100%',
+		height: '80%',
+		overflow: 'scroll',
+		padding: '2px 6px',
+		color: Styles.colors.color,
+		backgroundColor: 'rgba(0, 0, 0, 0.2)',
+	} as React.CSSProperties,
 };
 
 export default class Build extends React.Component<Props, State> {
@@ -191,7 +200,7 @@ export default class Build extends React.Component<Props, State> {
 				modal={true}
 				actions={dialogActions}
 				open={this.state.dialog}
-			>{build.log}</Dialog>
+			><pre style={css.buildLogOutput}>{build.log.join('\n')}</pre></Dialog>
 		</Card>;
 	}
 }
