@@ -54,6 +54,7 @@ func GetReady(db *database.Database) (builds []*Build, err error) {
 	coll := db.Builds()
 
 	cursor := coll.Find(&bson.M{
+		"state":    "completed",
 		"uploaded": false,
 	}).Iter()
 
