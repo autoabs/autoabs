@@ -22,6 +22,15 @@ func main() {
 	case "set":
 		cmd.Settings()
 		return
+	case "scheduler":
+		switch flag.Arg(1) {
+		case "build":
+			cmd.BuildScheduler()
+			return
+		case "storage":
+			cmd.StorageScheduler()
+			return
+		}
 	case "builds":
 		switch flag.Arg(1) {
 		case "sync":
