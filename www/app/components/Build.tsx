@@ -185,7 +185,8 @@ export default class Build extends React.Component<Props, State> {
 								<div style={css.name}>{build.name}</div>
 								<div style={css.version}>{build.version}-{build.release}</div>
 							</div>
-							<div style={css.repo}>{build.repo} - {build.arch}</div>
+							<div style={css.repo}>{build.repo} - {build.arch} (
+								{build.state})</div>
 						</div>
 					</div>
 					<div>
