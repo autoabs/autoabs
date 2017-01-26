@@ -52,8 +52,6 @@ export function archive(id: string): Promise<string> {
 					return;
 				}
 
-				console.log(res.body);
-
 				resolve();
 			});
 	});
