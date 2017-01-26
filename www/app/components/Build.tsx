@@ -101,6 +101,7 @@ export default class Build extends React.Component<Props, State> {
 	}
 
 	onArchive = (): void => {
+		BuildActions.archive(this.props.build.id);
 	}
 
 	render(): JSX.Element {
