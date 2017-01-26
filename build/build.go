@@ -442,7 +442,6 @@ func (b *Build) Archive(db *database.Database) (err error) {
 		return
 	}
 	b.State = "archived"
-	b.Builder = ""
 	b.RepoState = ""
 
 	return
