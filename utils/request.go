@@ -27,7 +27,7 @@ func GetRemoteAddr(c *gin.Context) (addr string) {
 	return
 }
 
-func ParseObjectId(strId string) (objId bson.ObjectId) {
+func ParseObjectId(strId string) (objId bson.ObjectId, ok bool) {
 	bytId, err := hex.DecodeString(strId)
 	if err != nil {
 		return
@@ -38,5 +38,6 @@ func ParseObjectId(strId string) (objId bson.ObjectId) {
 	}
 
 	objId = bson.ObjectId(bytId)
+	ok = true
 	return
 }
