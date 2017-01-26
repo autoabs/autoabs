@@ -36,6 +36,29 @@ export function sync(): Promise<string> {
 	});
 }
 
+export function archive(id: string): Promise<string> {
+	return new Promise<string>((resolve, reject): void => {
+		SuperAgent
+			.put('/build/' + id + '/archive')
+			.set('Accept', 'application/json')
+			.end((err: any, res: SuperAgent.Response): void => {
+				Dispatcher.dispatch({
+					type: BuildTypes.LOADED,
+				});
+
+				if (err) {
+					Alert.error(err);
+					reject(err);
+					return;
+				}
+
+				console.log(res.body);
+
+				resolve();
+			});
+	});
+}
+
 export function remove(id: string): void {
 	Dispatcher.dispatch({
 		type: BuildTypes.REMOVE,
