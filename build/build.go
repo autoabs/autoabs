@@ -428,7 +428,6 @@ func (b *Build) Archive(db *database.Database) (err error) {
 	}, &bson.M{
 		"$set": &bson.M{
 			"state":      "archived",
-			"builder":    "",
 			"repo_state": nil,
 		},
 	})
