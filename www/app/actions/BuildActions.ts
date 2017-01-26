@@ -11,7 +11,7 @@ export function sync(): Promise<string> {
 
 	return new Promise<string>((resolve, reject): void => {
 		SuperAgent
-			.get('/builds')
+			.get('/build')
 			.set('Accept', 'application/json')
 			.end((err: any, res: SuperAgent.Response): void => {
 				Dispatcher.dispatch({
