@@ -79,4 +79,5 @@ func Register(engine *gin.Engine) {
 	}
 
 	dbGroup.GET("/build", buildGet)
+	dbGroup.PUT("/build/:buildId/archive", buildArchive)
 }
