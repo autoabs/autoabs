@@ -4,7 +4,6 @@ export const LOADED = Symbol('build.loaded');
 export const SYNC = Symbol('build.sync');
 export const UPDATE = Symbol('build.update');
 export const REMOVE = Symbol('build.remove');
-export const ARCHIVE = Symbol('build.archive');
 
 export interface Build {
 	id: string;
