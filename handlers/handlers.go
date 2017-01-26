@@ -78,5 +78,5 @@ func Register(engine *gin.Engine) {
 		engine.GET("/jspm_packages/*path", staticTestingGet)
 	}
 
-	dbGroup.GET("/builds", buildsGet)
+	dbGroup.GET("/build", buildGet)
 }

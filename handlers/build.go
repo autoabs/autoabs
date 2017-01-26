@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func buildsGet(c *gin.Context) {
+func buildGet(c *gin.Context) {
 	db := c.MustGet("db").(*database.Database)
 
 	builds, err := build.GetAll(db)
