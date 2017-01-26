@@ -11,6 +11,7 @@ func buildGet(c *gin.Context) {
 
 	builds, err := build.GetAll(db)
 	if err != nil {
+		c.AbortWithError(500, err)
 		return
 	}
 
