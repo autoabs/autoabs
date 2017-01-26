@@ -207,7 +207,9 @@ export default class Build extends React.Component<Props, State> {
 				actions={dialogActions}
 				open={this.state.dialog}
 				contentStyle={css.buildLog}
-			><pre style={css.buildLogOutput}>{build.log.join('\n')}</pre></Dialog>
+			><pre style={css.buildLogOutput}>
+				{build.log ? build.log.join('\n') : ''}
+			</pre></Dialog>
 		</Card>;
 	}
 }
