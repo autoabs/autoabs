@@ -1,7 +1,9 @@
 package utils
 
 import (
+	"encoding/hex"
 	"github.com/gin-gonic/gin"
+	"gopkg.in/mgo.v2/bson"
 	"strings"
 )
 
@@ -22,5 +24,19 @@ func GetRemoteAddr(c *gin.Context) (addr string) {
 	}
 
 	addr = strings.Split(c.Request.RemoteAddr, ":")[0]
+	return
+}
+
+func ParseObjectId(strId string) (objId bson.ObjectId) {
+	bytId, err := hex.DecodeString(strId)
+	if err != nil {
+		return
+	}
+
+	if len(bytId) != 12 {
+		return
+	}
+
+	objId = bson.ObjectId(bytId)
 	return
 }
