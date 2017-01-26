@@ -5,6 +5,21 @@ import (
 	"gopkg.in/mgo.v2/bson"
 )
 
+func GetBuild(db *database.Database, buildId bson.ObjectId) (
+	bild *Build, err error) {
+
+	coll := db.Builds()
+
+	bild = &Build{}
+	err = coll.FindId(buildId).One(bild)
+	if err != nil {
+		err = database.ParseError(err)
+		return
+	}
+
+	return
+}
+
 func GetAll(db *database.Database) (builds []*Build, err error) {
 	builds = []*Build{}
 	coll := db.Builds()
