@@ -391,36 +391,11 @@ func (b *Build) Build(db *database.Database) (err error) {
 }
 
 func (b *Build) Archive(db *database.Database) (err error) {
-	pkgGfs := db.PkgGrid()
-	pkgBuildGfs := db.PkgBuildGrid()
 	coll := db.Builds()
 
-	if b.PkgBuildId != "" {
-		err = pkgBuildGfs.RemoveId(b.PkgBuildId)
-		if err != nil {
-			err = database.ParseError(err)
-
-			switch err.(type) {
-			case *database.NotFoundError:
-				err = nil
-			}
-
-			return
-		}
-	}
-
-	for _, gfId := range b.PkgIds {
-		err = pkgGfs.RemoveId(gfId)
-		if err != nil {
-			err = database.ParseError(err)
-
-			switch err.(type) {
-			case *database.NotFoundError:
-				err = nil
-			}
-
-			return
-		}
+	err = b.removePkg(db)
+	if err != nil {
+		return
 	}
 
 	err = coll.Update(&bson.M{
@@ -451,14 +426,19 @@ func (b *Build) Rebuild(db *database.Database) (err error) {
 	coll := db.Builds()
 	start := time.Now()
 
+	err = b.removePkg(db)
+	if err != nil {
+		return
+	}
+
 	err = coll.Update(&bson.M{
-		"_id":   b.Id,
-		"state": "failed",
+		"_id": b.Id,
 	}, &bson.M{
 		"$set": &bson.M{
 			"state":   "pending",
 			"builder": "",
 			"start":   start,
+			"pkg_ids": nil,
 		},
 	})
 	if err != nil {
@@ -478,10 +458,30 @@ func (b *Build) Rebuild(db *database.Database) (err error) {
 	return
 }
 
-func (b *Build) Remove(db *database.Database) (err error) {
+func (b *Build) removePkg(db *database.Database) (err error) {
 	pkgGfs := db.PkgGrid()
+
+	for _, gfId := range b.PkgIds {
+		err = pkgGfs.RemoveId(gfId)
+		if err != nil {
+			err = database.ParseError(err)
+
+			switch err.(type) {
+			case *database.NotFoundError:
+				err = nil
+			}
+
+			return
+		}
+	}
+
+	b.PkgIds = []bson.ObjectId{}
+
+	return
+}
+
+func (b *Build) removePkgBuild(db *database.Database) (err error) {
 	pkgBuildGfs := db.PkgBuildGrid()
-	coll := db.Builds()
 
 	if b.PkgBuildId != "" {
 		err = pkgBuildGfs.RemoveId(b.PkgBuildId)
@@ -497,18 +497,22 @@ func (b *Build) Remove(db *database.Database) (err error) {
 		}
 	}
 
-	for _, gfId := range b.PkgIds {
-		err = pkgGfs.RemoveId(gfId)
-		if err != nil {
-			err = database.ParseError(err)
+	b.PkgBuildId = ""
 
-			switch err.(type) {
-			case *database.NotFoundError:
-				err = nil
-			}
+	return
+}
 
-			return
-		}
+func (b *Build) Remove(db *database.Database) (err error) {
+	coll := db.Builds()
+
+	err = b.removePkg(db)
+	if err != nil {
+		return
+	}
+
+	err = b.removePkgBuild(db)
+	if err != nil {
+		return
 	}
 
 	err = coll.RemoveId(b.Id)
