@@ -86,7 +86,7 @@ export default class Build extends React.Component<Props, State> {
 		super(props, context);
 		this.state = {
 			dialog: false,
-			loading: true,
+			loading: false,
 		};
 	}
 
@@ -146,10 +146,12 @@ export default class Build extends React.Component<Props, State> {
 					<ConfirmButton key="rebuild" label="Rebuild"
 						color={css.rebuild.color}
 						progressColor={css.rebuild.color}
+						disabled={this.state.loading}
 					/>,
 					<ConfirmButton key="archive" label="Archive"
 						color={css.archive.color}
 						progressColor={css.archive.color}
+						disabled={this.state.loading}
 						onConfirm={this.onArchive}
 					/>,
 				];
@@ -168,10 +170,12 @@ export default class Build extends React.Component<Props, State> {
 					<ConfirmButton key="rebuild" label="Rebuild"
 						color={css.rebuild.color}
 						progressColor={css.rebuild.color}
+						disabled={this.state.loading}
 					/>,
 					<ConfirmButton key="archive" label="Archive"
 						color={css.archive.color}
 						progressColor={css.archive.color}
+						disabled={this.state.loading}
 						onConfirm={this.onArchive}
 					/>,
 				];
@@ -181,10 +185,12 @@ export default class Build extends React.Component<Props, State> {
 					<ConfirmButton key="rebuild" label="Rebuild"
 						color={css.rebuild.color}
 						progressColor={css.rebuild.color}
+						disabled={this.state.loading}
 					/>,
 					<ConfirmButton key="archive" label="Archive"
 						color={css.archive.color}
 						progressColor={css.archive.color}
+						disabled={this.state.loading}
 						onConfirm={this.onArchive}
 					/>,
 				];
@@ -194,6 +200,7 @@ export default class Build extends React.Component<Props, State> {
 					<ConfirmButton key="rebuild" label="Rebuild"
 						color={css.rebuild.color}
 						progressColor={css.rebuild.color}
+						disabled={this.state.loading}
 					/>,
 				];
 				break;
