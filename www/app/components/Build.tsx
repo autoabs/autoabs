@@ -143,10 +143,12 @@ export default class Build extends React.Component<Props, State> {
 		switch (build.state) {
 			case 'building':
 				actions = [
-					<ConfirmButton key="rebuild" style={css.rebuild} label="Rebuild"
+					<ConfirmButton key="rebuild" label="Rebuild"
+						color={css.rebuild.color}
 						progressColor={css.rebuild.color}
 					/>,
-					<ConfirmButton key="archive" style={css.archive} label="Archive"
+					<ConfirmButton key="archive" label="Archive"
+						color={css.archive.color}
 						progressColor={css.archive.color}
 						onConfirm={this.onArchive}
 					/>,
@@ -154,7 +156,8 @@ export default class Build extends React.Component<Props, State> {
 				break;
 			case 'pending':
 				actions = [
-					<ConfirmButton key="archive" style={css.archive} label="Archive"
+					<ConfirmButton key="archive" label="Archive"
+						color={css.archive.color}
 						progressColor={css.archive.color}
 						onConfirm={this.onArchive}
 					/>,
@@ -162,10 +165,12 @@ export default class Build extends React.Component<Props, State> {
 				break;
 			case 'failed':
 				actions = [
-					<ConfirmButton key="rebuild" style={css.rebuild} label="Rebuild"
+					<ConfirmButton key="rebuild" label="Rebuild"
+						color={css.rebuild.color}
 						progressColor={css.rebuild.color}
 					/>,
-					<ConfirmButton key="archive" style={css.archive} label="Archive"
+					<ConfirmButton key="archive" label="Archive"
+						color={css.archive.color}
 						progressColor={css.archive.color}
 						onConfirm={this.onArchive}
 					/>,
@@ -173,10 +178,12 @@ export default class Build extends React.Component<Props, State> {
 				break;
 			case 'completed':
 				actions = [
-					<ConfirmButton key="rebuild" style={css.rebuild} label="Rebuild"
+					<ConfirmButton key="rebuild" label="Rebuild"
+						color={css.rebuild.color}
 						progressColor={css.rebuild.color}
 					/>,
-					<ConfirmButton key="archive" style={css.archive} label="Archive"
+					<ConfirmButton key="archive" label="Archive"
+						color={css.archive.color}
 						progressColor={css.archive.color}
 						onConfirm={this.onArchive}
 					/>,
@@ -184,7 +191,8 @@ export default class Build extends React.Component<Props, State> {
 				break;
 			case 'archived':
 				actions = [
-					<ConfirmButton key="rebuild" style={css.rebuild} label="Rebuild"
+					<ConfirmButton key="rebuild" label="Rebuild"
+						color={css.rebuild.color}
 						progressColor={css.rebuild.color}
 					/>,
 				];
