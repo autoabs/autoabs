@@ -404,7 +404,7 @@ func (b *Build) Archive(db *database.Database) (err error) {
 		"$set": &bson.M{
 			"state":      "archived",
 			"repo_state": nil,
-			"pkg_ids":    nil,
+			"pkg_ids":    []bson.ObjectId{},
 		},
 	})
 	if err != nil {
@@ -439,7 +439,7 @@ func (b *Build) Rebuild(db *database.Database) (err error) {
 			"state":   "pending",
 			"builder": "",
 			"start":   start,
-			"pkg_ids": nil,
+			"pkg_ids": []bson.ObjectId{},
 		},
 	})
 	if err != nil {
