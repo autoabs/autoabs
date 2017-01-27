@@ -447,7 +447,7 @@ func (b *Build) Archive(db *database.Database) (err error) {
 	return
 }
 
-func (b *Build) Retry(db *database.Database) (err error) {
+func (b *Build) Rebuild(db *database.Database) (err error) {
 	coll := db.Builds()
 	start := time.Now()
 

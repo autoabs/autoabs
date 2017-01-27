@@ -99,7 +99,7 @@ func RetryFailed() (err error) {
 
 	bild := &Build{}
 	for cursor.Next(bild) {
-		err = bild.Retry(db)
+		err = bild.Rebuild(db)
 		if err != nil {
 			return
 		}
