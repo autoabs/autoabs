@@ -52,6 +52,13 @@ export function archive(id: string): Promise<string> {
 					return;
 				}
 
+				Dispatcher.dispatch({
+					type: BuildTypes.UPDATE,
+					data: {
+						build: res.body,
+					},
+				});
+
 				resolve();
 			});
 	});
