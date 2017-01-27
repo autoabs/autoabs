@@ -19,7 +19,7 @@ export function sync(): Promise<string> {
 				});
 
 				if (err) {
-					Alert.error(err);
+					Alert.error('Failed to sync builds');
 					reject(err);
 					return;
 				}
@@ -47,7 +47,7 @@ export function archive(id: string): Promise<string> {
 				});
 
 				if (err) {
-					Alert.error(err);
+					Alert.error('Failed to archive build');
 					reject(err);
 					return;
 				}
@@ -68,7 +68,7 @@ export function rebuild(id: string): Promise<string> {
 				});
 
 				if (err) {
-					Alert.error(err);
+					Alert.error('Failed to rebuild build');
 					reject(err);
 					return;
 				}
