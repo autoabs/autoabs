@@ -44,3 +44,27 @@ func buildArchive(c *gin.Context) {
 
 	c.JSON(200, bild)
 }
+
+func buildRebuild(c *gin.Context) {
+	db := c.MustGet("db").(*database.Database)
+
+	buildId, ok := utils.ParseObjectId(c.Param("buildId"))
+	if !ok {
+		c.AbortWithStatus(400)
+		return
+	}
+
+	bild, err := build.GetBuild(db, buildId)
+	if err != nil {
+		c.AbortWithError(500, err)
+		return
+	}
+
+	err = bild.Rebuild(db)
+	if err != nil {
+		c.AbortWithError(500, err)
+		return
+	}
+
+	c.JSON(200, bild)
+}
