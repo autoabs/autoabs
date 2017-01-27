@@ -32,8 +32,8 @@ export default class Builds extends React.Component<null, State> {
 
 	constructor(props: any, context: any) {
 		super(props, context);
-		BuildActions.sync();
 		this.state = getState();
+		BuildActions.sync();
 	}
 
 	componentDidMount(): void {
