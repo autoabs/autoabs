@@ -112,6 +112,14 @@ export default class Build extends React.Component<Props, State> {
 		);
 	}
 
+	onRebuild = (): void => {
+		this.setLoading();
+		BuildActions.rebuild(this.props.build.id).then(
+			this.clearLoading,
+			this.clearLoading,
+		);
+	}
+
 	setLoading = (): void => {
 		this.setState({
 			...this.state,
@@ -147,6 +155,7 @@ export default class Build extends React.Component<Props, State> {
 						color={css.rebuild.color}
 						progressColor={css.rebuild.color}
 						disabled={this.state.loading}
+						onConfirm={this.onRebuild}
 					/>,
 					<ConfirmButton key="archive" label="Archive"
 						color={css.archive.color}
@@ -172,6 +181,7 @@ export default class Build extends React.Component<Props, State> {
 						color={css.rebuild.color}
 						progressColor={css.rebuild.color}
 						disabled={this.state.loading}
+						onConfirm={this.onRebuild}
 					/>,
 					<ConfirmButton key="archive" label="Archive"
 						color={css.archive.color}
@@ -187,6 +197,7 @@ export default class Build extends React.Component<Props, State> {
 						color={css.rebuild.color}
 						progressColor={css.rebuild.color}
 						disabled={this.state.loading}
+						onConfirm={this.onRebuild}
 					/>,
 					<ConfirmButton key="archive" label="Archive"
 						color={css.archive.color}
@@ -202,6 +213,7 @@ export default class Build extends React.Component<Props, State> {
 						color={css.rebuild.color}
 						progressColor={css.rebuild.color}
 						disabled={this.state.loading}
+						onConfirm={this.onRebuild}
 					/>,
 				];
 				break;
