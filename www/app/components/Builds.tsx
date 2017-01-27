@@ -36,20 +36,6 @@ export default class Builds extends React.Component<null, State> {
 		this.state = getState();
 	}
 
-	sync(): void {
-		setTimeout(() => {
-			if (!this.syncing) {
-				return;
-			}
-
-			BuildActions.sync().then(() => {
-				this.sync();
-			}, () => {
-				this.sync();
-			});
-		}, 1000);
-	}
-
 	componentDidMount(): void {
 		BuildStore.addChangeListener(this.onChange);
 		this.syncing = true;
@@ -63,6 +49,20 @@ export default class Builds extends React.Component<null, State> {
 
 	onChange = (): void => {
 		this.setState(getState());
+	}
+
+	sync(): void {
+		setTimeout(() => {
+			if (!this.syncing) {
+				return;
+			}
+
+			BuildActions.sync().then(() => {
+				this.sync();
+			}, () => {
+				this.sync();
+			});
+		}, 1000);
 	}
 
 	render(): JSX.Element {
