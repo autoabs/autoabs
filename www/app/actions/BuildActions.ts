@@ -57,6 +57,27 @@ export function archive(id: string): Promise<string> {
 	});
 }
 
+export function rebuild(id: string): Promise<string> {
+	return new Promise<string>((resolve, reject): void => {
+		SuperAgent
+			.put('/build/' + id + '/rebuild')
+			.set('Accept', 'application/json')
+			.end((err: any, res: SuperAgent.Response): void => {
+				Dispatcher.dispatch({
+					type: BuildTypes.LOADED,
+				});
+
+				if (err) {
+					Alert.error(err);
+					reject(err);
+					return;
+				}
+
+				sync().then(resolve, resolve);
+			});
+	});
+}
+
 export function remove(id: string): void {
 	Dispatcher.dispatch({
 		type: BuildTypes.REMOVE,
