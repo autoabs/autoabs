@@ -188,7 +188,7 @@ export default class ConfirmButton extends React.Component<Props, State> {
 
 		return <div style={css.box}>
 			<FlatButton
-				style={this.props.style}
+				style={style}
 				label={label}
 				labelStyle={this.props.labelStyle}
 				primary={this.props.primary}
