@@ -44,6 +44,15 @@ class BuildStore extends Events.EventEmitter {
 		}
 	}
 
+	_update(data: BuildTypes.Build): void {
+		let n = this._map[data.id];
+		if (n === undefined) {
+			return;
+		}
+		this._state[n] = data;
+		this.emitChange();
+	}
+
 	_sync(data: BuildTypes.Build[]): void {
 		this._map = {};
 		for (let i = 0; i < data.length; i++) {
@@ -77,6 +86,10 @@ class BuildStore extends Events.EventEmitter {
 
 			case BuildTypes.LOADED:
 				this._loaded();
+				break;
+
+			case BuildTypes.UPDATE:
+				this._update(action.data.build);
 				break;
 
 			case BuildTypes.SYNC:

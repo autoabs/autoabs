@@ -26,6 +26,7 @@ export interface BuildDispatch {
 	data?: {
 		id?: string;
 		content?: string;
+		build?: Build;
 		builds?: Build[];
 	};
 }
