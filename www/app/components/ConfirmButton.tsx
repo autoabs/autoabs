@@ -11,6 +11,7 @@ interface Props {
 	style?: React.CSSProperties;
 	label?: string;
 	labelStyle?: React.CSSProperties;
+	color?: string;
 	primary?: boolean;
 	disabled?: boolean;
 	progressColor?: string;
@@ -175,6 +176,14 @@ export default class ConfirmButton extends React.Component<Props, State> {
 			} else {
 				label = this.props.label;
 			}
+		}
+
+		let style = this.props.style || {};
+		if (this.props.color) {
+			style['color'] = this.props.color;
+		}
+		if (this.props.disabled) {
+			style['opacity'] = 0.5;
 		}
 
 		return <div style={css.box}>
