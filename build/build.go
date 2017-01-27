@@ -404,6 +404,7 @@ func (b *Build) Archive(db *database.Database) (err error) {
 		"$set": &bson.M{
 			"state":      "archived",
 			"repo_state": nil,
+			"pkg_ids":    nil,
 		},
 	})
 	if err != nil {
