@@ -51,17 +51,16 @@ export default class Builds extends React.Component<null, State> {
 		this.setState(getState());
 	}
 
-	sync(): void {
+	sync = (): void => {
 		setTimeout(() => {
 			if (!this.syncing) {
 				return;
 			}
 
-			BuildActions.sync().then(() => {
-				this.sync();
-			}, () => {
-				this.sync();
-			});
+			BuildActions.sync().then(
+				this.sync,
+				this.sync,
+			);
 		}, 1000);
 	}
 
