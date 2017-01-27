@@ -6,7 +6,6 @@ Requires [jspm](https://www.npmjs.com/package/jspm)
 npm install
 jspm install
 sed -i 's|lib/node/index.js|lib/client.js|g' jspm_packages/npm/superagent@*.js
-tsc --watch
 ```
 
 #### lint
@@ -25,6 +24,7 @@ find app/ -name "*.js*" -delete
 
 ```
 jspm depcache app/App.js
+tsc --watch
 ```
 
 #### production
