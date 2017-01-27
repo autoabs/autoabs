@@ -18,6 +18,7 @@ interface Props {
 
 interface State {
 	dialog: boolean;
+	loading: boolean;
 }
 
 const css = {
@@ -85,23 +86,44 @@ export default class Build extends React.Component<Props, State> {
 		super(props, context);
 		this.state = {
 			dialog: false,
+			loading: true,
 		};
 	}
 
 	openDialog = (): void => {
 		this.setState({
+			...this.state,
 			dialog: true,
 		});
 	}
 
 	closeDialog = (): void => {
 		this.setState({
+			...this.state,
 			dialog: false,
 		});
 	}
 
 	onArchive = (): void => {
-		BuildActions.archive(this.props.build.id);
+		this.setLoading();
+		BuildActions.archive(this.props.build.id).then(
+			this.clearLoading,
+			this.clearLoading,
+		);
+	}
+
+	setLoading = (): void => {
+		this.setState({
+			...this.state,
+			loading: true,
+		});
+	}
+
+	clearLoading = (): void => {
+		this.setState({
+			...this.state,
+			loading: true,
+		});
 	}
 
 	render(): JSX.Element {
