@@ -122,7 +122,7 @@ export default class Build extends React.Component<Props, State> {
 	clearLoading = (): void => {
 		this.setState({
 			...this.state,
-			loading: true,
+			loading: false,
 		});
 	}
 
@@ -161,6 +161,7 @@ export default class Build extends React.Component<Props, State> {
 					<ConfirmButton key="archive" label="Archive"
 						color={css.archive.color}
 						progressColor={css.archive.color}
+						disabled={this.state.loading}
 						onConfirm={this.onArchive}
 					/>,
 				];
