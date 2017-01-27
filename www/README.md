@@ -21,6 +21,12 @@ tslint -c tslint.json app/**/*.ts*
 find app/ -name "*.js*" -delete
 ```
 
+### development
+
+```
+jspm depcache app/App.js
+```
+
 #### production
 
 ```
