@@ -26,6 +26,7 @@ const css = {
 		flex: '1 0 auto',
 		minWidth: '250px',
 		maxWidth: '600px',
+		height: '113px',
 		margin: '5px',
 	} as React.CSSProperties,
 	launch: {
