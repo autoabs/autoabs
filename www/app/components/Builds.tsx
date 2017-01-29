@@ -3,6 +3,7 @@ import * as React from 'react';
 import AppBar from 'material-ui/AppBar';
 import * as BuildTypes from '../types/BuildTypes';
 import BuildStore from '../stores/BuildStore';
+import InfiniteFlex from './InfiniteFlex';
 import * as BuildActions from '../actions/BuildActions';
 import Build from './Build';
 
@@ -64,19 +65,22 @@ export default class Builds extends React.Component<null, State> {
 		}, 1000);
 	}
 
+	buildItem = (build: BuildTypes.Build): JSX.Element => {
+		return <Build key={build.id} build={build}/>
+	}
+
 	render(): JSX.Element {
-		let builds = this.state.builds;
-
-		let buildsDom: JSX.Element[] = [];
-		for (let build of builds) {
-			buildsDom.push(<Build key={build.id} build={build}/>);
-		}
-
 		return <div>
 			<AppBar title="AutoABS"/>
-			<div style={css.builds}>
-				{buildsDom}
-			</div>
+			<InfiniteFlex
+				style={css.builds}
+				width={260}
+				height={123}
+				margin={6}
+				marginHit={5}
+				buildItem={this.buildItem}
+				items={this.state.builds}
+			/>
 		</div>;
 	}
 }
