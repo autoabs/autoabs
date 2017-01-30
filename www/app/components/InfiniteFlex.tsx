@@ -66,10 +66,11 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 	}
 
 	onScroll = (): void => {
+		let container = this.refs["container"] as Element;
+
 		this.updateScroll();
 
-		let width = parseInt(window.getComputedStyle(
-			this.refs["container"]).width) - 10;
+		let width = parseInt(window.getComputedStyle(container).width) - 10;
 		this.columns = Math.floor(width / this.props.width);
 
 		if (this.upper <= this.upperHit || this.lower >= this.lowerHit) {
