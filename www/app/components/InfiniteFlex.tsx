@@ -81,9 +81,9 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 	}
 
 	render(): JSX.Element {
-		let items = this.props.items;
 		this.updateScroll();
 		this.updateScrollHit();
+		let items = this.props.items;
 		let upper = Math.max(0, this.upper);
 		let lower = Math.min(items.length, this.lower);
 
