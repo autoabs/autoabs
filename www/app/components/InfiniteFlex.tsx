@@ -51,6 +51,10 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 
 		let len = this.props.items.length;
 
+		let elem = this.refs["container"] as Element;
+		let width = parseInt(window.getComputedStyle(elem).width) - 10;
+		this.columns = Math.floor(width / this.props.width);
+
 		this.shown = Math.floor(len * (inner / height));
 		let maxShown = Math.floor((window.innerHeight * window.innerWidth) / (
 			this.props.width * this.props.height));
@@ -67,10 +71,6 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 
 	onScroll = (): void => {
 		this.updateScroll();
-
-		let elem = this.refs["container"] as Element;
-		let width = parseInt(window.getComputedStyle(elem).width) - 10;
-		this.columns = Math.floor(width / this.props.width);
 
 		if (this.upper <= this.upperHit || this.lower >= this.lowerHit) {
 			this.upperHit = this.upper - this.shown;
