@@ -103,10 +103,10 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 
 			style = {
 				...this.props.style,
-				paddingTop: ((Math.floor(upper / this.columns) * 123) +
+				paddingTop: ((Math.floor(upper / this.columns) * this.props.height) +
 					this.props.padding) + 'px',
 				paddingBottom: ((Math.floor(
-					(items.length - lower) / this.columns) * 123) +
+					(items.length - lower) / this.columns) * this.props.height) +
 					this.props.padding) + 'px',
 			};
 
