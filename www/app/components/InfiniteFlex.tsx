@@ -59,10 +59,8 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 		let width = parseInt(window.getComputedStyle(elem).width) - 10;
 		this.columns = Math.floor(width / this.props.width);
 
-		this.shown = Math.floor(len * (inner / height));
-		let maxShown = Math.floor((window.innerHeight * window.innerWidth) / (
-			this.props.width * this.props.height));
-		this.shown = Math.min(this.shown, maxShown);
+		this.shown = Math.ceil(
+				window.innerHeight / this.props.height) * this.columns;
 
 		this.upper = Math.floor(
 			len * pos - this.shown * this.props.scrollMargin);
