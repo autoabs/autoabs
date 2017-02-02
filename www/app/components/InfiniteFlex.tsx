@@ -37,15 +37,16 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 	}
 
 	componentDidMount(): void {
-		window.addEventListener("scroll", this.onScroll);
-		window.addEventListener("resize", this.onScroll);
+		window.addEventListener('scroll', this.onScroll);
+		window.addEventListener('resize', this.onScroll);
 		this.ready = true;
 		this.forceUpdate();
 	}
 
 	componentWillUnmount(): void {
-		window.removeEventListener("scroll", this.onScroll);
-		window.removeEventListener("resize", this.onScroll);
+		window.removeEventListener('scroll', this.onScroll);
+		window.removeEventListener('resize', this.onScroll);
+		this.ready = false;
 	}
 
 	updateScroll = (): void => {
@@ -55,7 +56,7 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 		let pos = (scroll / (height - inner)) || 0;
 		let len = this.props.items.length;
 
-		let elem = this.refs["container"] as Element;
+		let elem = this.refs['container'] as Element;
 		let width = parseInt(window.getComputedStyle(elem).width) - 10;
 		this.columns = Math.floor(width / this.props.width);
 
