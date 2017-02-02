@@ -16,6 +16,7 @@ interface Props {
 }
 
 export default class InfiniteFlex extends React.Component<Props, null> {
+	ready: boolean;
 	upper: number;
 	upperHit: number;
 	lower: number;
@@ -25,6 +26,7 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 
 	constructor(props: any, context: any) {
 		super(props, context);
+		this.ready = false;
 		this.upper = 0;
 		this.upperHit = 0;
 		this.lower = 0;
@@ -36,6 +38,8 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 	componentDidMount(): void {
 		window.addEventListener("scroll", this.onScroll);
 		window.addEventListener("resize", this.onScroll);
+		this.ready = true;
+		this.forceUpdate();
 	}
 
 	componentWillUnmount(): void {
@@ -80,23 +84,27 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 	}
 
 	render(): JSX.Element {
-		this.updateScroll();
-		this.updateScrollHit();
-		let items = this.props.items;
-		let upper = Math.max(0, this.upper);
-		let lower = Math.min(items.length, this.lower);
-
-		let style = {
-			...this.props.style,
-			paddingTop: ((Math.floor(upper / this.columns) * 123) + 5) + 'px',
-			paddingBottom: ((Math.floor(
-				(items.length - lower) / this.columns) * 123) + 5) + 'px',
-		};
-
+		let style = {};
 		let itemsDom: JSX.Element[] = [];
-		for (let i = upper; i < lower; i++) {
-			let item = items[i];
-			itemsDom.push(this.props.buildItem(item));
+
+		if (this.ready) {
+			this.updateScroll();
+			this.updateScrollHit();
+			let items = this.props.items;
+			let upper = Math.max(0, this.upper);
+			let lower = Math.min(items.length, this.lower);
+
+			style = {
+				...this.props.style,
+				paddingTop: ((Math.floor(upper / this.columns) * 123) + 5) + 'px',
+				paddingBottom: ((Math.floor(
+					(items.length - lower) / this.columns) * 123) + 5) + 'px',
+			};
+
+			for (let i = upper; i < lower; i++) {
+				let item = items[i];
+				itemsDom.push(this.props.buildItem(item));
+			}
 		}
 
 		return <div ref="container" style={style}>
