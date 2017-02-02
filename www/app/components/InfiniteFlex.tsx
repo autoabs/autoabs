@@ -71,8 +71,8 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 	}
 
 	updateScrollHit = (): void => {
-		this.upperHit = this.upper - (this.shown * this.props.scrollMarginHit);
-		this.lowerHit = this.lower + (this.shown * this.props.scrollMarginHit);
+		this.upperHit = this.upper - this.shown * this.props.scrollMarginHit;
+		this.lowerHit = this.lower + this.shown * this.props.scrollMarginHit;
 	}
 
 	onScroll = (): void => {
