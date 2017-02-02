@@ -57,7 +57,8 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 		let len = this.props.items.length;
 
 		let elem = this.refs['container'] as Element;
-		let width = parseInt(window.getComputedStyle(elem).width) - 10;
+		let width = parseInt(
+			window.getComputedStyle(elem).width) - this.props.padding * 2;
 		this.columns = Math.floor(width / this.props.width);
 
 		this.shown = Math.ceil(
