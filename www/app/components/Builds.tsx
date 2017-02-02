@@ -77,8 +77,8 @@ export default class Builds extends React.Component<null, State> {
 				width={260}
 				height={123}
 				padding={5}
-				scrollMargin={6}
-				scrollMarginHit={5}
+				scrollMargin={2}
+				scrollMarginHit={1}
 				buildItem={this.buildItem}
 				items={this.state.builds}
 			/>
