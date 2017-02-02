@@ -9,8 +9,8 @@ interface Props {
 	style: React.CSSProperties;
 	width: number;
 	height: number;
-	margin: number;
-	marginHit: number;
+	scrollMargin: number;
+	scrollMarginHit: number;
 	buildItem: BuildItem;
 	items: any[];
 }
@@ -64,13 +64,15 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 			this.props.width * this.props.height));
 		this.shown = Math.min(this.shown, maxShown);
 
-		this.upper = Math.floor((len * pos) - this.shown * this.props.margin);
-		this.lower = Math.floor((len * pos) + this.shown * this.props.margin);
+		this.upper = Math.floor(
+			(len * pos) - this.shown * this.props.scrollMargin);
+		this.lower = Math.floor(
+			(len * pos) + this.shown * this.props.scrollMargin);
 	}
 
 	updateScrollHit = (): void => {
-		this.upperHit = this.upper - (this.shown * this.props.marginHit);
-		this.lowerHit = this.lower + (this.shown * this.props.marginHit);
+		this.upperHit = this.upper - (this.shown * this.props.scrollMarginHit);
+		this.lowerHit = this.lower + (this.shown * this.props.scrollMarginHit);
 	}
 
 	onScroll = (): void => {
