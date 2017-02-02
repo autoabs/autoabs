@@ -9,6 +9,7 @@ interface Props {
 	style: React.CSSProperties;
 	width: number;
 	height: number;
+	padding: number;
 	scrollMargin: number;
 	scrollMarginHit: number;
 	buildItem: BuildItem;
@@ -98,9 +99,11 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 
 			style = {
 				...this.props.style,
-				paddingTop: ((Math.floor(upper / this.columns) * 123) + 5) + 'px',
+				paddingTop: ((Math.floor(upper / this.columns) * 123) +
+					this.props.padding) + 'px',
 				paddingBottom: ((Math.floor(
-					(items.length - lower) / this.columns) * 123) + 5) + 'px',
+					(items.length - lower) / this.columns) * 123) +
+					this.props.padding) + 'px',
 			};
 
 			for (let i = upper; i < lower; i++) {
