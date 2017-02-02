@@ -2,7 +2,7 @@
 import * as React from 'react';
 
 interface BuildItem {
-	(item: any): JSX.Element;
+	(index: number, item: any): JSX.Element;
 }
 
 interface Props {
@@ -110,9 +110,11 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 					this.props.padding) + 'px',
 			};
 
+			let index = 0;
 			for (let i = upper; i < lower; i++) {
 				let item = items[i];
-				itemsDom.push(this.props.buildItem(item));
+				itemsDom.push(this.props.buildItem(index, item));
+				index += 1;
 			}
 		}
 

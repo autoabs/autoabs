@@ -65,8 +65,8 @@ export default class Builds extends React.Component<null, State> {
 		}, 1000);
 	}
 
-	buildItem = (build: BuildTypes.Build): JSX.Element => {
-		return <Build key={build.id} build={build}/>
+	buildItem = (index: number, build: BuildTypes.Build): JSX.Element => {
+		return <Build key={index} build={build}/>
 	}
 
 	render(): JSX.Element {
