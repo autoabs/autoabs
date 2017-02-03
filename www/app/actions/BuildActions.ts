@@ -41,7 +41,7 @@ export function archive(id: string): Promise<string> {
 		SuperAgent
 			.put('/build/' + id + '/archive')
 			.set('Accept', 'application/json')
-			.end((err: any, res: SuperAgent.Response): void => {
+			.end((err: any): void => {
 				Dispatcher.dispatch({
 					type: BuildTypes.LOADED,
 				});
@@ -62,7 +62,7 @@ export function rebuild(id: string): Promise<string> {
 		SuperAgent
 			.put('/build/' + id + '/rebuild')
 			.set('Accept', 'application/json')
-			.end((err: any, res: SuperAgent.Response): void => {
+			.end((err: any): void => {
 				Dispatcher.dispatch({
 					type: BuildTypes.LOADED,
 				});
