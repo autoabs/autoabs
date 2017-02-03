@@ -94,10 +94,10 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 			this.updateScrollHit();
 			let items = this.props.items;
 			let upper = Math.max(0, this.upper);
-			let lower = this.lower;
 			if (upper > 0) {
 				upper -= upper % this.columns;
 			}
+			let lower = this.lower;
 			lower += this.columns - ((lower - upper) % this.columns);
 			lower = Math.min(items.length, lower);
 
