@@ -5,12 +5,21 @@ import (
 	"github.com/autoabs/autoabs/database"
 	"github.com/autoabs/autoabs/utils"
 	"github.com/gin-gonic/gin"
+	"strconv"
 )
+
+type buildData struct {
+	Builds []*build.Build `json:"builds"`
+	Count  int            `json:"count"`
+}
 
 func buildGet(c *gin.Context) {
 	db := c.MustGet("db").(*database.Database)
 
-	builds, err := build.GetAll(db)
+	indexStr := c.Query("index")
+	index, _ := strconv.Atoi(indexStr)
+
+	builds, count, err := build.GetAll(db, index)
 	if err != nil {
 		c.AbortWithError(500, err)
 		return
@@ -18,7 +27,12 @@ func buildGet(c *gin.Context) {
 
 	build.Sort(builds)
 
-	c.JSON(200, builds)
+	data := &buildData{
+		Builds: builds,
+		Count:  count,
+	}
+
+	c.JSON(200, data)
 }
 
 func buildArchive(c *gin.Context) {
