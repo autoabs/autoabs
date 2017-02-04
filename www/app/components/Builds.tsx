@@ -9,11 +9,13 @@ import Build from './Build';
 
 interface State {
 	builds: BuildTypes.Builds;
+	count: number;
 }
 
 function getState(): State {
 	return {
 		builds: BuildStore.builds,
+		count: BuildStore.count,
 	};
 }
 
@@ -81,6 +83,7 @@ export default class Builds extends React.Component<null, State> {
 				scrollMarginHit={1}
 				buildItem={this.buildItem}
 				items={this.state.builds}
+				count={this.state.count}
 			/>
 		</div>;
 	}
