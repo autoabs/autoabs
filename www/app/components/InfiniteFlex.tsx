@@ -14,6 +14,7 @@ interface Props {
 	scrollMarginHit: number;
 	buildItem: BuildItem;
 	items: any[];
+	count: number;
 }
 
 export default class InfiniteFlex extends React.Component<Props, null> {
@@ -54,7 +55,7 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 		let inner = window.innerHeight;
 		let height = document.body.scrollHeight;
 		let pos = (scroll / (height - inner)) || 0;
-		let len = this.props.items.length;
+		let len = this.props.count;
 
 		let elem = this.refs['container'] as Element;
 		let width = parseInt(
@@ -99,21 +100,25 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 			}
 			let lower = this.lower;
 			lower += this.columns - ((lower - upper) % this.columns);
-			lower = Math.min(items.length, lower);
+			lower = Math.min(this.props.count, lower);
 
 			style = {
 				...this.props.style,
 				paddingTop: ((Math.floor(upper / this.columns) * this.props.height) +
 					this.props.padding) + 'px',
 				paddingBottom: ((Math.floor(
-					(items.length - lower) / this.columns) * this.props.height) +
+					(this.props.count - lower) / this.columns) * this.props.height) +
 					this.props.padding) + 'px',
 			};
 
 			let index = 0;
 			for (let i = upper; i < lower; i++) {
 				let item = items[i];
-				itemsDom.push(this.props.buildItem(index, item));
+
+				if (item) {
+					itemsDom.push(this.props.buildItem(index, item));
+				}
+
 				index += 1;
 			}
 		}
