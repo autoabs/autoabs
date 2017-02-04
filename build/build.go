@@ -20,8 +20,8 @@ import (
 	"os/exec"
 	"path"
 	"strings"
-	"time"
 	"sync"
+	"time"
 )
 
 type Build struct {
