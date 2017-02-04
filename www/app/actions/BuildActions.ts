@@ -12,6 +12,7 @@ export function sync(): Promise<string> {
 	return new Promise<string>((resolve, reject): void => {
 		SuperAgent
 			.get('/build')
+			.query({'index': 0})
 			.set('Accept', 'application/json')
 			.end((err: any, res: SuperAgent.Response): void => {
 				Dispatcher.dispatch({
@@ -27,7 +28,8 @@ export function sync(): Promise<string> {
 				Dispatcher.dispatch({
 					type: BuildTypes.SYNC,
 					data: {
-						builds: res.body,
+						builds: res.body.builds,
+						count: res.body.count,
 					},
 				});
 

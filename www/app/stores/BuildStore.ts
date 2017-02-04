@@ -6,12 +6,17 @@ import * as GlobalTypes from '../types/GlobalTypes';
 
 class BuildStore extends Events.EventEmitter {
 	_builds: BuildTypes.Builds = [];
+	_count: number;
 	_map: {[key: string]: number} = {};
 	_loadingState: boolean;
 	_token = Dispatcher.register((this._callback).bind(this));
 
 	get builds(): BuildTypes.Builds {
 		return this._builds;
+	}
+
+	get count(): number {
+		return this._count;
 	}
 
 	get loading(): boolean {
@@ -53,12 +58,15 @@ class BuildStore extends Events.EventEmitter {
 		this.emitChange();
 	}
 
-	_sync(data: BuildTypes.Build[]): void {
+	_sync(builds: BuildTypes.Builds, count: number): void {
+		this._count = count;
+
 		this._map = {};
-		for (let i = 0; i < data.length; i++) {
-			this._map[data[i].id] = i;
+		for (let i = 0; i < builds.length; i++) {
+			this._map[builds[i].id] = i;
 		}
-		this._builds = data;
+		this._builds = builds;
+
 		this.emitChange();
 	}
 
@@ -93,7 +101,7 @@ class BuildStore extends Events.EventEmitter {
 				break;
 
 			case BuildTypes.SYNC:
-				this._sync(action.data.builds);
+				this._sync(action.data.builds, action.data.count);
 				break;
 
 			case BuildTypes.REMOVE:
