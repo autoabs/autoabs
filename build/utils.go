@@ -20,11 +20,19 @@ func GetBuild(db *database.Database, buildId bson.ObjectId) (
 	return
 }
 
-func GetAll(db *database.Database) (builds []*Build, err error) {
+func GetAll(db *database.Database, index int) (
+	builds []*Build, count int, err error) {
+
 	builds = []*Build{}
 	coll := db.Builds()
 
-	cursor := coll.Find(&bson.M{}).Iter()
+	count, err = coll.Count()
+	if err != nil {
+		err = database.ParseError(err)
+		return
+	}
+
+	cursor := coll.Find(&bson.M{}).Skip(index * 500).Limit(500).Iter()
 
 	bild := &Build{}
 	for cursor.Next(bild) {
