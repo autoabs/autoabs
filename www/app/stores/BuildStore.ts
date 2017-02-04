@@ -5,13 +5,13 @@ import * as BuildTypes from '../types/BuildTypes';
 import * as GlobalTypes from '../types/GlobalTypes';
 
 class BuildStore extends Events.EventEmitter {
-	_state: BuildTypes.Builds = [];
+	_builds: BuildTypes.Builds = [];
 	_map: {[key: string]: number} = {};
 	_loadingState: boolean;
 	_token = Dispatcher.register((this._callback).bind(this));
 
 	get builds(): BuildTypes.Builds {
-		return this._state;
+		return this._builds;
 	}
 
 	get loading(): boolean {
@@ -49,7 +49,7 @@ class BuildStore extends Events.EventEmitter {
 		if (n === undefined) {
 			return;
 		}
-		this._state[n] = data;
+		this._builds[n] = data;
 		this.emitChange();
 	}
 
@@ -58,7 +58,7 @@ class BuildStore extends Events.EventEmitter {
 		for (let i = 0; i < data.length; i++) {
 			this._map[data[i].id] = i;
 		}
-		this._state = data;
+		this._builds = data;
 		this.emitChange();
 	}
 
@@ -69,10 +69,10 @@ class BuildStore extends Events.EventEmitter {
 		}
 		delete this._map[id];
 
-		this._state.splice(n, 1);
+		this._builds.splice(n, 1);
 
-		for (let i = n; i < this._state.length; i++) {
-			this._map[this._state[i].id] = i;
+		for (let i = n; i < this._builds.length; i++) {
+			this._map[this._builds[i].id] = i;
 		}
 
 		this.emitChange();
