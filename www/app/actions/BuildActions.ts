@@ -3,22 +3,15 @@ import * as SuperAgent from 'superagent';
 import Dispatcher from '../dispatcher/Dispatcher';
 import * as Alert from '../Alert';
 import * as BuildTypes from '../types/BuildTypes';
+import BuildStore from '../stores/BuildStore';
 
-export function sync(): Promise<string> {
-	Dispatcher.dispatch({
-		type: BuildTypes.LOADING,
-	});
-
+function _sync(index: number): Promise<string> {
 	return new Promise<string>((resolve, reject): void => {
 		SuperAgent
 			.get('/build')
-			.query({'index': 0})
+			.query({'index': index})
 			.set('Accept', 'application/json')
 			.end((err: any, res: SuperAgent.Response): void => {
-				Dispatcher.dispatch({
-					type: BuildTypes.LOADED,
-				});
-
 				if (err) {
 					Alert.error('Failed to sync builds');
 					reject(err);
@@ -29,6 +22,7 @@ export function sync(): Promise<string> {
 					type: BuildTypes.SYNC,
 					data: {
 						builds: res.body.builds,
+						index: res.body.index,
 						count: res.body.count,
 					},
 				});
@@ -36,6 +30,15 @@ export function sync(): Promise<string> {
 				resolve();
 			});
 	});
+}
+
+export function traverse(index: number): Promise<string> {
+	BuildStore._index = index;
+	return _sync(index);
+}
+
+export function sync(): Promise<string> {
+	return _sync(BuildStore.index);
 }
 
 export function archive(id: string): Promise<string> {
