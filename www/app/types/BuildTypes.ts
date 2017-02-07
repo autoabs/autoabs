@@ -28,6 +28,7 @@ export interface BuildDispatch {
 		content?: string;
 		build?: Build;
 		builds?: Build[];
+		index?: number;
 		count?: number;
 	};
 }
