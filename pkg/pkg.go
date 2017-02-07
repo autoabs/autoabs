@@ -73,6 +73,7 @@ func (p *Package) QueueBuild(db *database.Database, force bool) (err error) {
 		Name:       p.Name,
 		SubNames:   p.SubNames,
 		State:      "pending",
+		StateRank:  build.PendingRank,
 		Version:    p.Version,
 		Release:    p.Release,
 		Repo:       p.Repo,
