@@ -9,12 +9,14 @@ import Build from './Build';
 
 interface State {
 	builds: BuildTypes.Builds;
+	index: number;
 	count: number;
 }
 
 function getState(): State {
 	return {
 		builds: BuildStore.builds,
+		index: BuildStore.index,
 		count: BuildStore.count,
 	};
 }
@@ -71,6 +73,10 @@ export default class Builds extends React.Component<null, State> {
 		return <Build key={index} build={build}/>
 	}
 
+	traverse = (index: number): void => {
+		BuildActions.traverse(index);
+	}
+
 	render(): JSX.Element {
 		return <div>
 			<AppBar title="AutoABS"/>
@@ -82,7 +88,9 @@ export default class Builds extends React.Component<null, State> {
 				scrollMargin={2}
 				scrollMarginHit={1}
 				buildItem={this.buildItem}
+				traverse={this.traverse}
 				items={this.state.builds}
+				index={this.state.index}
 				count={this.state.count}
 			/>
 		</div>;
