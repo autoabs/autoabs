@@ -32,6 +32,7 @@ type Build struct {
 	Start      time.Time       `bson:"start,omitempty" json:"start,omitempty"`
 	Stop       time.Time       `bson:"stop,omitempty" json:"stop,omitempty"`
 	State      string          `bson:"state" json:"state"`
+	StateRank  int             `bson:"state_rank" json:"state_rank"`
 	Version    string          `bson:"version" json:"version"`
 	Release    string          `bson:"release" json:"release"`
 	Repo       string          `bson:"repo" json:"repo"`
@@ -352,9 +353,10 @@ func (b *Build) Build(db *database.Database) (err error) {
 		"state": "pending",
 	}, &bson.M{
 		"$set": &bson.M{
-			"state":   "building",
-			"builder": config.Config.ServerName,
-			"start":   time.Now(),
+			"state":      "building",
+			"state_rank": BuildingRank,
+			"builder":    config.Config.ServerName,
+			"start":      time.Now(),
 		},
 	})
 	if err != nil {
@@ -368,6 +370,7 @@ func (b *Build) Build(db *database.Database) (err error) {
 		return
 	}
 	b.State = "building"
+	b.StateRank = BuildingRank
 	b.Builder = config.Config.ServerName
 
 	err = b.build(db)
@@ -377,15 +380,17 @@ func (b *Build) Build(db *database.Database) (err error) {
 		}).Error("build: Build failed")
 
 		b.State = "failed"
+		b.StateRank = FailedRank
 		b.Stop = time.Now()
-		coll.CommitFields(b.Id, b, set.NewSet("state", "stop"))
+		coll.CommitFields(b.Id, b, set.NewSet("state", "state_rank", "stop"))
 
 		return
 	}
 
 	b.State = "completed"
+	b.StateRank = CompletedRank
 	b.Stop = time.Now()
-	coll.CommitFields(b.Id, b, set.NewSet("state", "stop"))
+	coll.CommitFields(b.Id, b, set.NewSet("state", "state_rank", "stop"))
 
 	return
 }
@@ -403,6 +408,7 @@ func (b *Build) Archive(db *database.Database) (err error) {
 	}, &bson.M{
 		"$set": &bson.M{
 			"state":      "archived",
+			"state_rank": ArchivedRank,
 			"repo_state": nil,
 			"pkg_ids":    []bson.ObjectId{},
 		},
@@ -418,6 +424,7 @@ func (b *Build) Archive(db *database.Database) (err error) {
 		return
 	}
 	b.State = "archived"
+	b.StateRank = ArchivedRank
 	b.RepoState = ""
 
 	return
@@ -436,10 +443,11 @@ func (b *Build) Rebuild(db *database.Database) (err error) {
 		"_id": b.Id,
 	}, &bson.M{
 		"$set": &bson.M{
-			"state":   "pending",
-			"builder": "",
-			"start":   start,
-			"pkg_ids": []bson.ObjectId{},
+			"state":      "pending",
+			"state_rank": PendingRank,
+			"builder":    "",
+			"start":      start,
+			"pkg_ids":    []bson.ObjectId{},
 		},
 	})
 	if err != nil {
@@ -453,6 +461,7 @@ func (b *Build) Rebuild(db *database.Database) (err error) {
 		return
 	}
 	b.State = "pending"
+	b.StateRank = PendingRank
 	b.Builder = ""
 	b.Start = start
 
