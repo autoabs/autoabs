@@ -5,6 +5,10 @@ interface BuildItem {
 	(index: number, item: any): JSX.Element;
 }
 
+interface Traverse {
+	(index: number): void;
+}
+
 interface Props {
 	style: React.CSSProperties;
 	width: number;
@@ -13,7 +17,9 @@ interface Props {
 	scrollMargin: number;
 	scrollMarginHit: number;
 	buildItem: BuildItem;
+	traverse: Traverse;
 	items: any[];
+	index: number;
 	count: number;
 }
 
@@ -25,6 +31,7 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 	lowerHit: number;
 	columns: number;
 	shown: number;
+	index: number;
 
 	constructor(props: any, context: any) {
 		super(props, context);
@@ -35,6 +42,7 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 		this.lowerHit = 0;
 		this.columns = 0;
 		this.shown = 0;
+		this.index = 0;
 	}
 
 	componentDidMount(): void {
@@ -112,13 +120,34 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 
 			let index = 0;
 			for (let i = upper; i < lower; i++) {
-				let item = items[i];
+				let item = items[i - this.props.index];
 
 				if (item) {
 					itemsDom.push(this.props.buildItem(index, item));
 				}
 
 				index += 1;
+			}
+
+			let len = items.length;
+
+			if (len) {
+				let start = this.index;
+				let end = start + len;
+
+				if ((this.props.index !== 0 && upper - start < 50)) {
+					let index = Math.max(0, upper - Math.floor(len / 2));
+					if (index !== this.index) {
+						this.index = index;
+						this.props.traverse(index);
+					}
+				} else if (end < this.props.count && end - lower < 50) {
+					let index = lower - Math.floor(len / 2);
+					if (index !== this.index) {
+						this.index = index;
+						this.props.traverse(index);
+					}
+				}
 			}
 		}
 
