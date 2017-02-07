@@ -26,8 +26,6 @@ func buildGet(c *gin.Context) {
 		return
 	}
 
-	build.Sort(builds)
-
 	data := &buildData{
 		Builds: builds,
 		Index: index,
