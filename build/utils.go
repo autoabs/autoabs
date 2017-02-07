@@ -3,6 +3,7 @@ package build
 import (
 	"github.com/autoabs/autoabs/database"
 	"gopkg.in/mgo.v2/bson"
+	"github.com/autoabs/autoabs/utils"
 )
 
 func GetBuild(db *database.Database, buildId bson.ObjectId) (
@@ -21,7 +22,7 @@ func GetBuild(db *database.Database, buildId bson.ObjectId) (
 }
 
 func GetAll(db *database.Database, index int) (
-	builds []*Build, count int, err error) {
+	builds []*Build, queryIndex, count int, err error) {
 
 	builds = []*Build{}
 	coll := db.Builds()
@@ -32,7 +33,9 @@ func GetAll(db *database.Database, index int) (
 		return
 	}
 
-	cursor := coll.Find(&bson.M{}).Skip(index * 500).Limit(500).Iter()
+	queryIndex = utils.Min(index, count-500)
+
+	cursor := coll.Find(&bson.M{}).Skip(queryIndex).Limit(500).Iter()
 
 	bild := &Build{}
 	for cursor.Next(bild) {

@@ -10,6 +10,7 @@ import (
 
 type buildData struct {
 	Builds []*build.Build `json:"builds"`
+	Index  int            `json:"index"`
 	Count  int            `json:"count"`
 }
 
@@ -19,7 +20,7 @@ func buildGet(c *gin.Context) {
 	indexStr := c.Query("index")
 	index, _ := strconv.Atoi(indexStr)
 
-	builds, count, err := build.GetAll(db, index)
+	builds, index, count, err := build.GetAll(db, index)
 	if err != nil {
 		c.AbortWithError(500, err)
 		return
@@ -29,6 +30,7 @@ func buildGet(c *gin.Context) {
 
 	data := &buildData{
 		Builds: builds,
+		Index: index,
 		Count:  count,
 	}
 
