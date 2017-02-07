@@ -35,7 +35,8 @@ func GetAll(db *database.Database, index int) (
 
 	queryIndex = utils.Min(index, utils.Max(0, count-500))
 
-	cursor := coll.Find(&bson.M{}).Skip(queryIndex).Limit(500).Iter()
+	cursor := coll.Find(&bson.M{}).Sort(
+		"state_rank").Skip(queryIndex).Limit(500).Iter()
 
 	bild := &Build{}
 	for cursor.Next(bild) {
