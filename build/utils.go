@@ -33,7 +33,7 @@ func GetAll(db *database.Database, index int) (
 		return
 	}
 
-	queryIndex = utils.Min(index, count-500)
+	queryIndex = utils.Min(index, utils.Max(0, count-500))
 
 	cursor := coll.Find(&bson.M{}).Skip(queryIndex).Limit(500).Iter()
 
