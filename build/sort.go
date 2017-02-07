@@ -5,11 +5,11 @@ import (
 )
 
 var stateRank = map[string]int{
-	"building":  1,
-	"pending":   2,
-	"failed":    3,
-	"completed": 4,
-	"archived":  5,
+	"building":  100,
+	"pending":   200,
+	"failed":    300,
+	"completed": 400,
+	"archived":  500,
 }
 
 type buildsSort struct {
