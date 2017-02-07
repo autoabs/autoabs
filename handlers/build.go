@@ -28,7 +28,7 @@ func buildGet(c *gin.Context) {
 
 	data := &buildData{
 		Builds: builds,
-		Index: index,
+		Index:  index,
 		Count:  count,
 	}
 
