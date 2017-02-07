@@ -6,6 +6,7 @@ import * as GlobalTypes from '../types/GlobalTypes';
 
 class BuildStore extends Events.EventEmitter {
 	_builds: BuildTypes.Builds = [];
+	_index: number;
 	_count: number;
 	_map: {[key: string]: number} = {};
 	_loadingState: boolean;
@@ -13,6 +14,10 @@ class BuildStore extends Events.EventEmitter {
 
 	get builds(): BuildTypes.Builds {
 		return this._builds;
+	}
+
+	get index(): number {
+		return this._index || 0;
 	}
 
 	get count(): number {
@@ -58,7 +63,8 @@ class BuildStore extends Events.EventEmitter {
 		this.emitChange();
 	}
 
-	_sync(builds: BuildTypes.Builds, count: number): void {
+	_sync(builds: BuildTypes.Builds, index: number, count: number): void {
+		this._index = index;
 		this._count = count;
 
 		this._map = {};
@@ -101,7 +107,7 @@ class BuildStore extends Events.EventEmitter {
 				break;
 
 			case BuildTypes.SYNC:
-				this._sync(action.data.builds, action.data.count);
+				this._sync(action.data.builds, action.data.index, action.data.count);
 				break;
 
 			case BuildTypes.REMOVE:
