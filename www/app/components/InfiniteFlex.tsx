@@ -63,6 +63,7 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 		let inner = window.innerHeight;
 		let height = document.body.scrollHeight;
 		let pos = (scroll / (height - inner)) || 0;
+		let count = this.props.count || 0;
 
 		let elem = this.refs['container'] as Element;
 		let width = parseInt(
@@ -73,9 +74,9 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 				window.innerHeight / this.props.height) * this.columns;
 
 		this.upper = Math.floor(
-			this.props.count * pos - this.shown * this.props.scrollMargin);
+			count * pos - this.shown * this.props.scrollMargin);
 		this.lower = Math.floor(
-			this.props.count * pos + this.shown * this.props.scrollMargin);
+			count * pos + this.shown * this.props.scrollMargin);
 	}
 
 	updateScrollHit = (): void => {
@@ -107,7 +108,7 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 			}
 			let lower = this.lower;
 			lower += this.columns - ((lower - upper) % this.columns);
-			lower = Math.min(this.props.count, lower);
+			lower = Math.min(this.props.count || 0, lower);
 
 			style = {
 				...this.props.style,
