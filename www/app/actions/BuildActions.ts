@@ -4,14 +4,24 @@ import Dispatcher from '../dispatcher/Dispatcher';
 import * as Alert from '../Alert';
 import * as BuildTypes from '../types/BuildTypes';
 import BuildStore from '../stores/BuildStore';
+import * as MiscUtils from '../utils/MiscUtils';
+
+let syncId: string;
 
 function _sync(index: number): Promise<string> {
+	let curSyncId = MiscUtils.uuid();
+	syncId = curSyncId;
+
 	return new Promise<string>((resolve, reject): void => {
 		SuperAgent
 			.get('/build')
 			.query({'index': index})
 			.set('Accept', 'application/json')
 			.end((err: any, res: SuperAgent.Response): void => {
+				if (curSyncId !== syncId) {
+					return;
+				}
+
 				if (err) {
 					Alert.error('Failed to sync builds');
 					reject(err);
