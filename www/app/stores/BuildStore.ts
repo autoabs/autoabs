@@ -40,20 +40,6 @@ class BuildStore extends Events.EventEmitter {
 		this.removeListener(GlobalTypes.CHANGE, callback);
 	}
 
-	_loading(): void {
-		if (this._loadingState !== true) {
-			this._loadingState = true;
-			this.emitChange();
-		}
-	}
-
-	_loaded(): void {
-		if (this._loadingState !== false) {
-			this._loadingState = false;
-			this.emitChange();
-		}
-	}
-
 	_update(data: BuildTypes.Build): void {
 		let n = this._map[data.id];
 		if (n === undefined) {
@@ -94,14 +80,6 @@ class BuildStore extends Events.EventEmitter {
 
 	_callback(action: BuildTypes.BuildDispatch): void {
 		switch (action.type) {
-			case BuildTypes.LOADING:
-				this._loading();
-				break;
-
-			case BuildTypes.LOADED:
-				this._loaded();
-				break;
-
 			case BuildTypes.UPDATE:
 				this._update(action.data.build);
 				break;
