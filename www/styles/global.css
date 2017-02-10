@@ -11,7 +11,14 @@
 
 body {
   margin: 0;
-  background-color: #1d1d1d;
+}
+
+.root {
+  background-color: #f5f8fa;
+}
+
+.root.pt-dark {
+  background-color: #293742;
 }
 
 /*******************************

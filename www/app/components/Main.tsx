@@ -2,7 +2,7 @@
 import * as React from 'react';
 import Builds from './Builds';
 
-document.body.className = 'pt-dark';
+document.body.className = 'root pt-dark';
 
 interface Props {
 	children?: JSX.Element;
