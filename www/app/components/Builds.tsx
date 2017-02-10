@@ -1,6 +1,5 @@
 /// <reference path="../References.d.ts"/>
 import * as React from 'react';
-import AppBar from 'material-ui/AppBar';
 import * as BuildTypes from '../types/BuildTypes';
 import BuildStore from '../stores/BuildStore';
 import InfiniteFlex from './InfiniteFlex';
@@ -79,7 +78,14 @@ export default class Builds extends React.Component<null, State> {
 
 	render(): JSX.Element {
 		return <div>
-			<AppBar title="AutoABS"/>
+			<nav className="pt-navbar pt-dark">
+				<div className="pt-navbar-group pt-align-left">
+					<div className="pt-navbar-heading">AutoABS</div>
+				</div>
+				<div className="pt-navbar-group pt-align-right">
+					<button className="pt-button pt-minimal pt-icon-refresh"/>
+				</div>
+			</nav>
 			<InfiniteFlex
 				style={css.builds}
 				width={260}
