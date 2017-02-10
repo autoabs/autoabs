@@ -1,15 +1,27 @@
 /// <reference path="./References.d.ts"/>
-import * as AlertTypes from './types/AlertTypes';
-import * as AlertActions from './actions/AlertActions';
+import * as Blueprint from '@blueprintjs/core';
+
+let toaster = Blueprint.Toaster.create({
+	position: Blueprint.Position.BOTTOM,
+});
 
 export function info(message: string): void {
-	AlertActions.create(AlertTypes.INFO, message);
+	toaster.show({
+		intent: Blueprint.Intent.PRIMARY,
+		message: message,
+	});
 }
 
 export function warning(message: string): void {
-	AlertActions.create(AlertTypes.WARNING, message);
+	toaster.show({
+		intent: Blueprint.Intent.WARNING,
+		message: message,
+	});
 }
 
 export function error(message: string): void {
-	AlertActions.create(AlertTypes.ERROR, message);
+	toaster.show({
+		intent: Blueprint.Intent.DANGER,
+		message: message,
+	});
 }
