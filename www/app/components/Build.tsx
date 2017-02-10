@@ -220,7 +220,7 @@ export default class Build extends React.Component<Props, State> {
 				</div>
 				<div>
 					<button type="button"
-						className="pt-button pt-icon-document"
+						className="pt-button pt-minimal pt-icon-document"
 						style={css.launch}
 						onClick={this.openDialog}
 					/>
