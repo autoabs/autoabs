@@ -43,7 +43,7 @@ export default class Builds extends React.Component<null, State> {
 	componentDidMount(): void {
 		BuildStore.addChangeListener(this.onChange);
 		this.syncing = true;
-		this.sync();
+		this.syncLoop();
 	}
 
 	componentWillUnmount(): void {
@@ -55,15 +55,15 @@ export default class Builds extends React.Component<null, State> {
 		this.setState(getState());
 	}
 
-	sync = (): void => {
+	syncLoop = (): void => {
 		setTimeout(() => {
 			if (!this.syncing) {
 				return;
 			}
 
 			BuildActions.sync().then(
-				this.sync,
-				this.sync,
+				this.syncLoop,
+				this.syncLoop,
 			);
 		}, 1000);
 	}
