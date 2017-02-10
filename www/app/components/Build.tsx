@@ -244,6 +244,7 @@ export default class Build extends React.Component<Props, State> {
 				style={css.buildLog}
 				isOpen={this.state.dialog}
 				onClose={this.closeDialog}
+				canOutsideClickClose={false}
 			>
 				<div className="pt-dialog-body">
 					<pre style={css.buildLogOutput}>
