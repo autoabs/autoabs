@@ -37,12 +37,10 @@ const css = {
 	version: {
 		fontSize: '14px',
 		margin: '5px 0 0 7px',
-		color: Styles.colors.fadeColor,
 	} as React.CSSProperties,
 	repo: {
 		fontSize: '12px',
 		marginTop: '7px',
-		color: Styles.colors.fadeColor,
 	} as React.CSSProperties,
 	actions: {
 		display: 'flex',
@@ -71,7 +69,6 @@ const css = {
 		height: 'calc(100% - 130px)',
 		overflow: 'scroll',
 		padding: '2px 6px',
-		color: Styles.colors.color,
 		backgroundColor: 'rgba(0, 0, 0, 0.2)',
 	} as React.CSSProperties,
 };
@@ -212,10 +209,13 @@ export default class Build extends React.Component<Props, State> {
 					<div className="layout vertical">
 						<div className="layout horizontal">
 							<div style={css.name}>{build.name}</div>
-							<div style={css.version}>{build.version}-{build.release} (
-								{build.state})</div>
+							<div  className="pt-text-muted" style={css.version}>
+								{build.version}-{build.release} ({build.state})
+							</div>
 						</div>
-						<div style={css.repo}>{build.repo} - {build.arch}</div>
+						<div className="pt-text-muted" style={css.repo}>
+							{build.repo} - {build.arch}
+						</div>
 					</div>
 				</div>
 				<div>
