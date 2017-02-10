@@ -1,10 +1,6 @@
 /// <reference path="../References.d.ts"/>
 import * as React from 'react';
-import Card from 'material-ui/Card';
-import CardText from 'material-ui/Card';
-import CardActions from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
-import IconButton from 'material-ui/IconButton';
 import Dialog from 'material-ui/Dialog';
 import Styles from '../Styles';
 import ConfirmButton from './ConfirmButton';
@@ -28,10 +24,10 @@ const css = {
 		maxWidth: '600px',
 		height: '113px',
 		margin: '5px',
+		padding: '0',
 	} as React.CSSProperties,
 	launch: {
-		color: Styles.colors.color,
-		margin: '1px 1px 0 0',
+		margin: '10px 10px 0 0',
 	} as React.CSSProperties,
 	content: {
 		padding: '10px 0 10px 10px',
@@ -228,30 +224,28 @@ export default class Build extends React.Component<Props, State> {
 			/>,
 		];
 
-		return <Card style={css.card}>
-			<CardText>
-				<div className="layout horizontal">
-					<div style={css.content} className="card-content flex">
-						<div className="layout vertical">
-							<div className="layout horizontal">
-								<div style={css.name}>{build.name}</div>
-								<div style={css.version}>{build.version}-{build.release} (
-									{build.state})</div>
-							</div>
-							<div style={css.repo}>{build.repo} - {build.arch}</div>
+		return <div className="pt-card" style={css.card}>
+			<div className="layout horizontal">
+				<div style={css.content} className="card-content flex">
+					<div className="layout vertical">
+						<div className="layout horizontal">
+							<div style={css.name}>{build.name}</div>
+							<div style={css.version}>{build.version}-{build.release} (
+								{build.state})</div>
 						</div>
-					</div>
-					<div>
-						<IconButton style={css.launch}
-								onClick={this.openDialog}>
-							<i className="material-icons">receipt</i>
-						</IconButton>
+						<div style={css.repo}>{build.repo} - {build.arch}</div>
 					</div>
 				</div>
-			</CardText>
-			<CardActions style={css.actions}>
+				<div>
+					<button type="button"
+						className="pt-button pt-icon-document"
+						style={css.launch}
+					/>
+				</div>
+			</div>
+			<div style={css.actions}>
 				{actions}
-			</CardActions>
+			</div>
 			<Dialog
 				title={`Builds Logs - ${build.name}`}
 				modal={true}
@@ -261,6 +255,6 @@ export default class Build extends React.Component<Props, State> {
 			><pre style={css.buildLogOutput}>
 				{build.log ? build.log.join('\n') : ''}
 			</pre></Dialog>
-		</Card>;
+		</div>;
 	}
 }
