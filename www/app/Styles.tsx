@@ -180,41 +180,23 @@ interface Colors {
 	violet3: string;
 	violet4: string;
 	violet5: string;
-
-	color: string;
-	fadeColor: string;
-	background: string;
 }
 
 interface Styles {
 	colors: Colors;
 }
 
-
 let lightStyles = {
 	colors: {
 		...colors,
-		color: 'rgba(0, 0, 0, 0.87)',
-		fadeColor: '#919191',
-		background: '#fff',
 	},
 };
-
-//lightStyles.theme.appBar.color = '#08c';
-
 
 let darkStyles = {
 	colors: {
 		...colors,
-		color: '#fff',
-		fadeColor: '#919191',
-		background: '#1d1d1d',
 	},
 };
-
-//darkStyles.theme.appBar.color = '#383838';
-//darkStyles.theme.appBar.textColor = '#fff';
-
 
 export let styles: Styles = darkStyles;
 export default styles
