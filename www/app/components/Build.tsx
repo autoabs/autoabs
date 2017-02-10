@@ -1,5 +1,6 @@
 /// <reference path="../References.d.ts"/>
 import * as React from 'react';
+import * as Blueprint from '@blueprintjs/core';
 import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import Styles from '../Styles';
@@ -72,8 +73,10 @@ const css = {
 		margin: '0 5px',
 	} as React.CSSProperties,
 	buildLog: {
+		top: 0,
 		width: '100%',
-		maxWidth: '100%',
+		height: '100%',
+		margin: 0,
 	} as React.CSSProperties,
 	buildLogOutput: {
 		fontSize: '10px',
@@ -216,14 +219,6 @@ export default class Build extends React.Component<Props, State> {
 				break;
 		}
 
-		let dialogActions = [
-			<FlatButton
-				label="Close"
-				primary={true}
-				onTouchTap={this.closeDialog}
-			/>,
-		];
-
 		return <div className="pt-card" style={css.card}>
 			<div className="layout horizontal">
 				<div style={css.content} className="card-content flex">
@@ -246,15 +241,26 @@ export default class Build extends React.Component<Props, State> {
 			<div style={css.actions}>
 				{actions}
 			</div>
-			<Dialog
+			<Blueprint.Dialog
 				title={`Builds Logs - ${build.name}`}
-				modal={true}
-				actions={dialogActions}
-				open={this.state.dialog}
-				contentStyle={css.buildLog}
-			><pre style={css.buildLogOutput}>
-				{build.log ? build.log.join('\n') : ''}
-			</pre></Dialog>
+				style={css.buildLog}
+				isOpen={this.state.dialog}
+				onClose={this.closeDialog}
+			>
+				<div className="pt-dialog-body">
+					<pre style={css.buildLogOutput}>
+						{build.log ? build.log.join('\n') : ''}
+					</pre>
+				</div>
+				<div className="pt-dialog-footer">
+					<div className="pt-dialog-footer-actions">
+						<button type="button"
+							className="pt-button"
+							onClick={this.closeDialog}
+						>Close</button>
+					</div>
+				</div>
+			</Blueprint.Dialog>
 		</div>;
 	}
 }
