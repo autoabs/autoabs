@@ -59,10 +59,13 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 	}
 
 	updateScroll = (): void => {
-		let scroll = window.scrollY;
+		let scroll = Math.max(window.scrollY, 0);
 		let inner = window.innerHeight;
 		let height = document.body.scrollHeight;
-		let pos = (scroll / (height - inner)) || 0;
+		let pos = 0;
+		if (inner !== height) {
+			pos = Math.max((scroll / (height - inner)) || 0, 0);
+		}
 		let count = this.props.count || 0;
 
 		let elem = this.refs['container'] as Element;
