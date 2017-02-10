@@ -1,8 +1,6 @@
 /// <reference path="../References.d.ts"/>
 import * as React from 'react';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import LinearProgress from 'material-ui/LinearProgress';
+import * as Blueprint from '@blueprintjs/core';
 import * as Constants from '../Constants';
 import Styles from '../Styles';
 import * as MiscUtils from '../utils/MiscUtils';
@@ -10,11 +8,7 @@ import * as MiscUtils from '../utils/MiscUtils';
 interface Props {
 	style?: React.CSSProperties;
 	label?: string;
-	labelStyle?: React.CSSProperties;
-	color?: string;
-	primary?: boolean;
 	disabled?: boolean;
-	progressColor?: string;
 	onConfirm?: () => void;
 }
 
@@ -25,18 +19,18 @@ interface State {
 }
 
 const css = {
-	box: {
-		display: 'inline-block',
-		position: 'relative',
-	} as React.CSSProperties,
 	actionProgress: {
 		position: 'absolute',
 		bottom: 0,
+		left: 0,
 		borderRadius: 0,
-		borderBottomLeftRadius: '2px',
-		borderBottomRightRadius: '2px',
+		borderBottomLeftRadius: '3px',
+		borderBottomRightRadius: '3px',
 		width: '100%',
-		backgroundColor: 'rgba(0, 0, 0, 0)',
+		height: '4px',
+	} as React.CSSProperties,
+	dialog: {
+		width: '180px',
 	} as React.CSSProperties,
 	dialogOk: {
 		color: Styles.colors.blue500,
@@ -147,58 +141,65 @@ export default class ConfirmButton extends React.Component<Props, State> {
 
 		if (Constants.mobile) {
 			label = this.props.label;
-			confirmElem = <Dialog
+			confirmElem = <Blueprint.Dialog
 				title="Confirm"
-				modal={true}
-				open={this.state.dialog}
-				actions={[
-					<FlatButton
-						label="Cancel"
-						style={css.dialogCancel}
-						onTouchTap={this.closeDialog}
-					/>,
-					<FlatButton
-						label="Ok"
-						style={css.dialogOk}
-						onTouchTap={this.closeDialogConfirm}
-					/>,
-				]}
-			/>;
+				style={css.dialog}
+				isOpen={this.state.dialog}
+				onClose={this.closeDialog}
+			>
+				<div className="pt-dialog-body">
+					Confirm action
+				</div>
+				<div className="pt-dialog-footer">
+					<div className="pt-dialog-footer-actions">
+						<button type="button"
+							className="pt-button"
+							style={css.dialogCancel}
+							onClick={this.closeDialog}
+						>Cancel</button>
+						<button type="button"
+							className="pt-button"
+							style={css.dialogOk}
+							onClick={this.closeDialogConfirm}
+						>Ok</button>
+					</div>
+				</div>
+			</Blueprint.Dialog>;
 		} else {
 			if (this.state.confirming) {
+				let style = {
+					width: this.state.confirm * 10 + '%',
+					backgroundColor: this.props.style.color,
+					borderRadius: 0,
+					left: 0,
+				};
+
 				label = 'Hold';
-				confirmElem = <LinearProgress
+				confirmElem = <div
+					className="pt-progress-bar pt-no-stripes"
 					style={css.actionProgress}
-					color={this.props.progressColor}
-					mode="determinate" max={10}
-					value={this.state.confirm}
-				/>;
+				>
+					<div className="pt-progress-meter" style={style}/>
+				</div>;
 			} else {
 				label = this.props.label;
 			}
 		}
 
 		let style = this.props.style || {};
-		if (this.props.color) {
-			style['color'] = this.props.color;
-		}
-		if (this.props.disabled) {
-			style['opacity'] = 0.5;
-		}
+		style['position'] = 'relative';
 
-		return <div style={css.box}>
-			<FlatButton
-				style={style}
-				label={label}
-				labelStyle={this.props.labelStyle}
-				primary={this.props.primary}
-				disabled={this.props.disabled}
-				onMouseDown={Constants.mobile ? undefined : this.confirm}
-				onMouseUp={Constants.mobile ? undefined : this.clearConfirm}
-				onMouseLeave={Constants.mobile ? undefined : this.clearConfirm}
-				onTouchTap={Constants.mobile ? this.openDialog : undefined}
-			/>
+		return <button type="button"
+			className="pt-button"
+			style={style}
+			disabled={this.props.disabled}
+			onMouseDown={Constants.mobile ? undefined : this.confirm}
+			onMouseUp={Constants.mobile ? undefined : this.clearConfirm}
+			onMouseLeave={Constants.mobile ? undefined : this.clearConfirm}
+			onClick={Constants.mobile ? this.openDialog : undefined}
+		>
+			{label}
 			{confirmElem}
-		</div>;
+		</button>;
 	}
 }
