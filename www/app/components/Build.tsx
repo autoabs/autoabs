@@ -50,23 +50,13 @@ const css = {
 		padding: '5px 0',
 		justifyContent: 'center',
 	} as React.CSSProperties,
-	skip: {
-		color: Styles.colors.yellow400,
-		width: '80px',
-		margin: '0 5px',
-	} as React.CSSProperties,
-	resume: {
-		color: Styles.colors.green500,
-		width: '80px',
-		margin: '0 5px',
-	} as React.CSSProperties,
 	rebuild: {
-		color: Styles.colors.blue500,
+		color: Styles.colors.blue3,
 		width: '80px',
 		margin: '0 5px',
 	} as React.CSSProperties,
 	archive: {
-		color: Styles.colors.red500,
+		color: Styles.colors.red3,
 		width: '80px',
 		margin: '0 5px',
 	} as React.CSSProperties,

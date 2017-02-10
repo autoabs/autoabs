@@ -33,10 +33,10 @@ const css = {
 		width: '180px',
 	} as React.CSSProperties,
 	dialogOk: {
-		color: Styles.colors.blue500,
+		color: Styles.colors.blue3,
 	} as React.CSSProperties,
 	dialogCancel: {
-		color: Styles.colors.grey500,
+		color: Styles.colors.gray3,
 	} as React.CSSProperties,
 };
 
