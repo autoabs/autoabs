@@ -68,6 +68,10 @@ export default class Builds extends React.Component<null, State> {
 		}, 1000);
 	}
 
+	sync = (): void => {
+		BuildActions.sync();
+	}
+
 	buildItem = (index: number, build: BuildTypes.Build): JSX.Element => {
 		return <Build key={index} build={build}/>
 	}
@@ -83,7 +87,10 @@ export default class Builds extends React.Component<null, State> {
 					<div className="pt-navbar-heading">AutoABS</div>
 				</div>
 				<div className="pt-navbar-group pt-align-right">
-					<button className="pt-button pt-minimal pt-icon-refresh"/>
+					<button
+						className="pt-button pt-minimal pt-icon-refresh"
+						onClick={this.sync}
+					/>
 				</div>
 			</nav>
 			<InfiniteFlex
