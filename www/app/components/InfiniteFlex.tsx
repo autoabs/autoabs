@@ -131,7 +131,6 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 			}
 
 			let len = items.length;
-
 			if (len) {
 				let start = this.index;
 				let end = start + len;
