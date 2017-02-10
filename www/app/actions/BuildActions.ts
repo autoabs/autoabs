@@ -57,10 +57,6 @@ export function archive(id: string): Promise<string> {
 			.put('/build/' + id + '/archive')
 			.set('Accept', 'application/json')
 			.end((err: any): void => {
-				Dispatcher.dispatch({
-					type: BuildTypes.LOADED,
-				});
-
 				if (err) {
 					Alert.error('Failed to archive build');
 					reject(err);
@@ -78,10 +74,6 @@ export function rebuild(id: string): Promise<string> {
 			.put('/build/' + id + '/rebuild')
 			.set('Accept', 'application/json')
 			.end((err: any): void => {
-				Dispatcher.dispatch({
-					type: BuildTypes.LOADED,
-				});
-
 				if (err) {
 					Alert.error('Failed to rebuild build');
 					reject(err);
