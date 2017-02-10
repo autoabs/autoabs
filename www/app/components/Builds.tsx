@@ -82,7 +82,7 @@ export default class Builds extends React.Component<null, State> {
 
 	render(): JSX.Element {
 		return <div>
-			<nav className="pt-navbar pt-dark">
+			<nav className="pt-navbar">
 				<div className="pt-navbar-group pt-align-left">
 					<div className="pt-navbar-heading">AutoABS</div>
 				</div>
