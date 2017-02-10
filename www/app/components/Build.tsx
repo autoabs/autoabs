@@ -1,8 +1,6 @@
 /// <reference path="../References.d.ts"/>
 import * as React from 'react';
 import * as Blueprint from '@blueprintjs/core';
-import FlatButton from 'material-ui/FlatButton';
-import Dialog from 'material-ui/Dialog';
 import Styles from '../Styles';
 import ConfirmButton from './ConfirmButton';
 import * as BuildActions from '../actions/BuildActions';
