@@ -6,6 +6,7 @@ import * as MiscUtils from '../utils/MiscUtils';
 
 interface Props {
 	style?: React.CSSProperties;
+	className?: string;
 	label?: string;
 	disabled?: boolean;
 	onConfirm?: () => void;
@@ -167,7 +168,8 @@ export default class ConfirmButton extends React.Component<Props, State> {
 
 				label = 'Hold';
 				confirmElem = <div
-					className="pt-progress-bar pt-no-stripes"
+					className={'pt-progress-bar pt-no-stripes ' + (
+						this.props.className || '')}
 					style={css.actionProgress}
 				>
 					<div className="pt-progress-meter" style={style}/>
@@ -181,7 +183,7 @@ export default class ConfirmButton extends React.Component<Props, State> {
 		style['position'] = 'relative';
 
 		return <button type="button"
-			className="pt-button"
+			className={'pt-button ' + (this.props.className || '')}
 			style={style}
 			disabled={this.props.disabled}
 			onMouseDown={Constants.mobile ? undefined : this.confirm}
