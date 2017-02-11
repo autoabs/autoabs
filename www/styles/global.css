@@ -9,10 +9,6 @@
   box-sizing: border-box;
 }
 
-body {
-  margin: 0;
-}
-
 .root {
   background-color: #f5f8fa;
 }
