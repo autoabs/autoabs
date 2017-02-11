@@ -2,7 +2,6 @@
 import * as React from 'react';
 import * as Blueprint from '@blueprintjs/core';
 import * as Constants from '../Constants';
-import Styles from '../Styles';
 import * as MiscUtils from '../utils/MiscUtils';
 
 interface Props {
@@ -31,12 +30,6 @@ const css = {
 	} as React.CSSProperties,
 	dialog: {
 		width: '180px',
-	} as React.CSSProperties,
-	dialogOk: {
-		color: Styles.colors.blue3,
-	} as React.CSSProperties,
-	dialogCancel: {
-		color: Styles.colors.gray3,
 	} as React.CSSProperties,
 };
 
@@ -154,12 +147,10 @@ export default class ConfirmButton extends React.Component<Props, State> {
 					<div className="pt-dialog-footer-actions">
 						<button type="button"
 							className="pt-button"
-							style={css.dialogCancel}
 							onClick={this.closeDialog}
 						>Cancel</button>
 						<button type="button"
-							className="pt-button"
-							style={css.dialogOk}
+							className="pt-button pt-intent-primary"
 							onClick={this.closeDialogConfirm}
 						>Ok</button>
 					</div>
