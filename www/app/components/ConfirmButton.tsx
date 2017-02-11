@@ -104,7 +104,7 @@ export default class ConfirmButton extends React.Component<Props, State> {
 							this.props.onConfirm();
 						}
 					}
-				}, 365);
+				}, 250);
 				return;
 			} else if (!this.state.confirming) {
 				clearInterval(id);
