@@ -1,7 +1,6 @@
 /// <reference path="../References.d.ts"/>
 import * as React from 'react';
 import * as Blueprint from '@blueprintjs/core';
-import Styles from '../Styles';
 import ConfirmButton from './ConfirmButton';
 import * as BuildActions from '../actions/BuildActions';
 import * as BuildTypes from '../types/BuildTypes';
@@ -48,15 +47,8 @@ const css = {
 		padding: '5px 0',
 		justifyContent: 'center',
 	} as React.CSSProperties,
-	rebuild: {
-		color: Styles.colors.blue3,
+	action: {
 		width: '80px',
-		margin: '0 5px',
-	} as React.CSSProperties,
-	archive: {
-		color: Styles.colors.red3,
-		width: '80px',
-		margin: '0 5px',
 	} as React.CSSProperties,
 	buildLog: {
 		top: '20px',
@@ -144,12 +136,14 @@ export default class Build extends React.Component<Props, State> {
 			case 'building':
 				actions = [
 					<ConfirmButton key="rebuild" label="Rebuild"
-						style={css.rebuild}
+						style={css.action}
+						className="pt-intent-primary"
 						disabled={this.state.loading}
 						onConfirm={this.onRebuild}
 					/>,
 					<ConfirmButton key="archive" label="Archive"
-						style={css.archive}
+						style={css.action}
+						className="pt-intent-danger"
 						disabled={this.state.loading}
 						onConfirm={this.onArchive}
 					/>,
@@ -158,7 +152,8 @@ export default class Build extends React.Component<Props, State> {
 			case 'pending':
 				actions = [
 					<ConfirmButton key="archive" label="Archive"
-						style={css.archive}
+						style={css.action}
+						className="pt-intent-danger"
 						disabled={this.state.loading}
 						onConfirm={this.onArchive}
 					/>,
@@ -167,12 +162,14 @@ export default class Build extends React.Component<Props, State> {
 			case 'failed':
 				actions = [
 					<ConfirmButton key="rebuild" label="Rebuild"
-						style={css.rebuild}
+						style={css.action}
+						className="pt-intent-primary"
 						disabled={this.state.loading}
 						onConfirm={this.onRebuild}
 					/>,
 					<ConfirmButton key="archive" label="Archive"
-						style={css.archive}
+						style={css.action}
+						className="pt-intent-danger"
 						disabled={this.state.loading}
 						onConfirm={this.onArchive}
 					/>,
@@ -181,12 +178,14 @@ export default class Build extends React.Component<Props, State> {
 			case 'completed':
 				actions = [
 					<ConfirmButton key="rebuild" label="Rebuild"
-						style={css.rebuild}
+						style={css.action}
+						className="pt-intent-primary"
 						disabled={this.state.loading}
 						onConfirm={this.onRebuild}
 					/>,
 					<ConfirmButton key="archive" label="Archive"
-						style={css.archive}
+						style={css.action}
+						className="pt-intent-danger"
 						disabled={this.state.loading}
 						onConfirm={this.onArchive}
 					/>,
@@ -195,7 +194,8 @@ export default class Build extends React.Component<Props, State> {
 			case 'archived':
 				actions = [
 					<ConfirmButton key="rebuild" label="Rebuild"
-						style={css.rebuild}
+						style={css.action}
+						className="pt-intent-primary"
 						disabled={this.state.loading}
 						onConfirm={this.onRebuild}
 					/>,
@@ -226,7 +226,7 @@ export default class Build extends React.Component<Props, State> {
 					/>
 				</div>
 			</div>
-			<div style={css.actions}>
+			<div className="pt-button-group pt-minimal" style={css.actions}>
 				{actions}
 			</div>
 			<Blueprint.Dialog
