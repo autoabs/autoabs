@@ -186,7 +186,7 @@ let colors = {
 	violet5: Blueprint.Colors.VIOLET5,
 };
 
-let styles = {
+let styles: Styles = {
 	colors: colors,
 };
 
