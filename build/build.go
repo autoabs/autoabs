@@ -446,6 +446,7 @@ func (b *Build) Rebuild(db *database.Database) (err error) {
 			"state":      "pending",
 			"state_rank": PendingRank,
 			"builder":    "",
+			"log":        []string{},
 			"start":      start,
 			"pkg_ids":    []bson.ObjectId{},
 		},
@@ -463,6 +464,7 @@ func (b *Build) Rebuild(db *database.Database) (err error) {
 	b.State = "pending"
 	b.StateRank = PendingRank
 	b.Builder = ""
+	b.Log = []string{}
 	b.Start = start
 
 	return
