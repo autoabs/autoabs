@@ -17,6 +17,34 @@
   background-color: #293742;
 }
 
+.pt-text-intent-primary {
+  color: #106ba3;
+}
+.pt-dark .pt-text-intent-primary {
+  color: #2b95d6;
+}
+
+.pt-text-intent-success {
+  color: #0d8050;
+}
+.pt-dark .pt-text-intent-success {
+  color: #15b371;
+}
+
+.pt-text-intent-warning {
+  color: #bf7326;
+}
+.pt-dark .pt-text-intent-warning {
+  color: #f29d49;
+}
+
+.pt-text-intent-danger {
+  color: #c23030;
+}
+.pt-dark .pt-text-intent-danger {
+  color: #f55656;
+}
+
 /*******************************
           Flex Layout
 *******************************/
