@@ -1,9 +1,11 @@
 /// <reference path="../References.d.ts"/>
 import * as React from 'react';
+import * as Blueprint from '@blueprintjs/core';
 import * as BuildTypes from '../types/BuildTypes';
 import BuildStore from '../stores/BuildStore';
 import InfiniteFlex from './InfiniteFlex';
 import * as BuildActions from '../actions/BuildActions';
+import Loading from './Loading';
 import Build from './Build';
 
 interface State {
@@ -85,6 +87,7 @@ export default class Builds extends React.Component<null, State> {
 			<nav className="pt-navbar">
 				<div className="pt-navbar-group pt-align-left">
 					<div className="pt-navbar-heading">AutoABS</div>
+					<Loading size="small" intent={Blueprint.Intent.PRIMARY}/>
 				</div>
 				<div className="pt-navbar-group pt-align-right">
 					<button
