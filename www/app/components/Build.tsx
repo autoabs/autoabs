@@ -2,6 +2,7 @@
 import * as React from 'react';
 import * as Blueprint from '@blueprintjs/core';
 import ConfirmButton from './ConfirmButton';
+import BuildLog from './BuildLog';
 import * as BuildActions from '../actions/BuildActions';
 import * as BuildTypes from '../types/BuildTypes';
 import * as MiscUtils from '../utils/MiscUtils';
@@ -229,27 +230,12 @@ export default class Build extends React.Component<Props, State> {
 			<div className="pt-button-group pt-minimal" style={css.actions}>
 				{actions}
 			</div>
-			<Blueprint.Dialog
-				title={`Builds Logs - ${build.name}`}
-				style={css.buildLog}
-				isOpen={this.state.dialog}
+			<BuildLog
+				id={build.id}
+				name={build.name}
+				shown={this.state.dialog}
 				onClose={this.closeDialog}
-				canOutsideClickClose={false}
-			>
-				<div className="pt-dialog-body">
-					<pre style={css.buildLogOutput}>
-						{build.log ? build.log.join('\n') : ''}
-					</pre>
-				</div>
-				<div className="pt-dialog-footer">
-					<div className="pt-dialog-footer-actions">
-						<button type="button"
-							className="pt-button"
-							onClick={this.closeDialog}
-						>Close</button>
-					</div>
-				</div>
-			</Blueprint.Dialog>
+			/>
 		</div>;
 	}
 }
