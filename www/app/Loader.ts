@@ -10,21 +10,23 @@ export default class Loader {
 		this._id = MiscUtils.uuid();
 	}
 
-	loading(): void {
+	loading(): Loader {
 		Dispatcher.dispatch({
 			type: LoadingTypes.ADD,
 			data: {
 				id: this._id,
 			},
 		});
+		return this;
 	}
 
-	done(): void {
+	done(): Loader {
 		Dispatcher.dispatch({
 			type: LoadingTypes.DONE,
 			data: {
 				id: this._id,
 			},
 		});
+		return this;
 	}
 }
