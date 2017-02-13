@@ -87,7 +87,7 @@ export default class Builds extends React.Component<null, State> {
 			<nav className="pt-navbar">
 				<div className="pt-navbar-group pt-align-left">
 					<div className="pt-navbar-heading">AutoABS</div>
-					<Loading size="small" intent={Blueprint.Intent.PRIMARY}/>
+					<Loading size="small"/>
 				</div>
 				<div className="pt-navbar-group pt-align-right">
 					<button
