@@ -14,7 +14,6 @@ export interface Build {
 	release?: string;
 	repo?: string;
 	arch?: string;
-	log?: string[];
 }
 
 export type Builds = Build[];
