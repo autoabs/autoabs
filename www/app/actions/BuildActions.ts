@@ -13,8 +13,7 @@ function _sync(index: number): Promise<string> {
 	let curSyncId = MiscUtils.uuid();
 	syncId = curSyncId;
 
-	let loader = new Loader();
-	loader.loading();
+	let loader = new Loader().loading();
 
 	return new Promise<string>((resolve, reject): void => {
 		SuperAgent
@@ -58,11 +57,15 @@ export function sync(): Promise<string> {
 }
 
 export function archive(id: string): Promise<string> {
+	let loader = new Loader().loading();
+
 	return new Promise<string>((resolve, reject): void => {
 		SuperAgent
 			.put('/build/' + id + '/archive')
 			.set('Accept', 'application/json')
 			.end((err: any): void => {
+				loader.done();
+
 				if (err) {
 					Alert.error('Failed to archive build');
 					reject(err);
@@ -75,11 +78,15 @@ export function archive(id: string): Promise<string> {
 }
 
 export function rebuild(id: string): Promise<string> {
+	let loader = new Loader().loading();
+
 	return new Promise<string>((resolve, reject): void => {
 		SuperAgent
 			.put('/build/' + id + '/rebuild')
 			.set('Accept', 'application/json')
 			.end((err: any): void => {
+				loader.done();
+
 				if (err) {
 					Alert.error('Failed to rebuild build');
 					reject(err);
