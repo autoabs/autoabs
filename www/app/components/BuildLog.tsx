@@ -1,6 +1,7 @@
 /// <reference path="../References.d.ts"/>
 import * as React from 'react';
 import * as Blueprint from '@blueprintjs/core';
+import Loading from './Loading';
 
 interface OnClose {
 	(): void;
@@ -18,6 +19,9 @@ interface State {
 }
 
 const css = {
+	loading: {
+		float: "left",
+	} as React.CSSProperties,
 	buildLog: {
 		top: '20px',
 		width: 'calc(100% - 40px)',
@@ -71,6 +75,7 @@ export default class Build extends React.Component<Props, State> {
 					</pre>
 			</div>
 			<div className="pt-dialog-footer">
+				<Loading size="small" style={css.loading}/>
 				<div className="pt-dialog-footer-actions">
 					<button type="button"
 						className="pt-button"
