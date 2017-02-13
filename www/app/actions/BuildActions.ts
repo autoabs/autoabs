@@ -2,6 +2,7 @@
 import * as SuperAgent from 'superagent';
 import Dispatcher from '../dispatcher/Dispatcher';
 import * as Alert from '../Alert';
+import Loader from '../Loader';
 import * as BuildTypes from '../types/BuildTypes';
 import BuildStore from '../stores/BuildStore';
 import * as MiscUtils from '../utils/MiscUtils';
@@ -12,12 +13,17 @@ function _sync(index: number): Promise<string> {
 	let curSyncId = MiscUtils.uuid();
 	syncId = curSyncId;
 
+	let loader = new Loader();
+	loader.loading();
+
 	return new Promise<string>((resolve, reject): void => {
 		SuperAgent
 			.get('/build')
 			.query({'index': index})
 			.set('Accept', 'application/json')
 			.end((err: any, res: SuperAgent.Response): void => {
+				loader.done();
+
 				if (curSyncId !== syncId) {
 					return;
 				}
