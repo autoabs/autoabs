@@ -4,12 +4,16 @@ import * as Blueprint from '@blueprintjs/core';
 import * as Constants from '../Constants';
 import * as MiscUtils from '../utils/MiscUtils';
 
+interface OnConfirm {
+	(): void;
+}
+
 interface Props {
 	style?: React.CSSProperties;
 	className?: string;
 	label?: string;
 	disabled?: boolean;
-	onConfirm?: () => void;
+	onConfirm?: OnConfirm;
 }
 
 interface State {
