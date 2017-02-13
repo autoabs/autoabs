@@ -4,6 +4,7 @@ import * as Blueprint from '@blueprintjs/core';
 import LoadingStore from '../stores/LoadingStore';
 
 interface Props {
+	style?: React.CSSProperties;
 	size?: string;
 	intent?: Blueprint.Intent,
 }
@@ -44,9 +45,11 @@ export default class Loading extends React.Component<Props, State> {
 			className = 'pt-' + this.props.size;
 		}
 
-		return <Blueprint.Spinner
-			className={className}
-			intent={this.props.intent}
-		/>;
+		return <div style={this.props.style}>
+			<Blueprint.Spinner
+				className={className}
+				intent={this.props.intent}
+			/>
+		</div>;
 	}
 }
