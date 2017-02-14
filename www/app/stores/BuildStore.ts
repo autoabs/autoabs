@@ -23,6 +23,14 @@ class BuildStore extends Events.EventEmitter {
 		return this._count;
 	}
 
+	build(id: string): BuildTypes.Build {
+		let i = this._map[id];
+		if (i === undefined) {
+			return null;
+		}
+		return this._builds[i];
+	}
+
 	emitChange(): void {
 		this.emit(GlobalTypes.CHANGE);
 	}
