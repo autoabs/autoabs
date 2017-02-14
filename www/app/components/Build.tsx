@@ -1,6 +1,5 @@
 /// <reference path="../References.d.ts"/>
 import * as React from 'react';
-import * as Blueprint from '@blueprintjs/core';
 import ConfirmButton from './ConfirmButton';
 import * as BuildActions from '../actions/BuildActions';
 import * as BuildInfoActions from '../actions/BuildInfoActions';
