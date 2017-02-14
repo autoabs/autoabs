@@ -35,6 +35,24 @@ func buildGet(c *gin.Context) {
 	c.JSON(200, data)
 }
 
+func buildLogGet(c *gin.Context) {
+	db := c.MustGet("db").(*database.Database)
+
+	buildId, ok := utils.ParseObjectId(c.Param("buildId"))
+	if !ok {
+		c.AbortWithStatus(400)
+		return
+	}
+
+	bild, err := build.Get(db, buildId)
+	if err != nil {
+		c.AbortWithError(500, err)
+		return
+	}
+
+	c.JSON(200, bild.Log)
+}
+
 func buildArchivePut(c *gin.Context) {
 	db := c.MustGet("db").(*database.Database)
 
