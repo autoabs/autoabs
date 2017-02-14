@@ -35,7 +35,7 @@ func buildGet(c *gin.Context) {
 	c.JSON(200, data)
 }
 
-func buildArchive(c *gin.Context) {
+func buildArchivePut(c *gin.Context) {
 	db := c.MustGet("db").(*database.Database)
 
 	buildId, ok := utils.ParseObjectId(c.Param("buildId"))
@@ -59,7 +59,7 @@ func buildArchive(c *gin.Context) {
 	c.JSON(200, bild)
 }
 
-func buildRebuild(c *gin.Context) {
+func buildRebuildPut(c *gin.Context) {
 	db := c.MustGet("db").(*database.Database)
 
 	buildId, ok := utils.ParseObjectId(c.Param("buildId"))
