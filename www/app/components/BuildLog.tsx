@@ -15,6 +15,7 @@ interface Props {
 }
 
 interface State {
+	output: string;
 	closing: boolean;
 }
 
@@ -41,17 +42,20 @@ export default class Build extends React.Component<Props, State> {
 	constructor(props: Props, context: any) {
 		super(props, context);
 		this.state = {
+			output: '',
 			closing: false,
 		};
 	}
 
 	closeDialog = (): void => {
 		this.setState({
+			...this.state,
 			closing: true,
 		});
 		this.props.onClose();
 		setTimeout(() => {
 			this.setState({
+				...this.state,
 				closing: false,
 			});
 		}, 500);
@@ -68,10 +72,10 @@ export default class Build extends React.Component<Props, State> {
 			isOpen={this.props.shown}
 			onClose={this.closeDialog}
 			canOutsideClickClose={false}
-			>
+		>
 			<div className="pt-dialog-body">
 					<pre style={css.buildLogOutput}>
-						{['test'] ? ['test'].join('\n') : ''}
+						{this.state.output}
 					</pre>
 			</div>
 			<div className="pt-dialog-footer">
