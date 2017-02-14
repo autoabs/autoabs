@@ -2,21 +2,32 @@
 import * as React from 'react';
 import * as Blueprint from '@blueprintjs/core';
 import Loading from './Loading';
-
-interface OnClose {
-	(): void;
-}
-
-interface Props {
-	id: string;
-	name: string;
-	shown: boolean;
-	onClose: OnClose;
-}
+import * as BuildLogActions from '../actions/BuildLogActions';
+import BuildStore from '../stores/BuildStore';
+import BuildLogStore from '../stores/BuildLogStore';
 
 interface State {
+	id: string;
+	name: string;
 	output: string;
-	closing: boolean;
+}
+
+function getState(): State {
+	let id = BuildLogStore.id;
+	let name = '';
+
+	if (id) {
+		let build = BuildStore.build(id);
+		if (build) {
+			name = build.name;
+		}
+	}
+
+	return {
+		id: id,
+		name: name,
+		output: BuildLogStore.output,
+	};
 }
 
 const css = {
@@ -38,38 +49,35 @@ const css = {
 	} as React.CSSProperties,
 };
 
-export default class Build extends React.Component<Props, State> {
-	constructor(props: Props, context: any) {
+export default class Build extends React.Component<void, State> {
+	constructor(props: void, context: any) {
 		super(props, context);
-		this.state = {
-			output: '',
-			closing: false,
-		};
+		this.state = getState();
+	}
+
+	componentDidMount(): void {
+		BuildStore.addChangeListener(this.onChange);
+		BuildLogStore.addChangeListener(this.onChange);
+	}
+
+	componentWillUnmount(): void {
+		BuildStore.removeChangeListener(this.onChange);
+		BuildLogStore.removeChangeListener(this.onChange);
+	}
+
+	onChange = (): void => {
+		this.setState(getState());
 	}
 
 	closeDialog = (): void => {
-		this.setState({
-			...this.state,
-			closing: true,
-		});
-		this.props.onClose();
-		setTimeout(() => {
-			this.setState({
-				...this.state,
-				closing: false,
-			});
-		}, 500);
+		BuildLogActions.close();
 	}
 
 	render(): JSX.Element {
-		if (!this.props.shown && !this.state.closing) {
-			return null;
-		}
-
 		return <Blueprint.Dialog
-			title={`Builds Logs - ${this.props.name}`}
+			title={`Builds Logs - ${this.state.name}`}
 			style={css.buildLog}
-			isOpen={this.props.shown}
+			isOpen={!!this.state.id}
 			onClose={this.closeDialog}
 			canOutsideClickClose={false}
 		>
