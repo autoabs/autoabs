@@ -11,7 +11,7 @@ interface Props {
 }
 
 interface State {
-	loading: boolean;
+	locked: boolean;
 }
 
 const css = {
@@ -55,7 +55,7 @@ export default class Build extends React.Component<Props, State> {
 	constructor(props: Props, context: any) {
 		super(props, context);
 		this.state = {
-			loading: false,
+			locked: false,
 		};
 	}
 
@@ -64,32 +64,32 @@ export default class Build extends React.Component<Props, State> {
 	}
 
 	onArchive = (): void => {
-		this.setLoading();
+		this.lock();
 		BuildActions.archive(this.props.build.id).then(
-			this.clearLoading,
-			this.clearLoading,
+			this.unlock,
+			this.unlock,
 		);
 	}
 
 	onRebuild = (): void => {
-		this.setLoading();
+		this.lock();
 		BuildActions.rebuild(this.props.build.id).then(
-			this.clearLoading,
-			this.clearLoading,
+			this.unlock,
+			this.unlock,
 		);
 	}
 
-	setLoading = (): void => {
+	lock = (): void => {
 		this.setState({
 			...this.state,
-			loading: true,
+			locked: true,
 		});
 	}
 
-	clearLoading = (): void => {
+	unlock = (): void => {
 		this.setState({
 			...this.state,
-			loading: false,
+			locked: false,
 		});
 	}
 
@@ -113,13 +113,13 @@ export default class Build extends React.Component<Props, State> {
 					<ConfirmButton key="rebuild" label="Rebuild"
 						style={css.action}
 						className="pt-intent-primary"
-						disabled={this.state.loading}
+						disabled={this.state.locked}
 						onConfirm={this.onRebuild}
 					/>,
 					<ConfirmButton key="archive" label="Archive"
 						style={css.action}
 						className="pt-intent-danger"
-						disabled={this.state.loading}
+						disabled={this.state.locked}
 						onConfirm={this.onArchive}
 					/>,
 				];
@@ -129,7 +129,7 @@ export default class Build extends React.Component<Props, State> {
 					<ConfirmButton key="archive" label="Archive"
 						style={css.action}
 						className="pt-intent-danger"
-						disabled={this.state.loading}
+						disabled={this.state.locked}
 						onConfirm={this.onArchive}
 					/>,
 				];
@@ -139,13 +139,13 @@ export default class Build extends React.Component<Props, State> {
 					<ConfirmButton key="rebuild" label="Rebuild"
 						style={css.action}
 						className="pt-intent-primary"
-						disabled={this.state.loading}
+						disabled={this.state.locked}
 						onConfirm={this.onRebuild}
 					/>,
 					<ConfirmButton key="archive" label="Archive"
 						style={css.action}
 						className="pt-intent-danger"
-						disabled={this.state.loading}
+						disabled={this.state.locked}
 						onConfirm={this.onArchive}
 					/>,
 				];
@@ -155,13 +155,13 @@ export default class Build extends React.Component<Props, State> {
 					<ConfirmButton key="rebuild" label="Rebuild"
 						style={css.action}
 						className="pt-intent-primary"
-						disabled={this.state.loading}
+						disabled={this.state.locked}
 						onConfirm={this.onRebuild}
 					/>,
 					<ConfirmButton key="archive" label="Archive"
 						style={css.action}
 						className="pt-intent-danger"
-						disabled={this.state.loading}
+						disabled={this.state.locked}
 						onConfirm={this.onArchive}
 					/>,
 				];
@@ -171,7 +171,7 @@ export default class Build extends React.Component<Props, State> {
 					<ConfirmButton key="rebuild" label="Rebuild"
 						style={css.action}
 						className="pt-intent-primary"
-						disabled={this.state.loading}
+						disabled={this.state.locked}
 						onConfirm={this.onRebuild}
 					/>,
 				];
