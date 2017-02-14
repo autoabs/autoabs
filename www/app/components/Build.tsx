@@ -50,19 +50,6 @@ const css = {
 	action: {
 		width: '80px',
 	} as React.CSSProperties,
-	buildLog: {
-		top: '20px',
-		width: 'calc(100% - 40px)',
-		height: 'calc(100% - 40px)',
-	} as React.CSSProperties,
-	buildLogOutput: {
-		fontSize: '10px',
-		width: '100%',
-		height: 'calc(100% - 130px)',
-		overflow: 'scroll',
-		padding: '2px 6px',
-		backgroundColor: 'rgba(0, 0, 0, 0.2)',
-	} as React.CSSProperties,
 };
 
 export default class Build extends React.Component<Props, State> {
