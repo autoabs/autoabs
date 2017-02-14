@@ -68,7 +68,7 @@ export default class Build extends React.Component<Props, State> {
 			isOpen={this.props.shown}
 			onClose={this.closeDialog}
 			canOutsideClickClose={false}
-		>
+			>
 			<div className="pt-dialog-body">
 					<pre style={css.buildLogOutput}>
 						{['test'] ? ['test'].join('\n') : ''}
