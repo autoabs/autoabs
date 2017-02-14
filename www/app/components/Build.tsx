@@ -2,8 +2,8 @@
 import * as React from 'react';
 import * as Blueprint from '@blueprintjs/core';
 import ConfirmButton from './ConfirmButton';
-import BuildLog from './BuildLog';
 import * as BuildActions from '../actions/BuildActions';
+import * as BuildLogActions from '../actions/BuildLogActions';
 import * as BuildTypes from '../types/BuildTypes';
 import * as MiscUtils from '../utils/MiscUtils';
 
@@ -12,7 +12,6 @@ interface Props {
 }
 
 interface State {
-	dialog: boolean;
 	loading: boolean;
 }
 
@@ -70,16 +69,12 @@ export default class Build extends React.Component<Props, State> {
 	constructor(props: Props, context: any) {
 		super(props, context);
 		this.state = {
-			dialog: false,
 			loading: false,
 		};
 	}
 
 	openDialog = (): void => {
-		this.setState({
-			...this.state,
-			dialog: true,
-		});
+		BuildLogActions.open(this.props.build.id);
 	}
 
 	closeDialog = (): void => {
@@ -230,12 +225,6 @@ export default class Build extends React.Component<Props, State> {
 			<div className="pt-button-group pt-minimal" style={css.actions}>
 				{actions}
 			</div>
-			<BuildLog
-				id={build.id}
-				name={build.name}
-				shown={this.state.dialog}
-				onClose={this.closeDialog}
-			/>
 		</div>;
 	}
 }
