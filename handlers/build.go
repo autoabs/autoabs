@@ -44,7 +44,7 @@ func buildArchivePut(c *gin.Context) {
 		return
 	}
 
-	bild, err := build.GetBuild(db, buildId)
+	bild, err := build.Get(db, buildId)
 	if err != nil {
 		c.AbortWithError(500, err)
 		return
@@ -68,7 +68,7 @@ func buildRebuildPut(c *gin.Context) {
 		return
 	}
 
-	bild, err := build.GetBuild(db, buildId)
+	bild, err := build.Get(db, buildId)
 	if err != nil {
 		c.AbortWithError(500, err)
 		return

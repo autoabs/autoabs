@@ -6,7 +6,7 @@ import (
 	"github.com/autoabs/autoabs/utils"
 )
 
-func GetBuild(db *database.Database, buildId bson.ObjectId) (
+func Get(db *database.Database, buildId bson.ObjectId) (
 	bild *Build, err error) {
 
 	coll := db.Builds()
