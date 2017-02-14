@@ -9,13 +9,13 @@ import * as MiscUtils from '../utils/MiscUtils';
 
 let syncId: string;
 
-function _sync(index: number): Promise<string> {
+function _sync(index: number): Promise<void> {
 	let curSyncId = MiscUtils.uuid();
 	syncId = curSyncId;
 
 	let loader = new Loader().loading();
 
-	return new Promise<string>((resolve, reject): void => {
+	return new Promise<void>((resolve, reject): void => {
 		SuperAgent
 			.get('/build')
 			.query({'index': index})
@@ -47,19 +47,19 @@ function _sync(index: number): Promise<string> {
 	});
 }
 
-export function traverse(index: number): Promise<string> {
+export function traverse(index: number): Promise<void> {
 	BuildStore._index = index;
 	return _sync(index);
 }
 
-export function sync(): Promise<string> {
+export function sync(): Promise<void> {
 	return _sync(BuildStore.index);
 }
 
-export function archive(id: string): Promise<string> {
+export function archive(id: string): Promise<void> {
 	let loader = new Loader().loading();
 
-	return new Promise<string>((resolve, reject): void => {
+	return new Promise<void>((resolve, reject): void => {
 		SuperAgent
 			.put('/build/' + id + '/archive')
 			.set('Accept', 'application/json')
@@ -77,10 +77,10 @@ export function archive(id: string): Promise<string> {
 	});
 }
 
-export function rebuild(id: string): Promise<string> {
+export function rebuild(id: string): Promise<void> {
 	let loader = new Loader().loading();
 
-	return new Promise<string>((resolve, reject): void => {
+	return new Promise<void>((resolve, reject): void => {
 		SuperAgent
 			.put('/build/' + id + '/rebuild')
 			.set('Accept', 'application/json')
