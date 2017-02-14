@@ -9,7 +9,6 @@ class BuildStore extends Events.EventEmitter {
 	_index: number;
 	_count: number;
 	_map: {[key: string]: number} = {};
-	_loadingState: boolean;
 	_token = Dispatcher.register((this._callback).bind(this));
 
 	get builds(): BuildTypes.Builds {
@@ -22,10 +21,6 @@ class BuildStore extends Events.EventEmitter {
 
 	get count(): number {
 		return this._count;
-	}
-
-	get loading(): boolean {
-		return this._loadingState;
 	}
 
 	emitChange(): void {
