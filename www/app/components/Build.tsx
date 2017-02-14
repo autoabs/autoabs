@@ -63,13 +63,6 @@ export default class Build extends React.Component<Props, State> {
 		BuildInfoActions.open(this.props.build.id);
 	}
 
-	closeDialog = (): void => {
-		this.setState({
-			...this.state,
-			dialog: false,
-		});
-	}
-
 	onArchive = (): void => {
 		this.setLoading();
 		BuildActions.archive(this.props.build.id).then(
