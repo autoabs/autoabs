@@ -3,13 +3,13 @@ import * as SuperAgent from 'superagent';
 import Dispatcher from '../dispatcher/Dispatcher';
 import * as Alert from '../Alert';
 import Loader from '../Loader';
-import * as BuildLogTypes from '../types/BuildLogTypes';
+import * as BuildInfoTypes from '../types/BuildInfoTypes';
 
 export function open(id: string): Promise<void> {
 	let loader = new Loader().loading();
 
 	Dispatcher.dispatch({
-		type: BuildLogTypes.OPEN,
+		type: BuildInfoTypes.OPEN,
 		data: {
 			id: id,
 		},
@@ -29,7 +29,7 @@ export function open(id: string): Promise<void> {
 				}
 
 				Dispatcher.dispatch({
-					type: BuildLogTypes.UPDATE,
+					type: BuildInfoTypes.UPDATE,
 					data: {
 						output: res.body,
 					},
@@ -42,6 +42,6 @@ export function open(id: string): Promise<void> {
 
 export function close(): void {
 	Dispatcher.dispatch({
-		type: BuildLogTypes.CLOSE,
+		type: BuildInfoTypes.CLOSE,
 	});
 }

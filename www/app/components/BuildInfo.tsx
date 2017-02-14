@@ -2,9 +2,9 @@
 import * as React from 'react';
 import * as Blueprint from '@blueprintjs/core';
 import Loading from './Loading';
-import * as BuildLogActions from '../actions/BuildLogActions';
+import * as BuildInfoActions from '../actions/BuildInfoActions';
 import BuildStore from '../stores/BuildStore';
-import BuildLogStore from '../stores/BuildLogStore';
+import BuildInfoStore from '../stores/BuildInfoStore';
 
 interface State {
 	id: string;
@@ -13,7 +13,7 @@ interface State {
 }
 
 function getState(): State {
-	let id = BuildLogStore.id;
+	let id = BuildInfoStore.id;
 	let name = '';
 
 	if (id) {
@@ -26,7 +26,7 @@ function getState(): State {
 	return {
 		id: id,
 		name: name,
-		output: BuildLogStore.output,
+		output: BuildInfoStore.output,
 	};
 }
 
@@ -34,12 +34,12 @@ const css = {
 	loading: {
 		float: "left",
 	} as React.CSSProperties,
-	buildLog: {
+	buildInfo: {
 		top: '20px',
 		width: 'calc(100% - 40px)',
 		height: 'calc(100% - 40px)',
 	} as React.CSSProperties,
-	buildLogOutput: {
+	buildInfoOutput: {
 		fontSize: '10px',
 		width: '100%',
 		height: 'calc(100% - 130px)',
@@ -57,12 +57,12 @@ export default class Build extends React.Component<void, State> {
 
 	componentDidMount(): void {
 		BuildStore.addChangeListener(this.onChange);
-		BuildLogStore.addChangeListener(this.onChange);
+		BuildInfoStore.addChangeListener(this.onChange);
 	}
 
 	componentWillUnmount(): void {
 		BuildStore.removeChangeListener(this.onChange);
-		BuildLogStore.removeChangeListener(this.onChange);
+		BuildInfoStore.removeChangeListener(this.onChange);
 	}
 
 	onChange = (): void => {
@@ -70,19 +70,19 @@ export default class Build extends React.Component<void, State> {
 	}
 
 	closeDialog = (): void => {
-		BuildLogActions.close();
+		BuildInfoActions.close();
 	}
 
 	render(): JSX.Element {
 		return <Blueprint.Dialog
 			title={`Builds Logs - ${this.state.name}`}
-			style={css.buildLog}
+			style={css.buildInfo}
 			isOpen={!!this.state.id}
 			onClose={this.closeDialog}
 			canOutsideClickClose={false}
 		>
 			<div className="pt-dialog-body">
-					<pre style={css.buildLogOutput}>
+					<pre style={css.buildInfoOutput}>
 						{this.state.output}
 					</pre>
 			</div>

@@ -3,7 +3,7 @@ import * as React from 'react';
 import * as Blueprint from '@blueprintjs/core';
 import ConfirmButton from './ConfirmButton';
 import * as BuildActions from '../actions/BuildActions';
-import * as BuildLogActions from '../actions/BuildLogActions';
+import * as BuildInfoActions from '../actions/BuildInfoActions';
 import * as BuildTypes from '../types/BuildTypes';
 import * as MiscUtils from '../utils/MiscUtils';
 
@@ -74,7 +74,7 @@ export default class Build extends React.Component<Props, State> {
 	}
 
 	openDialog = (): void => {
-		BuildLogActions.open(this.props.build.id);
+		BuildInfoActions.open(this.props.build.id);
 	}
 
 	closeDialog = (): void => {

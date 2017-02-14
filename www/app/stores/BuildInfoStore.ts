@@ -1,10 +1,10 @@
 /// <reference path="../References.d.ts"/>
 import Dispatcher from '../dispatcher/Dispatcher';
 import * as Events from 'events';
-import * as BuildLogTypes from '../types/BuildLogTypes';
+import * as BuildInfoTypes from '../types/BuildInfoTypes';
 import * as GlobalTypes from '../types/GlobalTypes';
 
-class BuildLogStore extends Events.EventEmitter {
+class BuildInfoStore extends Events.EventEmitter {
 	_id: string = '';
 	_output: string = '';
 	_token = Dispatcher.register((this._callback).bind(this));
@@ -46,21 +46,21 @@ class BuildLogStore extends Events.EventEmitter {
 		this.emitChange();
 	}
 
-	_callback(action: BuildLogTypes.BuildLogDispatch): void {
+	_callback(action: BuildInfoTypes.BuildInfoDispatch): void {
 		switch (action.type) {
-			case BuildLogTypes.OPEN:
+			case BuildInfoTypes.OPEN:
 				this._open(action.data.id);
 				break
 
-			case BuildLogTypes.CLOSE:
+			case BuildInfoTypes.CLOSE:
 				this._close();
 				break;
 
-			case BuildLogTypes.UPDATE:
+			case BuildInfoTypes.UPDATE:
 				this._update(action.data.output);
 				break;
 		}
 	}
 }
 
-export default new BuildLogStore();
+export default new BuildInfoStore();

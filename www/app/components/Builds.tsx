@@ -5,7 +5,7 @@ import * as BuildTypes from '../types/BuildTypes';
 import BuildStore from '../stores/BuildStore';
 import InfiniteFlex from './InfiniteFlex';
 import * as BuildActions from '../actions/BuildActions';
-import BuildLog from './BuildLog';
+import BuildInfo from './BuildInfo';
 import Loading from './Loading';
 import Build from './Build';
 
@@ -110,7 +110,7 @@ export default class Builds extends React.Component<null, State> {
 				index={this.state.index}
 				count={this.state.count}
 			/>
-			<BuildLog/>
+			<BuildInfo/>
 		</div>;
 	}
 }
