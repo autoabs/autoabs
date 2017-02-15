@@ -1,6 +1,5 @@
 /// <reference path="../References.d.ts"/>
 import * as React from 'react';
-import * as Blueprint from '@blueprintjs/core';
 import * as BuildTypes from '../types/BuildTypes';
 import BuildStore from '../stores/BuildStore';
 import InfiniteFlex from './InfiniteFlex';
