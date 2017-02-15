@@ -142,13 +142,17 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 					let index = Math.max(0, upper - Math.floor(len / 2));
 					if (index !== this.index) {
 						this.index = index;
-						this.props.traverse(index);
+						setTimeout(() => {
+							this.props.traverse(index);
+						});
 					}
 				} else if (end < this.props.count && end - lower < 50) {
 					let index = lower - Math.floor(len / 2);
 					if (index !== this.index) {
 						this.index = index;
-						this.props.traverse(index);
+						setTimeout(() => {
+							this.props.traverse(index);
+						});
 					}
 				}
 			}
