@@ -44,29 +44,14 @@ export default class Builds extends React.Component<null, State> {
 
 	componentDidMount(): void {
 		BuildStore.addChangeListener(this.onChange);
-		this.syncing = true;
 	}
 
 	componentWillUnmount(): void {
 		BuildStore.removeChangeListener(this.onChange);
-		this.syncing = false;
 	}
 
 	onChange = (): void => {
 		this.setState(getState());
-	}
-
-	syncLoop = (): void => {
-		setTimeout(() => {
-			if (!this.syncing) {
-				return;
-			}
-
-			BuildActions.sync().then(
-				this.syncLoop,
-				this.syncLoop,
-			);
-		}, 1000);
 	}
 
 	sync = (): void => {
