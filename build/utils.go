@@ -21,6 +21,27 @@ func Get(db *database.Database, buildId bson.ObjectId) (
 	return
 }
 
+func GetKey(db *database.Database, name, version, release,
+	repo, arch string) (bild *Build, err error) {
+
+	coll := db.Builds()
+
+	bild = &Build{}
+	err = coll.Find(&bson.M{
+		"name":    name,
+		"version": version,
+		"release": release,
+		"repo":    repo,
+		"arch":    arch,
+	}).One(bild)
+	if err != nil {
+		err = database.ParseError(err)
+		return
+	}
+
+	return
+}
+
 func GetAll(db *database.Database, index int) (
 	builds []*Build, queryIndex, count int, err error) {
 
