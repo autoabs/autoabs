@@ -81,6 +81,27 @@ func (s *Source) Queue(db *database.Database, force bool) (err error) {
 		}
 
 		if resp.Matched != 0 {
+			if force {
+				bildCur, e := build.GetKey(db, s.Name, s.Version,
+					s.Release, s.Repo, s.Arch)
+				if err != nil {
+					switch e.(type) {
+					case *database.NotFoundError:
+						e = nil
+					default:
+						err = e
+						return
+					}
+				}
+
+				if bildCur.State == "completed" {
+					err = bildCur.Upload(db, true)
+					if err != nil {
+						return
+					}
+				}
+			}
+
 			return
 		}
 	}
