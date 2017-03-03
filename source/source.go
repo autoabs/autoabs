@@ -37,8 +37,6 @@ func (s *Source) Queue(db *database.Database, force bool) (err error) {
 	coll := db.Builds()
 	gfs := db.PkgBuildGrid()
 
-	fmt.Printf("queue: %s\n", s.Name)
-
 	gf, err := gfs.Create("pkgbuild.tar")
 	if err != nil {
 		err = database.ParseError(err)
