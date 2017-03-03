@@ -76,6 +76,10 @@ func (q *Queue) Sync() (err error) {
 		pk.Remove()
 	}
 
+	for _, pk := range q.oldPackages {
+		pk.Remove()
+	}
+
 	for srcInf := range q.add.Iter() {
 		src := srcInf.(*source.Source)
 
