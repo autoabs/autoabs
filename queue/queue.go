@@ -7,7 +7,6 @@ import (
 	"github.com/autoabs/autoabs/source"
 	"github.com/dropbox/godropbox/container/set"
 	"gopkg.in/mgo.v2/bson"
-	"fmt"
 )
 
 type Queue struct {
