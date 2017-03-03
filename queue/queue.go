@@ -83,7 +83,7 @@ func (q *Queue) Sync() (err error) {
 	for srcInf := range q.add.Iter() {
 		src := srcInf.(*source.Source)
 
-		err = src.Queue(db, false)
+		err = src.Queue(db, true)
 		if err != nil {
 			return
 		}
