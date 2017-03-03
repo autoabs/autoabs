@@ -59,51 +59,43 @@ func (s *Source) Queue(db *database.Database, force bool) (err error) {
 		PkgBuildId: gfId,
 	}
 
-	if force {
-		err = coll.Insert(bild)
-		if err != nil {
-			err = database.ParseError(err)
-			return
-		}
-	} else {
-		resp, e := coll.Upsert(&bson.M{
-			"name":    s.Name,
-			"version": s.Version,
-			"release": s.Release,
-			"repo":    s.Repo,
-			"arch":    s.Arch,
-		}, &bson.M{
-			"$setOnInsert": bild,
-		})
-		if e != nil {
-			err = database.ParseError(e)
-			return
-		}
+	resp, e := coll.Upsert(&bson.M{
+		"name":    s.Name,
+		"version": s.Version,
+		"release": s.Release,
+		"repo":    s.Repo,
+		"arch":    s.Arch,
+	}, &bson.M{
+		"$setOnInsert": bild,
+	})
+	if e != nil {
+		err = database.ParseError(e)
+		return
+	}
 
-		if resp.Matched != 0 {
-			if force {
-				bildCur, e := build.GetKey(db, s.Name, s.Version,
-					s.Release, s.Repo, s.Arch)
-				if err != nil {
-					switch e.(type) {
-					case *database.NotFoundError:
-						e = nil
-					default:
-						err = e
-						return
-					}
-				}
-
-				if bildCur.State == "completed" {
-					err = bildCur.Upload(db, true)
-					if err != nil {
-						return
-					}
+	if resp.Matched != 0 {
+		if force {
+			bildCur, e := build.GetKey(db, s.Name, s.Version,
+				s.Release, s.Repo, s.Arch)
+			if err != nil {
+				switch e.(type) {
+				case *database.NotFoundError:
+					e = nil
+				default:
+					err = e
+					return
 				}
 			}
 
-			return
+			if bildCur.State == "completed" {
+				err = bildCur.Upload(db, true)
+				if err != nil {
+					return
+				}
+			}
 		}
+
+		return
 	}
 
 	arc := tar.NewWriter(gf)
