@@ -4,72 +4,58 @@ import (
 	"github.com/autoabs/autoabs/build"
 	"github.com/autoabs/autoabs/database"
 	"github.com/autoabs/autoabs/pkg"
+	"github.com/autoabs/autoabs/source"
 	"github.com/dropbox/godropbox/container/set"
 	"gopkg.in/mgo.v2/bson"
+	"fmt"
 )
 
 type Queue struct {
-	curPackages     map[string]*pkg.Package
-	curPackagesKeys set.Set
-	newPackages     map[string]*pkg.Package
-	newPackagesKeys set.Set
-	addPackages     []*pkg.Package
-	remPackages     []*pkg.Package
-	updatePackages  []*pkg.Package
-	buildPackages   []*pkg.Package
+	sources      map[string]*source.Source
+	sourcesKeys  set.Set
+	packages     map[string]*pkg.Package
+	packagesKeys set.Set
+	oldPackages  []*pkg.Package
+	add          set.Set // *source.Source
+	remove       set.Set // *pkg.Package
+	update       set.Set // *source.Source
 }
 
 func (q *Queue) Scan() (err error) {
-	q.curPackages = map[string]*pkg.Package{}
-	q.curPackagesKeys = set.NewSet()
-	q.newPackages = map[string]*pkg.Package{}
-	q.newPackagesKeys = set.NewSet()
-	q.addPackages = []*pkg.Package{}
-	q.remPackages = []*pkg.Package{}
-	q.updatePackages = []*pkg.Package{}
+	q.add = set.NewSet()
+	q.remove = set.NewSet()
+	q.update = set.NewSet()
 
-	curPkgs, err := getCurPackages()
+	q.packages, q.oldPackages, q.packagesKeys, err = pkg.GetAll()
 	if err != nil {
 		return
 	}
 
-	for _, pk := range curPkgs {
-		key := pk.Key()
-		q.curPackages[key] = pk
-		q.curPackagesKeys.Add(key)
-	}
-
-	newPkgs, err := getNewPackages()
+	q.sources, q.sourcesKeys, err = source.GetAll()
 	if err != nil {
 		return
 	}
 
-	for _, pk := range newPkgs {
-		key := pk.Key()
-		q.newPackages[key] = pk
-		q.newPackagesKeys.Add(key)
-	}
-
-	remPackagesKeys := q.curPackagesKeys.Copy()
-	remPackagesKeys.Subtract(q.newPackagesKeys)
+	remPackagesKeys := q.packagesKeys.Copy()
+	remPackagesKeys.Subtract(q.sourcesKeys)
 	for key := range remPackagesKeys.Iter() {
-		q.remPackages = append(q.remPackages, q.curPackages[key.(string)])
+		q.remove.Add(q.packages[key.(string)])
 	}
 
-	addPackagesKeys := q.newPackagesKeys.Copy()
-	addPackagesKeys.Subtract(q.curPackagesKeys)
+	addPackagesKeys := q.sourcesKeys.Copy()
+	addPackagesKeys.Subtract(q.packagesKeys)
 	for key := range addPackagesKeys.Iter() {
-		q.addPackages = append(q.addPackages, q.newPackages[key.(string)])
+		q.add.Add(q.sources[key.(string)])
 	}
 
-	for key, pk := range q.curPackages {
-		newPkg, ok := q.newPackages[key]
+	for key, pk := range q.packages {
+		src, ok := q.sources[key]
 		if !ok {
 			continue
 		}
 
-		if newPkg.Version != pk.Version || newPkg.Release != pk.Release {
-			q.updatePackages = append(q.updatePackages, newPkg)
+		if src.Version != pk.Version || src.Release != pk.Release {
+			q.update.Add(src)
 		}
 	}
 
@@ -85,33 +71,24 @@ func (q *Queue) Sync() (err error) {
 		return
 	}
 
-	for _, pk := range q.remPackages {
+	for pkInf := range q.remove.Iter() {
+		pk := pkInf.(*pkg.Package)
 		pk.Remove()
 	}
 
-	queued := set.NewSet()
+	for srcInf := range q.add.Iter() {
+		src := srcInf.(*source.Source)
 
-	for _, pk := range q.addPackages {
-		key := pk.IdKey()
-		if queued.Contains(key) {
-			continue
-		}
-		queued.Add(key)
-
-		err = pk.QueueBuild(db, false)
+		err = src.Queue(db, false)
 		if err != nil {
 			return
 		}
 	}
 
-	for _, pk := range q.updatePackages {
-		key := pk.IdKey()
-		if queued.Contains(key) {
-			continue
-		}
-		queued.Add(key)
+	for srcInf := range q.update.Iter() {
+		src := srcInf.(*source.Source)
 
-		err = pk.QueueBuild(db, false)
+		err = src.Queue(db, false)
 		if err != nil {
 			return
 		}
@@ -130,7 +107,7 @@ func (q *Queue) SyncState() (err error) {
 		return
 	}
 
-	for _, pk := range q.curPackages {
+	for _, pk := range q.packages {
 		err = pk.SyncState(db, stateId)
 		if err != nil {
 			return
@@ -195,22 +172,5 @@ func (q *Queue) Upload() (err error) {
 }
 
 func (q *Queue) Clean() (err error) {
-	err = q.Scan()
-	if err != nil {
-		return
-	}
-
-	curPkgs, err := getCurPackages()
-	if err != nil {
-		return
-	}
-
-	for _, pk := range curPkgs {
-		_, ok := q.newPackages[pk.Key()]
-		if !ok {
-			pk.Remove()
-		}
-	}
-
 	return
 }
