@@ -106,7 +106,7 @@ func (s *Source) Queue(db *database.Database, force bool) (err error) {
 
 		if err != nil {
 			e = &errortypes.WriteError{
-				errors.Wrap(err, "pkg: Failed to read pkg directory"),
+				errors.Wrap(err, "source: Failed to read pkg directory"),
 			}
 			return
 		}
@@ -130,7 +130,7 @@ func (s *Source) Queue(db *database.Database, force bool) (err error) {
 		e = arc.WriteHeader(hdr)
 		if e != nil {
 			e = &errortypes.WriteError{
-				errors.Wrap(e, "pkg: Failed to write tar header"),
+				errors.Wrap(e, "source: Failed to write tar header"),
 			}
 			return
 		}
@@ -138,7 +138,7 @@ func (s *Source) Queue(db *database.Database, force bool) (err error) {
 		file, e := os.Open(path)
 		if e != nil {
 			e = &errortypes.ReadError{
-				errors.Wrap(e, "pkg: Failed to open source file"),
+				errors.Wrap(e, "source: Failed to open source file"),
 			}
 			return
 		}
@@ -147,7 +147,7 @@ func (s *Source) Queue(db *database.Database, force bool) (err error) {
 		_, e = io.Copy(arc, file)
 		if e != nil {
 			e = &errortypes.WriteError{
-				errors.Wrap(e, "pkg: Failed to read source file"),
+				errors.Wrap(e, "source: Failed to read source file"),
 			}
 			return
 		}
@@ -161,7 +161,7 @@ func (s *Source) Queue(db *database.Database, force bool) (err error) {
 	err = arc.Close()
 	if err != nil {
 		err = &errortypes.WriteError{
-			errors.Wrap(err, "pkg: Failed to close tar file"),
+			errors.Wrap(err, "source: Failed to close tar file"),
 		}
 		return
 	}
@@ -169,7 +169,7 @@ func (s *Source) Queue(db *database.Database, force bool) (err error) {
 	err = gf.Close()
 	if err != nil {
 		err = &errortypes.WriteError{
-			errors.Wrap(err, "pkg: Failed to close grid file"),
+			errors.Wrap(err, "source: Failed to close grid file"),
 		}
 		return
 	}
