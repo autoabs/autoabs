@@ -2,7 +2,6 @@ package source
 
 import (
 	"archive/tar"
-	"fmt"
 	"github.com/autoabs/autoabs/build"
 	"github.com/autoabs/autoabs/database"
 	"github.com/autoabs/autoabs/errortypes"
