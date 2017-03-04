@@ -225,8 +225,9 @@ func (b *Build) build(db *database.Database) (err error) {
 		for {
 			line, _, err := out.ReadLine()
 			if err != nil {
-				if !strings.Contains(
-					err.Error(), "bad file descriptor") && err != io.EOF {
+				if err != io.EOF &&
+					!strings.Contains(err.Error(), "file already closed") &&
+					!strings.Contains(err.Error(), "bad file descriptor") {
 
 					err = &errortypes.ReadError{
 						errors.Wrap(err, "build: Failed to read stdout"),
@@ -263,8 +264,9 @@ func (b *Build) build(db *database.Database) (err error) {
 		for {
 			line, _, err := out.ReadLine()
 			if err != nil {
-				if !strings.Contains(
-					err.Error(), "bad file descriptor") && err != io.EOF {
+				if err != io.EOF &&
+					!strings.Contains(err.Error(), "file already closed") &&
+					!strings.Contains(err.Error(), "bad file descriptor") {
 
 					err = &errortypes.ReadError{
 						errors.Wrap(err, "build: Failed to read stderr"),
