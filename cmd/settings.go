@@ -2,8 +2,8 @@ package cmd
 
 import (
 	"flag"
-	"github.com/pritunl/pritunl-auth/database"
-	"github.com/pritunl/pritunl-auth/settings"
+	"github.com/autoabs/autoabs/database"
+	"github.com/autoabs/autoabs/settings"
 	"strconv"
 )
 
