@@ -41,6 +41,11 @@ func (d *Database) Settings() (coll *Collection) {
 	return
 }
 
+func (d *Database) Events() (coll *Collection) {
+	coll = d.getCollection("events")
+	return
+}
+
 func (d *Database) Builds() (coll *Collection) {
 	coll = d.getCollection("builds")
 	return
@@ -164,12 +169,24 @@ func addIndexes() (err error) {
 		return
 	}
 
+	coll = db.Events()
+	err = coll.EnsureIndex(mgo.Index{
+		Key:        []string{"channel"},
+		Background: true,
+	})
+	if err != nil {
+		err = &IndexError{
+			errors.Wrap(err, "database: Index error"),
+		}
+	}
+
 	return
 }
 
 func addCollections() (err error) {
 	db := GetDatabase()
 	defer db.Close()
+	coll := db.Events()
 
 	names, err := db.database.CollectionNames()
 	if err != nil {
@@ -178,7 +195,19 @@ func addCollections() (err error) {
 	}
 
 	for _, name := range names {
-		_ = name
+		if name == "events" {
+			return
+		}
+	}
+
+	err = coll.Create(&mgo.CollectionInfo{
+		Capped:   true,
+		MaxDocs:  1000,
+		MaxBytes: 5242880,
+	})
+	if err != nil {
+		err = ParseError(err)
+		return
 	}
 
 	return
