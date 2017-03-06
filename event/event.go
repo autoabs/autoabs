@@ -77,6 +77,7 @@ func Publish(db *database.Database, channel string, data interface{}) (
 
 	coll := db.Events()
 
+	// TODO mgo and mongodb objectid sort incompatible
 	msg := &Event{
 		Id:        bson.NewObjectId(),
 		Channel:   channel,
