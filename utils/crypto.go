@@ -2,7 +2,7 @@ package utils
 
 import (
 	"crypto/rand"
-	"github.com/blckur/blckur/errortypes"
+	"github.com/autoabs/autoabs/errortypes"
 	"github.com/dropbox/godropbox/errors"
 	"math/big"
 	mathrand "math/rand"
