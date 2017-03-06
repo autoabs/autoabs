@@ -7,7 +7,7 @@ import (
 	"github.com/autoabs/autoabs/database"
 	"github.com/autoabs/autoabs/requires"
 	"github.com/dropbox/godropbox/container/set"
-	"labix.org/v2/mgo/bson"
+	"gopkg.in/mgo.v2/bson"
 	"strings"
 	"time"
 )
