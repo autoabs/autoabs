@@ -186,7 +186,6 @@ func addCollections() (err error) {
 
 func init() {
 	module := requires.New("database")
-
 	module.After("config")
 
 	module.Handler = func() {
