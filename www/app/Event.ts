@@ -1,6 +1,9 @@
 /// <reference path="./References.d.ts"/>
+import Dispatcher from './dispatcher/Dispatcher';
 
-export function connect(): void {
+let connected = false;
+
+function _connect(): void {
 	let url = '';
 	let location = window.location;
 
@@ -16,11 +19,20 @@ export function connect(): void {
 
 	socket.addEventListener('close', () => {
 		setTimeout(() => {
-			connect();
+			_connect();
 		}, 500);
 	});
 
 	socket.addEventListener('message', (evt) => {
 		console.log(evt);
 	})
+}
+
+export function connect() {
+	if (connected) {
+		return;
+	}
+	connected = true;
+
+	_connect();
 }
