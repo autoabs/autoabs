@@ -9,6 +9,7 @@ import (
 	"github.com/autoabs/autoabs/constants"
 	"github.com/autoabs/autoabs/database"
 	"github.com/autoabs/autoabs/errortypes"
+	"github.com/autoabs/autoabs/event"
 	"github.com/autoabs/autoabs/signing"
 	"github.com/autoabs/autoabs/utils"
 	"github.com/dropbox/godropbox/container/set"
@@ -42,6 +43,35 @@ type Build struct {
 	Log        []string        `bson:"log,omitempty" json:"log"`
 	PkgIds     []bson.ObjectId `bson:"pkg_ids" json:"-"`
 	PkgBuildId bson.ObjectId   `bson:"pkg_build_id" json:"-"`
+}
+
+type EventBuild struct {
+	Id         bson.ObjectId   `bson:"id" json:"id"`
+	Name       string          `bson:"name" json:"name"`
+	SubNames   []string        `bson:"sub_names" json:"sub_names"`
+	Builder    string          `bson:"builder" json:"builder"`
+	Start      time.Time       `bson:"start,omitempty" json:"start,omitempty"`
+	Stop       time.Time       `bson:"stop,omitempty" json:"stop,omitempty"`
+	State      string          `bson:"state" json:"state"`
+	StateRank  int             `bson:"state_rank" json:"state_rank"`
+	Version    string          `bson:"version" json:"version"`
+	Release    string          `bson:"release" json:"release"`
+	Repo       string          `bson:"repo" json:"repo"`
+	RepoState  string          `bson:"repo_state" json:"repo_state"`
+	Uploaded   bool            `bson:"uploaded" json:"uploaded"`
+	Arch       string          `bson:"arch" json:"arch"`
+	Log        []string        `bson:"log" json:"log"`
+	PkgIds     []bson.ObjectId `bson:"-" json:"-"`
+	PkgBuildId bson.ObjectId   `bson:"-" json:"-"`
+}
+
+type EventData struct {
+	Build *EventBuild `bson:"build" json:"build"`
+}
+
+type Event struct {
+	Type string     `bson:"type" json:"type"`
+	Data *EventData `bson:"data" json:"data"`
 }
 
 func (b *Build) tmpPath() string {
@@ -615,6 +645,22 @@ func (b *Build) Upload(db *database.Database, force bool) (err error) {
 
 	b.Uploaded = true
 	coll.CommitFields(b.Id, b, set.NewSet("uploaded"))
+
+	return
+}
+
+func (b *Build) PublishUpdate(db *database.Database) (err error) {
+	evt := &Event{
+		Type: "build.update",
+		Data: &EventData{
+			Build: (*EventBuild)(b),
+		},
+	}
+
+	err = event.Publish(db, "test", evt)
+	if err != nil {
+		return
+	}
 
 	return
 }
