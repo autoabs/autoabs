@@ -17,10 +17,10 @@ var (
 )
 
 type Event struct {
-	Id        bson.ObjectId `bson:"_id,omitempty"`
-	Channel   string        `bson:"channel"`
-	Timestamp time.Time     `bson:"timestamp"`
-	Data      interface{}   `bson:"data"`
+	Id        bson.ObjectId `bson:"_id,omitempty" json:"id"`
+	Channel   string        `bson:"channel" json:"channel"`
+	Timestamp time.Time     `bson:"timestamp" json:"timestamp"`
+	Data      interface{}   `bson:"data" json:"data"`
 }
 
 func getCursorId(coll *database.Collection, channels []string) (
