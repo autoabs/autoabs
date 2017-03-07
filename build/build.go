@@ -404,6 +404,7 @@ func (b *Build) Build(db *database.Database) (err error) {
 	b.State = "building"
 	b.StateRank = BuildingRank
 	b.Builder = config.Config.ServerName
+	b.PublishUpdate(db)
 
 	err = b.build(db)
 	if err != nil {
@@ -415,6 +416,7 @@ func (b *Build) Build(db *database.Database) (err error) {
 		b.StateRank = FailedRank
 		b.Stop = time.Now()
 		coll.CommitFields(b.Id, b, set.NewSet("state", "state_rank", "stop"))
+		b.PublishUpdate(db)
 
 		return
 	}
@@ -423,6 +425,7 @@ func (b *Build) Build(db *database.Database) (err error) {
 	b.StateRank = CompletedRank
 	b.Stop = time.Now()
 	coll.CommitFields(b.Id, b, set.NewSet("state", "state_rank", "stop"))
+	b.PublishUpdate(db)
 
 	return
 }
@@ -458,6 +461,7 @@ func (b *Build) Archive(db *database.Database) (err error) {
 	b.State = "archived"
 	b.StateRank = ArchivedRank
 	b.RepoState = ""
+	b.PublishUpdate(db)
 
 	return
 }
@@ -498,6 +502,7 @@ func (b *Build) Rebuild(db *database.Database) (err error) {
 	b.Builder = ""
 	b.Log = []string{}
 	b.Start = start
+	b.PublishUpdate(db)
 
 	return
 }
@@ -645,6 +650,7 @@ func (b *Build) Upload(db *database.Database, force bool) (err error) {
 
 	b.Uploaded = true
 	coll.CommitFields(b.Id, b, set.NewSet("uploaded"))
+	b.PublishUpdate(db)
 
 	return
 }
