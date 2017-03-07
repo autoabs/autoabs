@@ -1,7 +1,7 @@
 /// <reference path="../References.d.ts"/>
-export const CHANGE = Symbol('change');
+export const CHANGE = 'change';
 
 export interface Dispatch {
-	type: Symbol;
+	type: string;
 	data?: any;
 }

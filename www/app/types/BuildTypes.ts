@@ -1,7 +1,7 @@
 /// <reference path="../References.d.ts"/>
-export const SYNC = Symbol('build.sync');
-export const UPDATE = Symbol('build.update');
-export const REMOVE = Symbol('build.remove');
+export const SYNC = 'build.sync';
+export const UPDATE = 'build.update';
+export const REMOVE = 'build.remove';
 
 export interface Build {
 	id: string;
@@ -19,7 +19,7 @@ export interface Build {
 export type Builds = Build[];
 
 export interface BuildDispatch {
-	type: Symbol;
+	type: string;
 	data?: {
 		id?: string;
 		content?: string;
