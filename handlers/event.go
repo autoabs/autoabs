@@ -39,7 +39,7 @@ func eventGet(c *gin.Context) {
 		return
 	})
 
-	lst, err := event.SubscribeListener([]string{"test"})
+	lst, err := event.SubscribeListener([]string{"dispatch"})
 	if err != nil {
 		c.AbortWithError(500, err)
 		return

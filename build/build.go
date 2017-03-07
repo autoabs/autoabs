@@ -657,7 +657,7 @@ func (b *Build) PublishUpdate(db *database.Database) (err error) {
 		},
 	}
 
-	err = event.Publish(db, "test", evt)
+	err = event.Publish(db, "dispatch", evt)
 	if err != nil {
 		return
 	}
