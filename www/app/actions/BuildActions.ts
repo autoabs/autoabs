@@ -1,6 +1,7 @@
 /// <reference path="../References.d.ts"/>
 import * as SuperAgent from 'superagent';
 import Dispatcher from '../dispatcher/Dispatcher';
+import EventDispatcher from '../dispatcher/EventDispatcher';
 import * as Alert from '../Alert';
 import Loader from '../Loader';
 import * as BuildTypes from '../types/BuildTypes';
@@ -109,3 +110,11 @@ export function remove(id: string): void {
 
 	Alert.info('Build successfully removed');
 }
+
+EventDispatcher.register((action: BuildTypes.BuildDispatch) => {
+	switch (action.type) {
+		case BuildTypes.CHANGE:
+			sync();
+			break;
+	}
+});
