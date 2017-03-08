@@ -24,7 +24,6 @@ function connect(): void {
 	});
 
 	socket.addEventListener('message', (evt) => {
-		console.log(JSON.parse(evt.data).data);
 		Dispatcher.dispatch(JSON.parse(evt.data).data);
 	})
 }
