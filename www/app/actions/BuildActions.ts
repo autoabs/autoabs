@@ -24,6 +24,7 @@ function _sync(index: number): Promise<void> {
 				loader.done();
 
 				if (curSyncId !== syncId) {
+					resolve();
 					return;
 				}
 
