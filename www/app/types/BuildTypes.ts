@@ -2,6 +2,7 @@
 export const SYNC = 'build.sync';
 export const UPDATE = 'build.update';
 export const REMOVE = 'build.remove';
+export const CHANGE = 'build.change';
 
 export interface Build {
 	id: string;
