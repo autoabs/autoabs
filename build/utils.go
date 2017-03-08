@@ -2,9 +2,23 @@ package build
 
 import (
 	"github.com/autoabs/autoabs/database"
+	"github.com/autoabs/autoabs/event"
 	"github.com/autoabs/autoabs/utils"
 	"gopkg.in/mgo.v2/bson"
 )
+
+func PublishChange(db *database.Database) (err error) {
+	evt := &Event{
+		Type: "build.change",
+	}
+
+	err = event.Publish(db, "dispatch", evt)
+	if err != nil {
+		return
+	}
+
+	return
+}
 
 func Get(db *database.Database, buildId bson.ObjectId) (
 	bild *Build, err error) {
