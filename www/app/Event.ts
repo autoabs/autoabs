@@ -1,5 +1,5 @@
 /// <reference path="./References.d.ts"/>
-import Dispatcher from './dispatcher/Dispatcher';
+import EventDispatcher from './dispatcher/EventDispatcher';
 
 let connected = false;
 
@@ -24,7 +24,7 @@ function connect(): void {
 	});
 
 	socket.addEventListener('message', (evt) => {
-		Dispatcher.dispatch(JSON.parse(evt.data).data);
+		EventDispatcher.dispatch(JSON.parse(evt.data).data);
 	})
 }
 
