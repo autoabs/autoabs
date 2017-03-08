@@ -44,33 +44,8 @@ type Build struct {
 	PkgBuildId bson.ObjectId   `bson:"pkg_build_id" json:"-"`
 }
 
-type EventBuild struct {
-	Id         bson.ObjectId   `bson:"id" json:"id"`
-	Name       string          `bson:"name" json:"name"`
-	SubNames   []string        `bson:"sub_names" json:"sub_names"`
-	Builder    string          `bson:"builder" json:"builder"`
-	Start      time.Time       `bson:"start,omitempty" json:"start,omitempty"`
-	Stop       time.Time       `bson:"stop,omitempty" json:"stop,omitempty"`
-	State      string          `bson:"state" json:"state"`
-	StateRank  int             `bson:"state_rank" json:"state_rank"`
-	Version    string          `bson:"version" json:"version"`
-	Release    string          `bson:"release" json:"release"`
-	Repo       string          `bson:"repo" json:"repo"`
-	RepoState  string          `bson:"repo_state" json:"repo_state"`
-	Uploaded   bool            `bson:"uploaded" json:"uploaded"`
-	Arch       string          `bson:"arch" json:"arch"`
-	Log        []string        `bson:"log" json:"log"`
-	PkgIds     []bson.ObjectId `bson:"-" json:"-"`
-	PkgBuildId bson.ObjectId   `bson:"-" json:"-"`
-}
-
-type EventData struct {
-	Build *EventBuild `bson:"build" json:"build"`
-}
-
 type Event struct {
-	Type string     `bson:"type" json:"type"`
-	Data *EventData `bson:"data" json:"data"`
+	Type string `bson:"type" json:"type"`
 }
 
 func (b *Build) tmpPath() string {
