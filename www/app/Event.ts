@@ -3,7 +3,7 @@ import Dispatcher from './dispatcher/Dispatcher';
 
 let connected = false;
 
-function _connect(): void {
+function connect(): void {
 	let url = '';
 	let location = window.location;
 
@@ -19,20 +19,21 @@ function _connect(): void {
 
 	socket.addEventListener('close', () => {
 		setTimeout(() => {
-			_connect();
+			connect();
 		}, 500);
 	});
 
 	socket.addEventListener('message', (evt) => {
+		console.log(JSON.parse(evt.data).data);
 		Dispatcher.dispatch(JSON.parse(evt.data).data);
 	})
 }
 
-export function connect() {
+export function init() {
 	if (connected) {
 		return;
 	}
 	connected = true;
 
-	_connect();
+	connect();
 }

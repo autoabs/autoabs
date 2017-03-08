@@ -6,7 +6,7 @@ import Main from './components/Main';
 import * as Event from './Event';
 
 Blueprint.FocusStyleManager.onlyShowFocusOnTabs();
-Event.connect();
+Event.init();
 
 ReactDOM.render(
 	<Main/>,
