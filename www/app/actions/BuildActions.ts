@@ -74,7 +74,7 @@ export function archive(id: string): Promise<void> {
 					return;
 				}
 
-				sync().then(resolve, resolve);
+				resolve();
 			});
 	});
 }
@@ -95,7 +95,7 @@ export function rebuild(id: string): Promise<void> {
 					return;
 				}
 
-				sync().then(resolve, resolve);
+				resolve();
 			});
 	});
 }
