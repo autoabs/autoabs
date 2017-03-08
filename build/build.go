@@ -657,10 +657,7 @@ func (b *Build) Upload(db *database.Database, force bool) (err error) {
 
 func (b *Build) PublishUpdate(db *database.Database) (err error) {
 	evt := &Event{
-		Type: "build.update",
-		Data: &EventData{
-			Build: (*EventBuild)(b),
-		},
+		Type: "build.change",
 	}
 
 	err = event.Publish(db, "dispatch", evt)
