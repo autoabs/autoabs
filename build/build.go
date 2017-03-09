@@ -550,6 +550,8 @@ func (b *Build) Remove(db *database.Database) (err error) {
 		return
 	}
 
+	PublishChange(db)
+
 	return
 }
 
