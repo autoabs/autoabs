@@ -97,6 +97,12 @@ func (q *Queue) Sync() (err error) {
 		}
 	}
 
+	if q.remove.Len() != 0 || len(q.oldPackages) != 0 ||
+		q.add.Len() != 0 || q.update.Len() != 0 {
+
+		build.PublishChange(db)
+	}
+
 	return
 }
 
