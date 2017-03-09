@@ -23,6 +23,10 @@ type Event struct {
 	Data      interface{}   `bson:"data" json:"data"`
 }
 
+type Dispatch struct {
+	Type string `bson:"type" json:"type"`
+}
+
 func getCursorId(coll *database.Collection, channels []string) (
 	id bson.ObjectId, err error) {
 

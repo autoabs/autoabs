@@ -44,10 +44,6 @@ type Build struct {
 	PkgBuildId bson.ObjectId   `bson:"pkg_build_id" json:"-"`
 }
 
-type Event struct {
-	Type string `bson:"type" json:"type"`
-}
-
 func (b *Build) tmpPath() string {
 	return path.Join(config.Config.RootPath, "tmp",
 		b.Name+"-"+b.Repo+"-"+b.Arch+"-"+b.Version+"-"+b.Release)

@@ -8,7 +8,7 @@ import (
 )
 
 func PublishChange(db *database.Database) (err error) {
-	evt := &Event{
+	evt := &event.Dispatch{
 		Type: "build.change",
 	}
 
