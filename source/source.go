@@ -32,7 +32,9 @@ func (s *Source) Keys() []string {
 	return keys
 }
 
-func (s *Source) Queue(db *database.Database, force bool) (err error) {
+func (s *Source) Queue(db *database.Database, force bool) (
+	queued bool, err error) {
+
 	coll := db.Builds()
 	gfs := db.PkgBuildGrid()
 
@@ -97,6 +99,8 @@ func (s *Source) Queue(db *database.Database, force bool) (err error) {
 
 		return
 	}
+
+	queued = true
 
 	arc := tar.NewWriter(gf)
 

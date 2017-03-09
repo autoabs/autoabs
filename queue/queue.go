@@ -79,26 +79,37 @@ func (q *Queue) Sync() (err error) {
 		pk.Remove()
 	}
 
+	changed := false
+
 	for srcInf := range q.add.Iter() {
 		src := srcInf.(*source.Source)
 
-		err = src.Queue(db, true)
-		if err != nil {
+		queued, e := src.Queue(db, true)
+		if e != nil {
+			err = e
 			return
+		}
+
+		if queued {
+			changed = true
 		}
 	}
 
 	for srcInf := range q.update.Iter() {
 		src := srcInf.(*source.Source)
 
-		err = src.Queue(db, false)
-		if err != nil {
+		queued, e := src.Queue(db, false)
+		if e != nil {
+			err = e
 			return
+		}
+
+		if queued {
+			changed = true
 		}
 	}
 
-	if q.remove.Len() != 0 || len(q.oldPackages) != 0 ||
-		q.add.Len() != 0 || q.update.Len() != 0 {
+	if q.remove.Len() != 0 || len(q.oldPackages) != 0 || changed {
 
 		build.PublishChange(db)
 	}
