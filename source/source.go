@@ -174,7 +174,5 @@ func (s *Source) Queue(db *database.Database, force bool) (err error) {
 		return
 	}
 
-	build.PublishChange(db)
-
 	return
 }
