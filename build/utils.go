@@ -152,6 +152,12 @@ func RetryFailed() (err error) {
 		}
 	}
 
+	err = cursor.Close()
+	if err != nil {
+		err = database.ParseError(err)
+		return
+	}
+
 	return
 }
 
@@ -168,6 +174,12 @@ func ClearAll() (err error) {
 		if err != nil {
 			return
 		}
+	}
+
+	err = cursor.Close()
+	if err != nil {
+		err = database.ParseError(err)
+		return
 	}
 
 	return
@@ -190,6 +202,12 @@ func ClearPending() (err error) {
 		}
 	}
 
+	err = cursor.Close()
+	if err != nil {
+		err = database.ParseError(err)
+		return
+	}
+
 	return
 }
 
@@ -208,6 +226,12 @@ func ClearFailed() (err error) {
 		if err != nil {
 			return
 		}
+	}
+
+	err = cursor.Close()
+	if err != nil {
+		err = database.ParseError(err)
+		return
 	}
 
 	return
