@@ -51,6 +51,11 @@ func (d *Database) Builds() (coll *Collection) {
 	return
 }
 
+func (d *Database) BuildsLog() (coll *Collection) {
+	coll = d.getCollection("builds_log")
+	return
+}
+
 func (d *Database) PkgGrid() *mgo.GridFS {
 	return d.database.GridFS("pkg")
 }
@@ -159,6 +164,21 @@ func addIndexes() (err error) {
 			"release",
 			"repo",
 			"arch",
+		},
+		Background: true,
+	})
+	if err != nil {
+		err = &IndexError{
+			errors.Wrap(err, "database: Index error"),
+		}
+		return
+	}
+
+	coll = db.BuildsLog()
+	err = coll.EnsureIndex(mgo.Index{
+		Key: []string{
+			"b",
+			"t",
 		},
 		Background: true,
 	})
