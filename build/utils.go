@@ -242,10 +242,11 @@ func GetLog(db *database.Database, buildId bson.ObjectId) (
 
 	coll := db.BuildsLog()
 	log = []string{}
+	reversed := []string{}
 
 	cursor := coll.Find(&bson.M{
 		"b": buildId,
-	}).Sort("t").Iter()
+	}).Sort("-t").Limit(1000).Iter()
 	if err != nil {
 		err = database.ParseError(err)
 		return
@@ -253,7 +254,11 @@ func GetLog(db *database.Database, buildId bson.ObjectId) (
 
 	entry := &BuildLog{}
 	for cursor.Next(entry) {
-		log = append(log, entry.Log)
+		reversed = append(reversed, entry.Log)
+	}
+
+	for i := len(reversed) - 1; i >= 0; i-- {
+		log = append(log, reversed[i])
 	}
 
 	err = cursor.Err()
