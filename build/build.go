@@ -44,6 +44,12 @@ type Build struct {
 	PkgBuildId bson.ObjectId   `bson:"pkg_build_id" json:"-"`
 }
 
+type BuildLog struct {
+	Build     bson.ObjectId `bson:"b"`
+	Timestamp time.Time     `bson:"t"`
+	Log       string        `bson:"l"`
+}
+
 func (b *Build) tmpPath() string {
 	return path.Join(config.Config.RootPath, "tmp",
 		b.Name+"-"+b.Repo+"-"+b.Arch+"-"+b.Version+"-"+b.Release)
@@ -175,7 +181,7 @@ func (b *Build) addFile(db *database.Database, pkgPath string) (err error) {
 }
 
 func (b *Build) build(db *database.Database) (err error) {
-	coll := db.Builds()
+	coll := db.BuildsLog()
 	tmpPath := b.tmpPath()
 
 	err = utils.ExistsRemove(tmpPath)
@@ -242,11 +248,13 @@ func (b *Build) build(db *database.Database) (err error) {
 
 			fmt.Println(string(line))
 
-			err = coll.UpdateId(b.Id, &bson.M{
-				"$push": &bson.M{
-					"log": string(line),
-				},
-			})
+			log := &BuildLog{
+				Build:     b.Id,
+				Timestamp: time.Now(),
+				Log:       string(line),
+			}
+
+			err = coll.Insert(log)
 			if err != nil {
 				err = database.ParseError(err)
 				logrus.WithFields(logrus.Fields{
@@ -279,13 +287,13 @@ func (b *Build) build(db *database.Database) (err error) {
 				return
 			}
 
-			fmt.Println(string(line))
+			log := &BuildLog{
+				Build:     b.Id,
+				Timestamp: time.Now(),
+				Log:       string(line),
+			}
 
-			err = coll.UpdateId(b.Id, &bson.M{
-				"$push": &bson.M{
-					"log": string(line),
-				},
-			})
+			err = coll.Insert(log)
 			if err != nil {
 				err = database.ParseError(err)
 				logrus.WithFields(logrus.Fields{
