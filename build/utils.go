@@ -268,3 +268,17 @@ func GetLog(db *database.Database, buildId bson.ObjectId) (
 
 	return
 }
+
+func ClearLog(db *database.Database, buildId bson.ObjectId) (err error) {
+	coll := db.BuildsLog()
+
+	err = coll.Remove(&bson.M{
+		"b": buildId,
+	})
+	if err != nil {
+		err = database.ParseError(err)
+		return
+	}
+
+	return
+}
