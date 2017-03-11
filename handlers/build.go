@@ -44,13 +44,13 @@ func buildLogGet(c *gin.Context) {
 		return
 	}
 
-	bild, err := build.Get(db, buildId)
+	log, err := build.GetLog(db, buildId)
 	if err != nil {
 		c.AbortWithError(500, err)
 		return
 	}
 
-	c.JSON(200, bild.Log)
+	c.JSON(200, log)
 }
 
 func buildArchivePut(c *gin.Context) {
