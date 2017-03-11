@@ -50,6 +50,8 @@ const css = {
 };
 
 export default class Build extends React.Component<void, State> {
+	syncInterval: NodeJS.Timer;
+
 	constructor(props: void, context: any) {
 		super(props, context);
 		this.state = getState();
@@ -58,11 +60,17 @@ export default class Build extends React.Component<void, State> {
 	componentDidMount(): void {
 		BuildStore.addChangeListener(this.onChange);
 		BuildInfoStore.addChangeListener(this.onChange);
+		this.syncInterval = setInterval(() => {
+			if (this.state.id) {
+				BuildInfoActions.sync();
+			}
+		}, 1000)
 	}
 
 	componentWillUnmount(): void {
 		BuildStore.removeChangeListener(this.onChange);
 		BuildInfoStore.removeChangeListener(this.onChange);
+		clearInterval(this.syncInterval);
 	}
 
 	onChange = (): void => {
