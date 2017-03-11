@@ -236,3 +236,30 @@ func ClearFailed() (err error) {
 
 	return
 }
+
+func GetLog(db *database.Database, buildId bson.ObjectId) (
+	log []string, err error) {
+
+	coll := db.BuildsLog()
+	log = []string{}
+
+	cursor := coll.Find(&bson.M{
+		"b": buildId,
+	}).Sort("t").Iter()
+	if err != nil {
+		err = database.ParseError(err)
+		return
+	}
+
+	entry := &BuildLog{}
+	for cursor.Next(entry) {
+		log = append(log, entry.Log)
+	}
+
+	err = cursor.Err()
+	if err != nil {
+		return
+	}
+
+	return
+}
