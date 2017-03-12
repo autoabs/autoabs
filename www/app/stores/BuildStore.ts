@@ -52,6 +52,10 @@ class BuildStore extends Events.EventEmitter {
 		this.emitChange();
 	}
 
+	_traverse(index: number): void {
+		this._index = index;
+	}
+
 	_sync(builds: BuildTypes.Builds, index: number, count: number): void {
 		this._index = index;
 		this._count = count;
@@ -85,6 +89,10 @@ class BuildStore extends Events.EventEmitter {
 		switch (action.type) {
 			case BuildTypes.UPDATE:
 				this._update(action.data.build);
+				break;
+
+			case BuildTypes.TRAVERSE:
+				this._traverse(action.data.index);
 				break;
 
 			case BuildTypes.SYNC:

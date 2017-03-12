@@ -1,6 +1,7 @@
 /// <reference path="../References.d.ts"/>
 export const SYNC = 'build.sync';
 export const UPDATE = 'build.update';
+export const TRAVERSE = 'build.traverse';
 export const REMOVE = 'build.remove';
 export const CHANGE = 'build.change';
 
