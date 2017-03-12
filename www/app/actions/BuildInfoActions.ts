@@ -5,19 +5,18 @@ import * as Alert from '../Alert';
 import Loader from '../Loader';
 import * as BuildInfoTypes from '../types/BuildInfoTypes';
 
-export function open(id: string): Promise<void> {
-	let loader = new Loader().loading();
+let curId: string;
 
-	Dispatcher.dispatch({
-		type: BuildInfoTypes.OPEN,
-		data: {
-			id: id,
-		},
-	});
+export function sync(): Promise<void> {
+	if (!curId) {
+		return Promise.resolve();
+	}
+
+	let loader = new Loader().loading();
 
 	return new Promise<void>((resolve, reject): void => {
 		SuperAgent
-			.get('/build/' + id + '/log')
+			.get('/build/' + curId + '/log')
 			.set('Accept', 'application/json')
 			.end((err: any, res: SuperAgent.Response): void => {
 				loader.done();
@@ -38,6 +37,19 @@ export function open(id: string): Promise<void> {
 				resolve();
 			});
 	});
+}
+
+export function open(id: string): Promise<void> {
+	curId = id;
+
+	Dispatcher.dispatch({
+		type: BuildInfoTypes.OPEN,
+		data: {
+			id: id,
+		},
+	});
+
+	return sync();
 }
 
 export function close(): void {
