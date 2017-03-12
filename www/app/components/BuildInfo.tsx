@@ -9,23 +9,27 @@ import BuildInfoStore from '../stores/BuildInfoStore';
 interface State {
 	id: string;
 	name: string;
+	state: string;
 	output: string;
 }
 
 function getState(): State {
 	let id = BuildInfoStore.id;
-	let name = '';
+	let name = null;
+	let state = null;
 
 	if (id) {
 		let build = BuildStore.build(id);
 		if (build) {
 			name = build.name;
+			state = build.state;
 		}
 	}
 
 	return {
 		id: id,
 		name: name,
+		state: state,
 		output: BuildInfoStore.output,
 	};
 }
@@ -61,7 +65,7 @@ export default class Build extends React.Component<void, State> {
 		BuildStore.addChangeListener(this.onChange);
 		BuildInfoStore.addChangeListener(this.onChange);
 		this.syncInterval = setInterval(() => {
-			if (this.state.id) {
+			if (this.state.id && this.state.state === 'building') {
 				BuildInfoActions.sync();
 			}
 		}, 1000)
