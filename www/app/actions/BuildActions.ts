@@ -10,7 +10,7 @@ import * as MiscUtils from '../utils/MiscUtils';
 
 let syncId: string;
 
-function _sync(index: number): Promise<void> {
+function _sync(): Promise<void> {
 	let curSyncId = MiscUtils.uuid();
 	syncId = curSyncId;
 
@@ -19,7 +19,7 @@ function _sync(index: number): Promise<void> {
 	return new Promise<void>((resolve, reject): void => {
 		SuperAgent
 			.get('/build')
-			.query({'index': index})
+			.query({'index': BuildStore.index})
 			.set('Accept', 'application/json')
 			.end((err: any, res: SuperAgent.Response): void => {
 				loader.done();
@@ -50,12 +50,18 @@ function _sync(index: number): Promise<void> {
 }
 
 export function traverse(index: number): Promise<void> {
-	BuildStore._index = index;
-	return _sync(index);
+	Dispatcher.dispatch({
+		type: BuildTypes.TRAVERSE,
+		data: {
+			index: index,
+		},
+	});
+
+	return _sync();
 }
 
 export function sync(): Promise<void> {
-	return _sync(BuildStore.index);
+	return _sync();
 }
 
 export function archive(id: string): Promise<void> {
