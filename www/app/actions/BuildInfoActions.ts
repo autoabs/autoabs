@@ -4,11 +4,10 @@ import Dispatcher from '../dispatcher/Dispatcher';
 import * as Alert from '../Alert';
 import Loader from '../Loader';
 import * as BuildInfoTypes from '../types/BuildInfoTypes';
-
-let curId: string;
+import BuildInfoStore from '../stores/BuildInfoStore';
 
 export function sync(): Promise<void> {
-	if (!curId) {
+	if (!BuildInfoStore.id) {
 		return Promise.resolve();
 	}
 
@@ -16,7 +15,7 @@ export function sync(): Promise<void> {
 
 	return new Promise<void>((resolve, reject): void => {
 		SuperAgent
-			.get('/build/' + curId + '/log')
+			.get('/build/' + BuildInfoStore.id + '/log')
 			.set('Accept', 'application/json')
 			.end((err: any, res: SuperAgent.Response): void => {
 				loader.done();
@@ -40,8 +39,6 @@ export function sync(): Promise<void> {
 }
 
 export function open(id: string): Promise<void> {
-	curId = id;
-
 	Dispatcher.dispatch({
 		type: BuildInfoTypes.OPEN,
 		data: {
