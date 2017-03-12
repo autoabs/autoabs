@@ -50,7 +50,7 @@ class BuildInfoStore extends Events.EventEmitter {
 		switch (action.type) {
 			case BuildInfoTypes.OPEN:
 				this._open(action.data.id);
-				break
+				break;
 
 			case BuildInfoTypes.CLOSE:
 				this._close();
