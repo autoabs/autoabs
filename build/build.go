@@ -220,11 +220,11 @@ func (b *Build) build(db *database.Database) (err error) {
 		return
 	}
 
+	output := make(chan *BuildLog, 100)
 	outputWait := sync.WaitGroup{}
-	outputWait.Add(2)
+	outputWait.Add(1)
 
 	go func() {
-		defer outputWait.Done()
 		defer stdout.Close()
 
 		out := bufio.NewReader(stdout)
@@ -254,18 +254,13 @@ func (b *Build) build(db *database.Database) (err error) {
 				Log:       string(line),
 			}
 
-			err = coll.Insert(log)
-			if err != nil {
-				err = database.ParseError(err)
-				logrus.WithFields(logrus.Fields{
-					"error": err,
-				}).Error("build: Stdout push error")
-			}
+			output <- log
 		}
+
+		output <- nil
 	}()
 
 	go func() {
-		defer outputWait.Done()
 		defer stderr.Close()
 
 		out := bufio.NewReader(stderr)
@@ -293,12 +288,26 @@ func (b *Build) build(db *database.Database) (err error) {
 				Log:       string(line),
 			}
 
+			output <- log
+		}
+	}()
+
+	go func() {
+		defer outputWait.Done()
+
+		for {
+			log := <-output
+
+			if log == nil {
+				return
+			}
+
 			err = coll.Insert(log)
 			if err != nil {
 				err = database.ParseError(err)
 				logrus.WithFields(logrus.Fields{
 					"error": err,
-				}).Error("build: Stderr push error")
+				}).Error("build: Output push error")
 			}
 		}
 	}()
