@@ -298,7 +298,6 @@ func (b *Build) build(db *database.Database) (err error) {
 
 		for {
 			log := <-output
-
 			if log == nil {
 				return
 			}
