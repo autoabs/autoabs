@@ -87,7 +87,7 @@ export default class Build extends React.Component<void, State> {
 
 	render(): JSX.Element {
 		return <Blueprint.Dialog
-			title={`Builds Info - ${this.state.name}`}
+			title={`Build Info - ${this.state.name}`}
 			style={css.buildInfo}
 			isOpen={!!this.state.id}
 			onClose={this.closeDialog}
