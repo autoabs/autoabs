@@ -226,6 +226,9 @@ func (b *Build) build(db *database.Database) (err error) {
 
 	go func() {
 		defer stdout.Close()
+		defer func() {
+			output <- nil
+		}()
 
 		out := bufio.NewReader(stdout)
 		for {
@@ -256,8 +259,6 @@ func (b *Build) build(db *database.Database) (err error) {
 
 			output <- log
 		}
-
-		output <- nil
 	}()
 
 	go func() {
