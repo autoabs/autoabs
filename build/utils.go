@@ -272,7 +272,7 @@ func GetLog(db *database.Database, buildId bson.ObjectId) (
 func ClearLog(db *database.Database, buildId bson.ObjectId) (err error) {
 	coll := db.BuildsLog()
 
-	err = coll.Remove(&bson.M{
+	_, err = coll.RemoveAll(&bson.M{
 		"b": buildId,
 	})
 	if err != nil {
