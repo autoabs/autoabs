@@ -225,6 +225,14 @@ func (b *Build) build(db *database.Database) (err error) {
 		return
 	}
 
+	err = cmd.Start()
+	if err != nil {
+		err = &errortypes.ExecError{
+			errors.Wrap(err, "build: Failed to build"),
+		}
+		return
+	}
+
 	output := make(chan *BuildLog, 100)
 	outputWait := sync.WaitGroup{}
 	outputWait.Add(1)
@@ -318,14 +326,6 @@ func (b *Build) build(db *database.Database) (err error) {
 	}()
 
 	defer outputWait.Wait()
-
-	err = cmd.Start()
-	if err != nil {
-		err = &errortypes.ExecError{
-			errors.Wrap(err, "build: Failed to build"),
-		}
-		return
-	}
 
 	err = cmd.Wait()
 	if err != nil {
