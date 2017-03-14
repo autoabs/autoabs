@@ -262,8 +262,6 @@ func (b *Build) build(db *database.Database) (err error) {
 				return
 			}
 
-			fmt.Println(string(line))
-
 			log := &BuildLog{
 				Build:     b.Id,
 				Timestamp: time.Now(),
