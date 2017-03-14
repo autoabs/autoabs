@@ -184,6 +184,11 @@ func (b *Build) build(db *database.Database) (err error) {
 	coll := db.BuildsLog()
 	tmpPath := b.tmpPath()
 
+	err = ClearLog(db, b.Id)
+	if err != nil {
+		return
+	}
+
 	err = utils.ExistsRemove(tmpPath)
 	if err != nil {
 		return
@@ -540,6 +545,11 @@ func (b *Build) removePkgBuild(db *database.Database) (err error) {
 
 func (b *Build) Remove(db *database.Database) (err error) {
 	coll := db.Builds()
+
+	err = ClearLog(db, b.Id)
+	if err != nil {
+		return
+	}
 
 	err = b.removePkg(db)
 	if err != nil {
