@@ -23,6 +23,13 @@ const css = {
 		margin: '5px',
 		padding: '0',
 	} as React.CSSProperties,
+	topBar: {
+		height: '3px',
+		width: '100%',
+		backgroundColor: '#DB3737',
+		borderTopLeftRadius: '3px',
+		borderTopRightRadius: '3px',
+	} as React.CSSProperties,
 	launch: {
 		margin: '10px 10px 0 0',
 	} as React.CSSProperties,
@@ -179,6 +186,7 @@ export default class Build extends React.Component<Props, State> {
 		}
 
 		return <div className="pt-card" style={css.card}>
+			<div style={css.topBar}/>
 			<div className="layout horizontal">
 				<div style={css.content} className="card-content flex">
 					<div className="layout vertical">
