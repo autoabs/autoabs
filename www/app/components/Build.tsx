@@ -26,7 +26,6 @@ const css = {
 	topBar: {
 		height: '3px',
 		width: '100%',
-		backgroundColor: '#DB3737',
 		borderTopLeftRadius: '3px',
 		borderTopRightRadius: '3px',
 	} as React.CSSProperties,
