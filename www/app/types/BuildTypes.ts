@@ -16,6 +16,8 @@ export interface Build {
 	release?: string;
 	repo?: string;
 	arch?: string;
+	pkg_ids?: string[];
+	pkg_build_id?: string;
 }
 
 export type Builds = Build[];
