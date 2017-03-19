@@ -110,7 +110,6 @@ func (q *Queue) Sync() (err error) {
 	}
 
 	if q.remove.Len() != 0 || len(q.oldPackages) != 0 || changed {
-
 		build.PublishChange(db)
 	}
 
