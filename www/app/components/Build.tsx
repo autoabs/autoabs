@@ -25,7 +25,7 @@ const css = {
 		padding: '0',
 	} as React.CSSProperties,
 	topBar: {
-		height: '3px',
+		height: '2px',
 		width: '100%',
 		borderTopLeftRadius: '3px',
 		borderTopRightRadius: '3px',
