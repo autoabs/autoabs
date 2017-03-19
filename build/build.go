@@ -126,6 +126,37 @@ func (b *Build) extract(db *database.Database) (err error) {
 	return
 }
 
+func (b *Build) extractTest(db *database.Database) (err error) {
+	tmpPath := b.tmpPath()
+
+	err = utils.ExistsMkdir(tmpPath, 0700)
+	if err != nil {
+		return
+	}
+
+	pkgNames := []string{}
+	pkgPackages := []string{}
+
+	for _, name := range b.SubNames {
+		pkgNames = append(pkgNames, fmt.Sprintf("'%s'", name))
+		pkgPackages = append(pkgPackages,
+			fmt.Sprintf(testPkgBuildPackage, name, name))
+	}
+
+	pkgNamesStr := strings.Join(pkgNames, " ")
+	pkgPackagesStr := strings.Join(pkgPackages, "\n")
+
+	data := fmt.Sprintf(testPkgBuild, pkgNamesStr, b.Version,
+		b.Release, b.Arch, pkgPackagesStr)
+
+	err = ioutil.WriteFile(path.Join(tmpPath, "PKGBUILD"), []byte(data), 0644)
+	if err != nil {
+		return
+	}
+
+	return
+}
+
 func (b *Build) addFile(db *database.Database, pkgPath string) (err error) {
 	gfs := db.PkgGrid()
 	coll := db.Builds()
