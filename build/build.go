@@ -503,6 +503,7 @@ func (b *Build) Rebuild(db *database.Database) (err error) {
 			"state":      "pending",
 			"state_rank": PendingRank,
 			"builder":    "",
+			"uploaded":   false,
 			"log":        []string{},
 			"start":      start,
 			"pkg_ids":    []bson.ObjectId{},
