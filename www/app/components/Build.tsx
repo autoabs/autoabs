@@ -5,6 +5,7 @@ import * as BuildActions from '../actions/BuildActions';
 import * as BuildInfoActions from '../actions/BuildInfoActions';
 import * as BuildTypes from '../types/BuildTypes';
 import * as MiscUtils from '../utils/MiscUtils';
+import Styles from '../Styles';
 
 interface Props {
 	build: BuildTypes.Build;
@@ -101,6 +102,9 @@ export default class Build extends React.Component<Props, State> {
 
 	render(): JSX.Element {
 		let build = this.props.build;
+		let barStyle = {
+			...css.topBar,
+		} as React.CSSProperties;
 
 		let start = '-';
 		if (build.start !== '0001-01-01T00:00:00Z') {
@@ -115,6 +119,7 @@ export default class Build extends React.Component<Props, State> {
 
 		switch (build.state) {
 			case 'building':
+				barStyle.backgroundColor = Styles.colors.violet4;
 				actions = [
 					<ConfirmButton key="rebuild" label="Rebuild"
 						style={css.action}
@@ -131,6 +136,7 @@ export default class Build extends React.Component<Props, State> {
 				];
 				break;
 			case 'pending':
+				barStyle.backgroundColor = Styles.colors.blue4;
 				actions = [
 					<ConfirmButton key="archive" label="Archive"
 						style={css.action}
@@ -141,6 +147,7 @@ export default class Build extends React.Component<Props, State> {
 				];
 				break;
 			case 'failed':
+				barStyle.backgroundColor = Styles.colors.red4;
 				actions = [
 					<ConfirmButton key="rebuild" label="Rebuild"
 						style={css.action}
@@ -157,6 +164,7 @@ export default class Build extends React.Component<Props, State> {
 				];
 				break;
 			case 'completed':
+				barStyle.backgroundColor = Styles.colors.green4;
 				actions = [
 					<ConfirmButton key="rebuild" label="Rebuild"
 						style={css.action}
@@ -173,6 +181,7 @@ export default class Build extends React.Component<Props, State> {
 				];
 				break;
 			case 'archived':
+				barStyle.backgroundColor = Styles.colors.gray4;
 				actions = [
 					<ConfirmButton key="rebuild" label="Rebuild"
 						style={css.action}
@@ -185,7 +194,7 @@ export default class Build extends React.Component<Props, State> {
 		}
 
 		return <div className="pt-card" style={css.card}>
-			<div style={css.topBar}/>
+			<div style={barStyle}/>
 			<div className="layout horizontal">
 				<div style={css.content} className="card-content flex">
 					<div className="layout vertical">
