@@ -40,8 +40,8 @@ type Build struct {
 	Uploaded   bool            `bson:"uploaded" json:"uploaded"`
 	Arch       string          `bson:"arch" json:"arch"`
 	Log        []string        `bson:"log,omitempty" json:"log"`
-	PkgIds     []bson.ObjectId `bson:"pkg_ids" json:"-"`
-	PkgBuildId bson.ObjectId   `bson:"pkg_build_id" json:"-"`
+	PkgIds     []bson.ObjectId `bson:"pkg_ids" json:"pkg_ids"`
+	PkgBuildId bson.ObjectId   `bson:"pkg_build_id" json:"pkg_build_id"`
 }
 
 type BuildLog struct {
