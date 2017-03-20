@@ -174,6 +174,20 @@ func addIndexes() (err error) {
 		return
 	}
 
+	err = coll.EnsureIndex(mgo.Index{
+		Key: []string{
+			"state_rank",
+			"name",
+		},
+		Background: true,
+	})
+	if err != nil {
+		err = &IndexError{
+			errors.Wrap(err, "database: Index error"),
+		}
+		return
+	}
+
 	coll = db.BuildsLog()
 	err = coll.EnsureIndex(mgo.Index{
 		Key: []string{
