@@ -18,7 +18,7 @@ interface State {
 const css = {
 	card: {
 		flex: '1 0 auto',
-		minWidth: '250px',
+		minWidth: '270px',
 		maxWidth: '600px',
 		height: '113px',
 		margin: '5px',
