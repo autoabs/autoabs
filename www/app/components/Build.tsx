@@ -34,18 +34,18 @@ const css = {
 		margin: '10px 10px 0 0',
 	} as React.CSSProperties,
 	content: {
-		padding: '10px 0 10px 10px',
+		padding: '10px 0 0 10px',
 	} as React.CSSProperties,
 	name: {
-		fontSize: '20px',
+		fontSize: '14px',
 	} as React.CSSProperties,
 	version: {
-		fontSize: '14px',
-		margin: '5px 0 0 7px',
+		fontSize: '12px',
+		marginTop: '5px',
 	} as React.CSSProperties,
 	repo: {
 		fontSize: '12px',
-		marginTop: '7px',
+		marginTop: '5px',
 	} as React.CSSProperties,
 	actions: {
 		display: 'flex',
@@ -198,11 +198,9 @@ export default class Build extends React.Component<Props, State> {
 			<div className="layout horizontal">
 				<div style={css.content} className="card-content flex">
 					<div className="layout vertical">
-						<div className="layout horizontal">
-							<div style={css.name}>{build.name}</div>
-							<div className="pt-text-muted" style={css.version}>
-								{build.version}-{build.release} ({build.state})
-							</div>
+						<div style={css.name}>{build.name}</div>
+						<div className="pt-text-muted" style={css.version}>
+							{build.version}-{build.release} ({build.state})
 						</div>
 						<div className="pt-text-muted" style={css.repo}>
 							{build.repo} - {build.arch}
