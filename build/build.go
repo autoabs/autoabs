@@ -227,9 +227,16 @@ func (b *Build) build(db *database.Database) (err error) {
 
 	defer utils.ExistsRemove(tmpPath)
 
-	err = b.extract(db)
-	if err != nil {
-		return
+	if constants.BuildTest {
+		err = b.extractTest(db)
+		if err != nil {
+			return
+		}
+	} else {
+		err = b.extract(db)
+		if err != nil {
+			return
+		}
 	}
 
 	cmd := exec.Command(
