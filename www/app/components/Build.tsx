@@ -200,10 +200,10 @@ export default class Build extends React.Component<Props, State> {
 					<div className="layout vertical">
 						<div style={css.name}>{build.name}</div>
 						<div className="pt-text-muted" style={css.version}>
-							{build.version}-{build.release} ({build.state})
+							{build.version}-{build.release}
 						</div>
 						<div className="pt-text-muted" style={css.repo}>
-							{build.repo} - {build.arch}
+							{build.repo} - {build.arch} - {build.state}
 						</div>
 					</div>
 				</div>
