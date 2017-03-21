@@ -6,7 +6,7 @@ import (
 
 const (
 	Production        = false
-	BuildTest         = true
+	BuildTest         = false
 	StaticRoot        = "www/dist"
 	StaticTestingRoot = "www"
 	StaticCache       = false
