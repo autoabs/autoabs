@@ -44,7 +44,7 @@ func (s *scanner) Stop() {
 		return
 	}
 
-	utils.Exec("",
+	utils.ExecOutput("",
 		"docker",
 		"rm",
 		"-f",
