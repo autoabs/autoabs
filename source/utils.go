@@ -152,38 +152,76 @@ func (s *scanner) scanRepos(db *database.Database,
 	return
 }
 
-func (s *scanner) scanSource(pth string) (err error) {
-	targets, err := ioutil.ReadDir(pth)
+func (s *scanner) scanSource(db *database.Database, pth string) (err error) {
+	curCommit, err := getCommit(db, pth)
 	if err != nil {
-		err = &errortypes.ReadError{
-			errors.Wrapf(err, "source: Failed to read dir %s", pth),
-		}
 		return
 	}
 
-	for _, entry := range targets {
-		if !entry.IsDir() {
-			continue
-		}
+	newCommit, err := utils.GitCommit(pth)
+	if err != nil {
+		return
+	}
 
-		name := entry.Name()
-
-		reposPath := path.Join(pth, name, "repos")
-
-		exists, e := utils.ExistsDir(reposPath)
+	if curCommit == "" {
+		targets, e := ioutil.ReadDir(pth)
 		if e != nil {
-			err = e
+			err = &errortypes.ReadError{
+				errors.Wrapf(e, "source: Failed to read dir %s", pth),
+			}
 			return
 		}
 
-		if !exists {
-			continue
-		}
+		for _, entry := range targets {
+			if !entry.IsDir() {
+				continue
+			}
 
-		err = s.scanRepos(name, reposPath)
-		if err != nil {
-			return
+			name := entry.Name()
+
+			reposPath := path.Join(pth, name, "repos")
+
+			exists, e := utils.ExistsDir(reposPath)
+			if e != nil {
+				err = e
+				return
+			}
+
+			if !exists {
+				continue
+			}
+
+			err = s.scanRepos(db, name, reposPath)
+			if err != nil {
+				return
+			}
 		}
+	} else {
+	}
+
+	err = setCommit(db, pth, newCommit)
+	if err != nil {
+		return
+	}
+
+	return
+}
+
+func (s *scanner) preload(db *database.Database) (err error) {
+	coll := db.Sources()
+
+	cursor := coll.Find(&bson.M{}).Iter()
+	if err != nil {
+		return
+	}
+
+	source := &Source{}
+	for cursor.Next(source) {
+		for _, key := range source.Keys() {
+			s.Sources[key] = source
+			s.Keys.Add(key)
+		}
+		source = &Source{}
 	}
 
 	return
@@ -191,6 +229,9 @@ func (s *scanner) scanSource(pth string) (err error) {
 
 func (s *scanner) Scan() (err error) {
 	pth := path.Join(config.Config.RootPath, "sources")
+
+	db := database.GetDatabase()
+	defer db.Close()
 
 	s.Sources = map[string]*Source{}
 	s.Keys = set.NewSet()
@@ -201,6 +242,11 @@ func (s *scanner) Scan() (err error) {
 	}
 
 	if !exists {
+		return
+	}
+
+	err = s.preload(db)
+	if err != nil {
 		return
 	}
 
@@ -219,7 +265,7 @@ func (s *scanner) Scan() (err error) {
 
 		sourcePath := path.Join(pth, entry.Name())
 
-		err = s.scanSource(sourcePath)
+		err = s.scanSource(db, sourcePath)
 		if err != nil {
 			return
 		}
