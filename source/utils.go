@@ -12,7 +12,9 @@ import (
 	"github.com/dropbox/godropbox/errors"
 	"gopkg.in/mgo.v2/bson"
 	"io/ioutil"
+	"os"
 	"path"
+	"path/filepath"
 	"strings"
 )
 
@@ -68,71 +70,56 @@ func (s *scanner) run(cmd string, arg ...string) (output string, err error) {
 	return
 }
 
-func (s *scanner) scanRepos(db *database.Database,
-	pkgName, pth string) (err error) {
+func (s *scanner) scanPkgbuild(db *database.Database, repo, pth string) (
+	err error) {
 
-	repos, err := ioutil.ReadDir(pth)
-	if err != nil {
-		err = &errortypes.ReadError{
-			errors.Wrapf(err, "source: Failed to read dir %s", pth),
+	pthSpl := strings.Split(pth, "/")
+
+	sourcePath, _ := filepath.Split(pth)
+	sourcePath = strings.TrimRight(sourcePath, "/")
+
+	if len(pthSpl) > 3 && pthSpl[len(pthSpl)-3] == "repos" {
+		split := strings.Split(pthSpl[len(pthSpl)-2], "-")
+		if len(split) == 2 {
+			repo = split[0]
+
+			if !settings.System.HasArch(split[1]) {
+				return
+			}
 		}
+	}
+
+	if !settings.System.HasRepo(repo) {
 		return
 	}
 
-	for _, entry := range repos {
-		if !entry.IsDir() {
+	output, e := s.run(
+		"/bin/bash",
+		"-c",
+		fmt.Sprintf(
+			`source "%s"; echo ${pkgname[*]}:${arch[*]}:$pkgver:$pkgrel`,
+			pth,
+		),
+	)
+	if e != nil {
+		err = e
+		return
+	}
+
+	pkgInfo := strings.Split(strings.TrimSpace(string(output)), ":")
+
+	subNames := strings.Split(pkgInfo[0], " ")
+
+	for _, arch := range strings.Split(pkgInfo[1], " ") {
+		if !settings.System.HasArch(arch) {
 			continue
 		}
-
-		name := entry.Name()
-
-		split := strings.Split(name, "-")
-		if len(split) != 2 {
-			continue
-		}
-
-		repo := split[0]
-		arch := split[1]
-
-		if !settings.System.HasRepo(repo) || !settings.System.HasArch(arch) {
-			continue
-		}
-
-		sourcePath := path.Join(pth, name)
-		pkgBuildPath := path.Join(sourcePath, "PKGBUILD")
-
-		exists, e := utils.ExistsFile(pkgBuildPath)
-		if e != nil {
-			err = e
-			return
-		}
-
-		if !exists {
-			continue
-		}
-
-		output, e := s.run(
-			"/bin/bash",
-			"-c",
-			fmt.Sprintf(
-				`source "%s"; echo ${pkgname[*]}:$pkgver:$pkgrel`,
-				pkgBuildPath,
-			),
-		)
-		if e != nil {
-			err = e
-			return
-		}
-
-		pkgInfo := strings.Split(strings.TrimSpace(string(output)), ":")
-
-		subNames := strings.Split(pkgInfo[0], " ")
 
 		source := &Source{
-			Name:     pkgName,
+			Name:     subNames[0],
 			SubNames: subNames,
-			Version:  pkgInfo[1],
-			Release:  pkgInfo[2],
+			Version:  pkgInfo[2],
+			Release:  pkgInfo[3],
 			Repo:     repo,
 			Arch:     arch,
 			Path:     sourcePath,
@@ -152,7 +139,9 @@ func (s *scanner) scanRepos(db *database.Database,
 	return
 }
 
-func (s *scanner) scanSource(db *database.Database, pth string) (err error) {
+func (s *scanner) scanSource(db *database.Database, repo, pth string) (
+	err error) {
+
 	curCommit, err := getCommit(db, pth)
 	if err != nil {
 		return
@@ -164,38 +153,33 @@ func (s *scanner) scanSource(db *database.Database, pth string) (err error) {
 	}
 
 	if curCommit == "" {
-		targets, e := ioutil.ReadDir(pth)
-		if e != nil {
-			err = &errortypes.ReadError{
-				errors.Wrapf(e, "source: Failed to read dir %s", pth),
-			}
-			return
-		}
+		err = filepath.Walk(pth, func(pth string,
+			info os.FileInfo, err error) (e error) {
 
-		for _, entry := range targets {
-			if !entry.IsDir() {
-				continue
-			}
-
-			name := entry.Name()
-
-			reposPath := path.Join(pth, name, "repos")
-
-			exists, e := utils.ExistsDir(reposPath)
-			if e != nil {
-				err = e
-				return
-			}
-
-			if !exists {
-				continue
-			}
-
-			err = s.scanRepos(db, name, reposPath)
 			if err != nil {
+				e = &errortypes.ReadError{
+					errors.Wrap(err,
+						"source: Failed to read source directory"),
+				}
 				return
 			}
-		}
+
+			if info.IsDir() {
+				return
+			}
+
+			if !strings.HasSuffix(pth, "PKGBUILD") ||
+				strings.HasSuffix(pth, "/trunk/PKGBUILD") {
+
+				return
+			}
+
+			fmt.Println(pth)
+
+			err = s.scanPkgbuild(db, repo, pth)
+
+			return
+		})
 	} else {
 	}
 
@@ -263,9 +247,11 @@ func (s *scanner) Scan() (err error) {
 			continue
 		}
 
-		sourcePath := path.Join(pth, entry.Name())
+		name := entry.Name()
 
-		err = s.scanSource(db, sourcePath)
+		sourcePath := path.Join(pth, name)
+
+		err = s.scanSource(db, name, sourcePath)
 		if err != nil {
 			return
 		}
