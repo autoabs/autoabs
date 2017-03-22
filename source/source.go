@@ -184,3 +184,19 @@ func (s *Source) Queue(db *database.Database, force bool) (
 
 	return
 }
+
+func (s *Source) Upsert(db *database.Database) (err error) {
+	coll := db.Sources()
+
+	_, err = coll.Upsert(&bson.M{
+		"name": s.Name,
+		"repo": s.Repo,
+		"arch": s.Arch,
+	}, s)
+	if err != nil {
+		err = database.ParseError(err)
+		return
+	}
+
+	return
+}
