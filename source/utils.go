@@ -178,7 +178,37 @@ func (s *scanner) scanSource(db *database.Database, repo, pth string) (
 
 			return
 		})
-	} else {
+	} else if curCommit != newCommit {
+		changed, e := utils.GitChanged(pth, curCommit, newCommit)
+		if e != nil {
+			err = e
+			return
+		}
+
+		for keyInf := range changed.Iter() {
+			pkgPth := filepath.Join(pth, keyInf.(string))
+
+			if !strings.HasSuffix(pkgPth, "PKGBUILD") ||
+				strings.HasSuffix(pkgPth, "/trunk/PKGBUILD") {
+
+				continue
+			}
+
+			exists, e := utils.ExistsFile(pkgPth)
+			if e != nil {
+				err = e
+				return
+			}
+
+			if !exists {
+				continue
+			}
+
+			err = s.scanPkgbuild(db, repo, pkgPth)
+			if err != nil {
+				return
+			}
+		}
 	}
 
 	err = setCommit(db, pth, newCommit)
