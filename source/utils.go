@@ -97,7 +97,8 @@ func (s *scanner) scanPkgbuild(db *database.Database, repo, pth string) (
 		"/bin/bash",
 		"-c",
 		fmt.Sprintf(
-			`source "%s"; echo ${pkgname[*]}:${arch[*]}:$pkgver:$pkgrel`,
+			`source "%s"; echo %%%%-AUTOABS-%%%%${pkgname[*]}:`+
+				`${arch[*]}:$pkgver:$pkgrel%%%%-AUTOABS-%%%%`,
 			pth,
 		),
 	)
@@ -106,7 +107,11 @@ func (s *scanner) scanPkgbuild(db *database.Database, repo, pth string) (
 		return
 	}
 
-	pkgInfo := strings.Split(strings.TrimSpace(string(output)), ":")
+	output = strings.TrimSpace(string(output))
+	outputSpl := strings.Split(output, "%%-AUTOABS-%%")
+	output = outputSpl[1]
+
+	pkgInfo := strings.Split(output, ":")
 
 	subNames := strings.Split(pkgInfo[0], " ")
 
