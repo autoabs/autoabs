@@ -175,6 +175,9 @@ func (s *scanner) scanSource(db *database.Database, repo, pth string) (
 			}
 
 			err = s.scanPkgbuild(db, repo, pth)
+			if err != nil {
+				return
+			}
 
 			return
 		})
