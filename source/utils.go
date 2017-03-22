@@ -3,20 +3,68 @@ package source
 import (
 	"fmt"
 	"github.com/autoabs/autoabs/config"
+	"github.com/autoabs/autoabs/constants"
+	"github.com/autoabs/autoabs/database"
 	"github.com/autoabs/autoabs/errortypes"
 	"github.com/autoabs/autoabs/settings"
 	"github.com/autoabs/autoabs/utils"
 	"github.com/dropbox/godropbox/container/set"
 	"github.com/dropbox/godropbox/errors"
 	"io/ioutil"
-	"os/exec"
 	"path"
 	"strings"
 )
 
 type scanner struct {
-	Sources map[string]*Source
-	Keys    set.Set
+	Sources   map[string]*Source
+	Keys      set.Set
+	Container string
+}
+
+func (s *scanner) Start() (err error) {
+	output, err := utils.ExecOutput("",
+		"docker",
+		"run",
+		"-it",
+		"-d",
+		"-v", fmt.Sprintf("%s:%s", config.Config.RootPath,
+			config.Config.RootPath),
+		constants.BuildImage,
+		"/bin/bash",
+	)
+
+	s.Container = strings.TrimSpace(output)
+
+	return
+}
+
+func (s *scanner) Stop() {
+	if s.Container == "" {
+		return
+	}
+
+	utils.Exec("",
+		"docker",
+		"rm",
+		"-f",
+		s.Container,
+	)
+}
+
+func (s *scanner) run(cmd string, arg ...string) (output string, err error) {
+	args := []string{
+		"exec",
+		s.Container,
+		cmd,
+	}
+	args = append(args, arg...)
+
+	output, err = utils.ExecOutput("",
+		"docker",
+		args...,
+	)
+
+	return
 }
 
 func (s *scanner) scanRepos(pkgName, pth string) (err error) {
@@ -60,7 +108,7 @@ func (s *scanner) scanRepos(pkgName, pth string) (err error) {
 			continue
 		}
 
-		cmd := exec.Command(
+		output, e := s.run(
 			"/bin/bash",
 			"-c",
 			fmt.Sprintf(
@@ -68,12 +116,8 @@ func (s *scanner) scanRepos(pkgName, pth string) (err error) {
 				pkgBuildPath,
 			),
 		)
-
-		output, e := cmd.Output()
 		if e != nil {
-			err = errortypes.ExecError{
-				errors.Wrapf(e, "source: Failed to get package version"),
-			}
+			err = e
 			return
 		}
 
