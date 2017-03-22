@@ -10,6 +10,7 @@ import (
 	"github.com/autoabs/autoabs/utils"
 	"github.com/dropbox/godropbox/container/set"
 	"github.com/dropbox/godropbox/errors"
+	"gopkg.in/mgo.v2/bson"
 	"io/ioutil"
 	"path"
 	"strings"
@@ -67,7 +68,9 @@ func (s *scanner) run(cmd string, arg ...string) (output string, err error) {
 	return
 }
 
-func (s *scanner) scanRepos(pkgName, pth string) (err error) {
+func (s *scanner) scanRepos(db *database.Database,
+	pkgName, pth string) (err error) {
+
 	repos, err := ioutil.ReadDir(pth)
 	if err != nil {
 		err = &errortypes.ReadError{
@@ -133,6 +136,11 @@ func (s *scanner) scanRepos(pkgName, pth string) (err error) {
 			Repo:     repo,
 			Arch:     arch,
 			Path:     sourcePath,
+		}
+
+		err = source.Upsert(db)
+		if err != nil {
+			return
 		}
 
 		for _, key := range source.Keys() {
