@@ -4,6 +4,7 @@ import (
 	"github.com/autoabs/autoabs/errortypes"
 	"github.com/dropbox/godropbox/errors"
 	"io"
+	"io/ioutil"
 	"os"
 	"os/exec"
 )
@@ -90,6 +91,26 @@ func ExecOutput(dir, name string, arg ...string) (output string, err error) {
 		return
 	}
 	output = string(outputByt)
+
+	return
+}
+
+func ExecSilent(dir, name string, arg ...string) (err error) {
+	cmd := exec.Command(name, arg...)
+	cmd.Stdout = ioutil.Discard
+	cmd.Stderr = ioutil.Discard
+
+	if dir != "" {
+		cmd.Dir = dir
+	}
+
+	err = cmd.Run()
+	if err != nil {
+		err = &errortypes.ExecError{
+			errors.Wrapf(err, "utils: Failed to exec '%s'", name),
+		}
+		return
+	}
 
 	return
 }
