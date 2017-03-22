@@ -200,3 +200,18 @@ func (s *Source) Upsert(db *database.Database) (err error) {
 
 	return
 }
+
+func (s *Source) Remove(db *database.Database) (err error) {
+	coll := db.Sources()
+
+	err = coll.Remove(&bson.M{
+		"name": s.Name,
+		"repo": s.Repo,
+		"arch": s.Arch,
+	})
+	if err != nil {
+		return
+	}
+
+	return
+}
