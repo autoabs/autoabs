@@ -13,13 +13,17 @@ import (
 )
 
 type Source struct {
-	Name     string
-	SubNames []string
-	Version  string
-	Release  string
-	Repo     string
-	Arch     string
-	Path     string
+	Name     string   `bson:"name"`
+	SubNames []string `bson:"sub_names"`
+	Version  string   `bson:"version"`
+	Release  string   `bson:"release"`
+	Repo     string   `bson:"repo"`
+	Arch     string   `bson:"arch"`
+	Path     string   `bson:"path"`
+}
+
+func (s *Source) Key() string {
+	return s.Name + "-" + s.Release + "-" + s.Arch
 }
 
 func (s *Source) Keys() []string {
