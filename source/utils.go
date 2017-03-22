@@ -277,6 +277,12 @@ func (s *scanner) Scan() (err error) {
 func GetAll() (sources map[string]*Source, keys set.Set, err error) {
 	scnr := &scanner{}
 
+	err = scnr.Start()
+	if err != nil {
+		return
+	}
+	defer scnr.Stop()
+
 	err = scnr.Scan()
 	if err != nil {
 		return
