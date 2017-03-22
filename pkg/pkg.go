@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"github.com/autoabs/autoabs/config"
 	"github.com/autoabs/autoabs/database"
+	"github.com/autoabs/autoabs/utils"
 	"gopkg.in/mgo.v2/bson"
 	"os"
-	"os/exec"
 	"path"
 )
 
@@ -68,14 +68,11 @@ func (p *Package) Remove() {
 		return
 	}
 
-	cmd := exec.Command(
+	utils.ExecSilent(
 		"/usr/bin/repo-remove",
 		p.DatabasePath(),
 		p.Path,
 	)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	cmd.Run()
 
 	os.Remove(p.Path)
 	os.Remove(p.Path + ".sig")
