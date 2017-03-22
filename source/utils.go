@@ -174,8 +174,6 @@ func (s *scanner) scanSource(db *database.Database, repo, pth string) (
 				return
 			}
 
-			fmt.Println(pth)
-
 			err = s.scanPkgbuild(db, repo, pth)
 
 			return
