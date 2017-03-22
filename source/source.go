@@ -109,7 +109,7 @@ func (s *Source) Queue(db *database.Database, force bool) (
 	arc := tar.NewWriter(gf)
 
 	ln := len(s.Path) + 1
-	err = filepath.Walk(s.Path, func(path string,
+	err = filepath.Walk(s.Path, func(pth string,
 		info os.FileInfo, err error) (e error) {
 
 		if err != nil {
@@ -123,11 +123,11 @@ func (s *Source) Queue(db *database.Database, force bool) (
 			return
 		}
 
-		if s.Path+"/" != path[:ln] {
+		if s.Path+"/" != pth[:ln] {
 			return
 		}
 
-		name := path[ln:]
+		name := pth[ln:]
 
 		hdr := &tar.Header{
 			Name: name,
@@ -143,7 +143,7 @@ func (s *Source) Queue(db *database.Database, force bool) (
 			return
 		}
 
-		file, e := os.Open(path)
+		file, e := os.Open(pth)
 		if e != nil {
 			e = &errortypes.ReadError{
 				errors.Wrap(e, "source: Failed to open source file"),
