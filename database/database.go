@@ -51,6 +51,16 @@ func (d *Database) Builds() (coll *Collection) {
 	return
 }
 
+func (d *Database) Sources() (coll *Collection) {
+	coll = d.getCollection("sources")
+	return
+}
+
+func (d *Database) SourcesState() (coll *Collection) {
+	coll = d.getCollection("sources_state")
+	return
+}
+
 func (d *Database) BuildsLog() (coll *Collection) {
 	coll = d.getCollection("builds_log")
 	return
