@@ -113,7 +113,7 @@ func (s *Source) Queue(db *database.Database, force bool) (
 		info os.FileInfo, err error) (e error) {
 
 		if err != nil {
-			e = &errortypes.WriteError{
+			e = &errortypes.ReadError{
 				errors.Wrap(err, "source: Failed to read pkg directory"),
 			}
 			return
