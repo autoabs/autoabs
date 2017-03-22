@@ -144,6 +144,42 @@ func (s *scanner) scanPkgbuild(db *database.Database, repo, pth string) (
 	return
 }
 
+func (s *scanner) remPkgbuild(db *database.Database, repo, pth string) (
+	err error) {
+
+	coll := db.Sources()
+
+	pth = strings.TrimRight(pth, "/PKGBUILD")
+
+	source := &Source{}
+	err = coll.FindOne(&bson.M{
+		"path": pth,
+	}, source)
+	if err != nil {
+		switch err.(type) {
+		case *database.NotFoundError:
+			err = nil
+		default:
+			return
+		}
+	}
+
+	for _, key := range source.Keys() {
+		_, ok := s.Sources[key]
+		if ok {
+			delete(s.Sources, key)
+		}
+		s.Keys.Remove(key)
+	}
+
+	err = source.Remove(db)
+	if err != nil {
+		return
+	}
+
+	return
+}
+
 func (s *scanner) scanSource(db *database.Database, repo, pth string) (
 	err error) {
 
@@ -209,12 +245,12 @@ func (s *scanner) scanSource(db *database.Database, repo, pth string) (
 			}
 
 			if !exists {
-				continue
-			}
-
-			err = s.scanPkgbuild(db, repo, pkgPth)
-			if err != nil {
-				return
+				err = s.remPkgbuild(db, repo, pkgPth)
+			} else {
+				err = s.scanPkgbuild(db, repo, pkgPth)
+				if err != nil {
+					return
+				}
 			}
 		}
 	}
