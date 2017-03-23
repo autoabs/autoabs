@@ -1,7 +1,6 @@
 package queue
 
 import (
-	"fmt"
 	"github.com/autoabs/autoabs/build"
 	"github.com/autoabs/autoabs/database"
 	"github.com/autoabs/autoabs/pkg"
@@ -45,7 +44,6 @@ func (q *Queue) Scan() (err error) {
 	}
 
 	for _, pk := range q.oldPackages {
-		fmt.Printf("old: %s\n", pk.Key())
 		q.remove.Add(pk)
 		q.fix.Add(q.packages[pk.Key()])
 	}
