@@ -63,6 +63,24 @@ func (p *Package) SyncState(db *database.Database, stateId bson.ObjectId) (
 	return
 }
 
+func (p *Package) Fix() (err error) {
+	if p.Path == "" {
+		return
+	}
+
+	err = utils.Exec(
+		"",
+		"/usr/bin/repo-add",
+		p.DatabasePath(),
+		p.Path,
+	)
+	if err != nil {
+		return
+	}
+
+	return
+}
+
 func (p *Package) Remove() {
 	if p.Path == "" {
 		return
