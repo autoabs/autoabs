@@ -1,6 +1,7 @@
 package queue
 
 import (
+	"fmt"
 	"github.com/autoabs/autoabs/build"
 	"github.com/autoabs/autoabs/database"
 	"github.com/autoabs/autoabs/pkg"
@@ -17,12 +18,14 @@ type Queue struct {
 	oldPackages  []*pkg.Package
 	add          set.Set // *source.Source
 	remove       set.Set // *pkg.Package
+	fix          set.Set // *pkg.Package
 	update       set.Set // *source.Source
 }
 
 func (q *Queue) Scan() (err error) {
 	q.add = set.NewSet()
 	q.remove = set.NewSet()
+	q.fix = set.NewSet()
 	q.update = set.NewSet()
 
 	q.packages, q.oldPackages, q.packagesKeys, err = pkg.GetAll()
@@ -39,6 +42,12 @@ func (q *Queue) Scan() (err error) {
 	remPackagesKeys.Subtract(q.sourcesKeys)
 	for key := range remPackagesKeys.Iter() {
 		q.remove.Add(q.packages[key.(string)])
+	}
+
+	for _, pk := range q.oldPackages {
+		fmt.Printf("old: %s\n", pk.Key())
+		q.remove.Add(pk)
+		q.fix.Add(q.packages[pk.Key()])
 	}
 
 	addPackagesKeys := q.sourcesKeys.Copy()
@@ -70,12 +79,17 @@ func (q *Queue) Sync() (err error) {
 		return
 	}
 
-	for pkInf := range q.remove.Iter() {
+	for pkInf := range q.fix.Iter() {
 		pk := pkInf.(*pkg.Package)
-		pk.Remove()
+
+		err = pk.Fix()
+		if err != nil {
+			return
+		}
 	}
 
-	for _, pk := range q.oldPackages {
+	for pkInf := range q.remove.Iter() {
+		pk := pkInf.(*pkg.Package)
 		pk.Remove()
 	}
 
