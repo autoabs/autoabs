@@ -36,6 +36,10 @@ func (s *Source) Keys() []string {
 	return keys
 }
 
+func (s *Source) FullVersion() string {
+	return s.Version + "-" + s.Release
+}
+
 func (s *Source) Queue(db *database.Database, force bool) (
 	queued bool, err error) {
 
