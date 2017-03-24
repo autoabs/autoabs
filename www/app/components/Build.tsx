@@ -195,7 +195,7 @@ export default class Build extends React.Component<Props, State> {
 
 		let repoState = '';
 		if (build.repo_state) {
-			repoState = ' - repo';
+			repoState = ' - uploaded';
 		}
 
 		return <div className="pt-card" style={css.card}>
