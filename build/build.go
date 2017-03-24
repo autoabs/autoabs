@@ -50,6 +50,10 @@ type BuildLog struct {
 	Log       string        `bson:"l"`
 }
 
+func (b *Build) Key() string {
+	return b.Name + "-" + b.Repo + "-" + b.Arch
+}
+
 func (b *Build) FullVersion() string {
 	return b.Version + "-" + b.Release
 }
