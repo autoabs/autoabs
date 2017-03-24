@@ -189,12 +189,24 @@ func (q *Queue) Upload() (err error) {
 	db := database.GetDatabase()
 	defer db.Close()
 
+	err = q.Scan()
+	if err != nil {
+		return
+	}
+
 	builds, err := build.GetReady(db)
 	if err != nil {
 		return
 	}
 
 	for _, bild := range builds {
+		pk, ok := q.packages[bild.Key()]
+		if ok {
+			if !utils.VersionNewer(bild.FullVersion(), pk.FullVersion()) {
+				continue
+			}
+		}
+
 		err = bild.Upload(db, false)
 		if err != nil {
 			return
