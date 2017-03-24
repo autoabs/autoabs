@@ -15,6 +15,7 @@ export interface Build {
 	version?: string;
 	release?: string;
 	repo?: string;
+	repo_state?: string;
 	arch?: string;
 	pkg_ids?: string[];
 	pkg_build_id?: string;
