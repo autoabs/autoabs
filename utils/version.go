@@ -19,7 +19,7 @@ func VersionNewer(x, y string) bool {
 		panic(err)
 	}
 
-	if n > 0 {
+	if n >= 0 {
 		return true
 	}
 
