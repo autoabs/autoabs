@@ -193,6 +193,11 @@ export default class Build extends React.Component<Props, State> {
 				break;
 		}
 
+		let repoState = '';
+		if (build.repo_state) {
+			repoState = ' - repo';
+		}
+
 		return <div className="pt-card" style={css.card}>
 			<div style={barStyle}/>
 			<div className="layout horizontal">
@@ -203,7 +208,7 @@ export default class Build extends React.Component<Props, State> {
 							{build.version}-{build.release}
 						</div>
 						<div className="pt-text-muted" style={css.repo}>
-							{build.repo} - {build.arch} - {build.state}
+							{build.repo} - {build.arch} - {build.state}{repoState}
 						</div>
 					</div>
 				</div>
