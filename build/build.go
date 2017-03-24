@@ -50,6 +50,10 @@ type BuildLog struct {
 	Log       string        `bson:"l"`
 }
 
+func (b *Build) FullVersion() string {
+	return b.Version + "-" + b.Release
+}
+
 func (b *Build) tmpPath() string {
 	return path.Join(config.Config.RootPath, "tmp",
 		b.Name+"-"+b.Repo+"-"+b.Arch+"-"+b.Version+"-"+b.Release)
