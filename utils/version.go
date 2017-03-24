@@ -20,8 +20,8 @@ func VersionNewer(x, y string) bool {
 	}
 
 	if n >= 0 {
-		return true
+		return true // x newer
 	}
 
-	return false
+	return false // y newer
 }
