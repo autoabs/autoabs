@@ -623,6 +623,25 @@ func (b *Build) Remove(db *database.Database) (err error) {
 	return
 }
 
+func (b *Build) ClearUpload(db *database.Database) (err error) {
+	coll := db.Builds()
+
+	if b.Uploaded {
+		return
+	}
+
+	b.Uploaded = true
+
+	err = coll.CommitFields(b.Id, b, set.NewSet("uploaded"))
+	if err != nil {
+		return
+	}
+
+	PublishChange(db)
+
+	return
+}
+
 func (b *Build) Upload(db *database.Database, force bool) (err error) {
 	repoPath := b.repoPath()
 	coll := db.Builds()
