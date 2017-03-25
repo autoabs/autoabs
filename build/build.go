@@ -712,7 +712,12 @@ func (b *Build) Upload(db *database.Database, force bool) (err error) {
 	}
 
 	b.Uploaded = true
-	coll.CommitFields(b.Id, b, set.NewSet("uploaded"))
+
+	err = coll.CommitFields(b.Id, b, set.NewSet("uploaded"))
+	if err != nil {
+		return
+	}
+
 	PublishChange(db)
 
 	return
