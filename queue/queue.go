@@ -5,6 +5,7 @@ import (
 	"github.com/autoabs/autoabs/database"
 	"github.com/autoabs/autoabs/pkg"
 	"github.com/autoabs/autoabs/source"
+	"github.com/autoabs/autoabs/utils"
 	"github.com/dropbox/godropbox/container/set"
 	"gopkg.in/mgo.v2/bson"
 )
@@ -203,6 +204,11 @@ func (q *Queue) Upload() (err error) {
 		pk, ok := q.packages[bild.Key()]
 		if ok {
 			if !utils.VersionNewer(bild.FullVersion(), pk.FullVersion()) {
+				err = bild.ClearUpload(db)
+				if err != nil {
+					return
+				}
+
 				continue
 			}
 		}
