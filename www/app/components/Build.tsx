@@ -4,7 +4,6 @@ import ConfirmButton from './ConfirmButton';
 import * as BuildActions from '../actions/BuildActions';
 import * as BuildInfoActions from '../actions/BuildInfoActions';
 import * as BuildTypes from '../types/BuildTypes';
-import * as MiscUtils from '../utils/MiscUtils';
 import Styles from '../Styles';
 
 interface Props {
