@@ -5,7 +5,6 @@ import BuildStore from '../stores/BuildStore';
 import InfiniteFlex from './InfiniteFlex';
 import * as BuildActions from '../actions/BuildActions';
 import BuildInfo from './BuildInfo';
-import Loading from './Loading';
 import Build from './Build';
 
 interface State {
@@ -34,8 +33,6 @@ const css = {
 };
 
 export default class Builds extends React.Component<null, State> {
-	syncing: boolean;
-
 	constructor(props: any, context: any) {
 		super(props, context);
 		this.state = getState();
@@ -54,10 +51,6 @@ export default class Builds extends React.Component<null, State> {
 		this.setState(getState());
 	}
 
-	sync = (): void => {
-		BuildActions.sync();
-	}
-
 	buildItem = (index: number, build: BuildTypes.Build): JSX.Element => {
 		return <Build key={index} build={build}/>
 	}
@@ -68,18 +61,6 @@ export default class Builds extends React.Component<null, State> {
 
 	render(): JSX.Element {
 		return <div>
-			<nav className="pt-navbar">
-				<div className="pt-navbar-group pt-align-left">
-					<div className="pt-navbar-heading">AutoABS</div>
-					<Loading size="small"/>
-				</div>
-				<div className="pt-navbar-group pt-align-right">
-					<button
-						className="pt-button pt-minimal pt-icon-refresh"
-						onClick={this.sync}
-					/>
-				</div>
-			</nav>
 			<InfiniteFlex
 				style={css.builds}
 				width={260}
