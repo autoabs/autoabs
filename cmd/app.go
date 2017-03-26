@@ -5,6 +5,8 @@ import (
 	"github.com/Sirupsen/logrus"
 	"github.com/autoabs/autoabs/config"
 	"github.com/autoabs/autoabs/handlers"
+	"github.com/autoabs/autoabs/node"
+	"github.com/autoabs/autoabs/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"os"
@@ -32,6 +34,11 @@ func App() {
 	}
 
 	handlers.Register(router)
+
+	nde := node.Node{
+		Name: utils.RandName(),
+	}
+	nde.Keepalive()
 
 	addr := fmt.Sprintf(
 		"%s:%d",
