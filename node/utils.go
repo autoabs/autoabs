@@ -1,7 +1,7 @@
 package node
 
 import (
-	"github.com/blckur/blckur/database"
+	"github.com/autoabs/autoabs/database"
 	"gopkg.in/mgo.v2/bson"
 )
 
