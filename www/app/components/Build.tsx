@@ -106,6 +106,15 @@ export default class Build extends React.Component<Props, State> {
 			...css.topBar,
 		} as React.CSSProperties;
 
+		let buildTime = '';
+		if (build.start !== '0001-01-01T00:00:00Z' &&
+				build.stop !== '0001-01-01T00:00:00Z') {
+			let stop = new Date(build.stop);
+			let start = new Date(build.start);
+			buildTime = ' (' + (
+				(stop.getTime() - start.getTime()) / 1000).toFixed(2) + 's)';
+		}
+
 		let actions: JSX.Element[];
 
 		switch (build.state) {
@@ -199,7 +208,7 @@ export default class Build extends React.Component<Props, State> {
 							{build.version}-{build.release}
 						</div>
 						<div className="pt-text-muted" style={css.repo}>
-							{build.repo} - {build.arch} - {build.state}{repoState}
+							{build.repo} - {build.arch} - {build.state}{buildTime}{repoState}
 						</div>
 					</div>
 				</div>
