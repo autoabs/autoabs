@@ -171,7 +171,20 @@ func addIndexes() (err error) {
 	db := GetDatabase()
 	defer db.Close()
 
-	coll := db.Builds()
+	coll := db.Nodes()
+	err = coll.EnsureIndex(mgo.Index{
+		Key:         []string{"timestamp"},
+		ExpireAfter: 30 * time.Second,
+		Background:  true,
+	})
+	if err != nil {
+		err = &IndexError{
+			errors.Wrap(err, "database: Index error"),
+		}
+		return
+	}
+
+	coll = db.Builds()
 	err = coll.EnsureIndex(mgo.Index{
 		Key: []string{
 			"name",
