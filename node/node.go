@@ -10,6 +10,7 @@ import (
 
 type Node struct {
 	Name      string    `bson:"_id" json:"name"`
+	Type      string    `bson:"type" json:"type"`
 	Timestamp time.Time `bson:"timestamp" json:"timestamp"`
 	Memory    float64   `bson:"memory" json:"memory"`
 	Load1     float64   `bson:"load1" json:"load1"`
