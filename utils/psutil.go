@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"fmt"
 	"github.com/autoabs/autoabs/errortypes"
 	"github.com/dropbox/godropbox/errors"
 	"github.com/shirou/gopsutil/load"
@@ -17,8 +16,6 @@ func MemoryUsed() (used float64, err error) {
 		}
 		return
 	}
-
-	fmt.Println(runtime.NumCPU())
 
 	used = virt.UsedPercent
 
