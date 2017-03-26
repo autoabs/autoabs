@@ -39,11 +39,7 @@ const css = {
 	name: {
 		fontSize: '14px',
 	} as React.CSSProperties,
-	version: {
-		fontSize: '12px',
-		marginTop: '5px',
-	} as React.CSSProperties,
-	repo: {
+	info: {
 		fontSize: '12px',
 		marginTop: '5px',
 	} as React.CSSProperties,
@@ -204,13 +200,13 @@ export default class Build extends React.Component<Props, State> {
 				<div style={css.content} className="card-content flex">
 					<div className="layout vertical">
 						<div style={css.name}>{build.name}</div>
-						<div className="pt-text-muted" style={css.version}>
+						<div className="pt-text-muted" style={css.info}>
 							{build.version}-{build.release}
 						</div>
-						<div className="pt-text-muted" style={css.repo}>
+						<div className="pt-text-muted" style={css.info}>
 							{build.repo} - {build.arch}
 						</div>
-						<div className="pt-text-muted" style={css.repo}>
+						<div className="pt-text-muted" style={css.info}>
 							{build.state}{buildTime}{repoState}
 						</div>
 					</div>
