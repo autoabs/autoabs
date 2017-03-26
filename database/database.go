@@ -46,6 +46,11 @@ func (d *Database) Events() (coll *Collection) {
 	return
 }
 
+func (d *Database) Nodes() (coll *Collection) {
+	coll = d.getCollection("nodes")
+	return
+}
+
 func (d *Database) Builds() (coll *Collection) {
 	coll = d.getCollection("builds")
 	return
