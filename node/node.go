@@ -9,7 +9,7 @@ import (
 )
 
 type Node struct {
-	Name      string    `bson:"_id" json:"name"`
+	Id        string    `bson:"_id" json:"id"`
 	Type      string    `bson:"type" json:"type"`
 	Timestamp time.Time `bson:"timestamp" json:"timestamp"`
 	Memory    float64   `bson:"memory" json:"memory"`
@@ -52,7 +52,7 @@ func (n *Node) keepalive() {
 		}
 
 		coll.Upsert(&bson.M{
-			"_id": n.Name,
+			"_id": n.Id,
 		}, n)
 
 		time.Sleep(10 * time.Second)

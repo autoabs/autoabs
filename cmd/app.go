@@ -36,7 +36,7 @@ func App() {
 	handlers.Register(router)
 
 	nde := node.Node{
-		Name: utils.RandName(),
+		Id:   utils.RandName(),
 		Type: "app",
 	}
 	nde.Keepalive()
