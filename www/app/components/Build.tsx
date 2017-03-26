@@ -101,13 +101,13 @@ export default class Build extends React.Component<Props, State> {
 			...css.topBar,
 		} as React.CSSProperties;
 
-		let buildTime = '';
+		let buildTime;
 		if (build.start !== '0001-01-01T00:00:00Z' &&
 				build.stop !== '0001-01-01T00:00:00Z') {
 			let stop = new Date(build.stop);
 			let start = new Date(build.start);
-			buildTime = ' (' + (
-				(stop.getTime() - start.getTime()) / 1000).toFixed(2) + 's)';
+			buildTime = ' (' + Math.round(
+				(stop.getTime() - start.getTime()) / 1000) + 's)';
 		}
 
 		let actions: JSX.Element[];
