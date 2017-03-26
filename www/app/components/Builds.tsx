@@ -83,7 +83,7 @@ export default class Builds extends React.Component<null, State> {
 			<InfiniteFlex
 				style={css.builds}
 				width={260}
-				height={123}
+				height={130}
 				padding={5}
 				scrollMargin={2}
 				scrollMarginHit={1}

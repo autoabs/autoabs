@@ -20,7 +20,7 @@ const css = {
 		flex: '1 0 auto',
 		minWidth: '270px',
 		maxWidth: '600px',
-		height: '113px',
+		height: '130px',
 		margin: '5px',
 		padding: '0',
 	} as React.CSSProperties,
@@ -208,8 +208,10 @@ export default class Build extends React.Component<Props, State> {
 							{build.version}-{build.release}
 						</div>
 						<div className="pt-text-muted" style={css.repo}>
-							{build.repo} - {build.arch} - {build.state}
-							{buildTime}{repoState}
+							{build.repo} - {build.arch}
+						</div>
+						<div className="pt-text-muted" style={css.repo}>
+							{build.state}{buildTime}{repoState}
 						</div>
 					</div>
 				</div>
