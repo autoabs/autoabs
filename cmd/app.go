@@ -37,6 +37,7 @@ func App() {
 
 	nde := node.Node{
 		Name: utils.RandName(),
+		Type: "app",
 	}
 	nde.Keepalive()
 
