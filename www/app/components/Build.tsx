@@ -208,7 +208,8 @@ export default class Build extends React.Component<Props, State> {
 							{build.version}-{build.release}
 						</div>
 						<div className="pt-text-muted" style={css.repo}>
-							{build.repo} - {build.arch} - {build.state}{buildTime}{repoState}
+							{build.repo} - {build.arch} - {build.state}
+							{buildTime}{repoState}
 						</div>
 					</div>
 				</div>
