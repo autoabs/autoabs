@@ -1,6 +1,7 @@
 /// <reference path="../References.d.ts"/>
 import * as React from 'react';
 import * as BuildActions from '../actions/BuildActions';
+import * as NodeActions from '../actions/NodeActions';
 import Loading from './Loading';
 import Builds from './Builds';
 import Nodes from './Nodes';
@@ -39,6 +40,9 @@ export default class Main extends React.Component<void, State> {
 		switch (this.state.page) {
 			case 'builds':
 				BuildActions.sync();
+				break;
+			case 'nodes':
+				NodeActions.sync();
 				break;
 		}
 	}
