@@ -16,6 +16,9 @@ const css = {
 		overflowX: 'auto',
 		overflowY: 'hidden',
 	} as React.CSSProperties,
+	heading: {
+		marginRight: '11px',
+	} as React.CSSProperties,
 }
 
 export default class Main extends React.Component<void, State> {
@@ -55,7 +58,9 @@ export default class Main extends React.Component<void, State> {
 		return <div>
 			<nav className="pt-navbar layout horizontal" style={css.nav}>
 				<div className="pt-navbar-group pt-align-left flex">
-					<div className="pt-navbar-heading">AutoABS</div>
+					<div className="pt-navbar-heading"
+						style={css.heading}
+					>AutoABS</div>
 					<Loading size="small"/>
 				</div>
 				<div className="pt-navbar-group pt-align-right">
