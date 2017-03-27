@@ -28,6 +28,9 @@ const css = {
 		fontSize: '12px',
 		marginTop: '5px',
 	} as React.CSSProperties,
+	stat: {
+		marginTop: '1px',
+	} as React.CSSProperties,
 };
 
 export default class Node extends React.Component<Props, State> {
@@ -41,22 +44,55 @@ export default class Node extends React.Component<Props, State> {
 	render(): JSX.Element {
 		let node = this.props.node;
 
+		let memoryStyle = {
+			'width': node.memory + '%',
+		} as React.CSSProperties;
+		let load1Style = {
+			'width': node.load1 + '%',
+		} as React.CSSProperties;
+		let load5Style = {
+			'width': node.load5 + '%',
+		} as React.CSSProperties;
+		let load15Style = {
+			'width': node.load15 + '%',
+		} as React.CSSProperties;
+
 		return <div className="pt-card" style={css.card}>
 			<div className="layout horizontal">
 				<div style={css.content} className="card-content flex">
 					<div className="layout vertical">
 						<div style={css.name}>{node.id}</div>
 						<div className="pt-text-muted" style={css.info}>
-							{node.memory}
+							memory:
+						</div>
+						<div style={css.stat}
+							className="pt-progress-bar pt-no-stripes"
+						>
+							<div className="pt-progress-meter" style={memoryStyle}/>
 						</div>
 						<div className="pt-text-muted" style={css.info}>
-							{node.load1}
+							load1:
+						</div>
+						<div style={css.stat}
+							className="pt-progress-bar pt-no-stripes pt-intent-success"
+						>
+							<div className="pt-progress-meter" style={load1Style}/>
 						</div>
 						<div className="pt-text-muted" style={css.info}>
-							{node.load5}
+							load5:
+						</div>
+						<div style={css.stat}
+							className="pt-progress-bar pt-no-stripes pt-intent-primary"
+						>
+							<div className="pt-progress-meter" style={load5Style}/>
 						</div>
 						<div className="pt-text-muted" style={css.info}>
-							{node.load15}
+							load15:
+						</div>
+						<div style={css.stat}
+							className="pt-progress-bar pt-no-stripes pt-intent-danger"
+						>
+							<div className="pt-progress-meter" style={load15Style}/>
 						</div>
 					</div>
 				</div>
