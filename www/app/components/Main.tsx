@@ -2,6 +2,7 @@
 import * as React from 'react';
 import * as BuildActions from '../actions/BuildActions';
 import * as NodeActions from '../actions/NodeActions';
+import FixContainer from './FixContainer';
 import Loading from './Loading';
 import Builds from './Builds';
 import Nodes from './Nodes';
@@ -59,7 +60,7 @@ export default class Main extends React.Component<void, State> {
 				break;
 		}
 
-		return <div>
+		return <FixContainer>
 			<nav className="pt-navbar layout horizontal" style={css.nav}>
 				<div className="pt-navbar-group pt-align-left flex">
 					<div className="pt-navbar-heading"
@@ -83,6 +84,6 @@ export default class Main extends React.Component<void, State> {
 				</div>
 			</nav>
 			{page}
-		</div>;
+		</FixContainer>;
 	}
 }
