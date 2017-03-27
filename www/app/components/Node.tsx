@@ -61,7 +61,9 @@ export default class Node extends React.Component<Props, State> {
 			<div className="layout horizontal">
 				<div style={css.content} className="card-content flex">
 					<div className="layout vertical">
-						<div style={css.name}>{node.id}</div>
+						<div style={css.name}>
+							{node.id} - {node.type}
+						</div>
 						<div className="pt-text-muted" style={css.info}>
 							memory:
 						</div>
