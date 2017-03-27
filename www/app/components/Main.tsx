@@ -81,7 +81,7 @@ export default class Main extends React.Component<void, State> {
 					<button
 						className="pt-button pt-minimal pt-icon-refresh"
 						onClick={this.sync}
-					/>
+					>Refresh</button>
 				</div>
 			</nav>
 			{page}
