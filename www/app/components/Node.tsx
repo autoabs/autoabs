@@ -68,7 +68,7 @@ export default class Node extends React.Component<Props, State> {
 							memory:
 						</div>
 						<div style={css.stat}
-							className="pt-progress-bar pt-no-stripes"
+							className="pt-progress-bar pt-no-stripes pt-intent-primary"
 						>
 							<div className="pt-progress-meter" style={memoryStyle}/>
 						</div>
@@ -84,7 +84,7 @@ export default class Node extends React.Component<Props, State> {
 							load5:
 						</div>
 						<div style={css.stat}
-							className="pt-progress-bar pt-no-stripes pt-intent-primary"
+							className="pt-progress-bar pt-no-stripes pt-intent-warning"
 						>
 							<div className="pt-progress-meter" style={load5Style}/>
 						</div>
