@@ -504,7 +504,6 @@ func (b *Build) Archive(db *database.Database) (err error) {
 
 func (b *Build) Rebuild(db *database.Database) (err error) {
 	coll := db.Builds()
-	start := time.Now()
 
 	err = b.removePkg(db)
 	if err != nil {
@@ -520,7 +519,8 @@ func (b *Build) Rebuild(db *database.Database) (err error) {
 			"builder":    "",
 			"uploaded":   false,
 			"log":        []string{},
-			"start":      start,
+			"start":      nil,
+			"stop":       nil,
 			"pkg_ids":    []bson.ObjectId{},
 		},
 	})
@@ -538,7 +538,8 @@ func (b *Build) Rebuild(db *database.Database) (err error) {
 	b.StateRank = PendingRank
 	b.Builder = ""
 	b.Log = []string{}
-	b.Start = start
+	b.Start = time.Time{}
+	b.Stop = time.Time{}
 	PublishChange(db)
 
 	return
