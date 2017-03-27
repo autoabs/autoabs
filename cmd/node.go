@@ -6,6 +6,7 @@ import (
 	"github.com/autoabs/autoabs/config"
 	"github.com/autoabs/autoabs/handlers"
 	"github.com/autoabs/autoabs/node"
+	"github.com/autoabs/autoabs/scheduler"
 	"github.com/autoabs/autoabs/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -14,8 +15,7 @@ import (
 	"time"
 )
 
-// Starts web server node
-func App() {
+func WebNode() {
 	var debug bool
 	debugStr := os.Getenv("DEBUG")
 	if debugStr == "" {
@@ -37,7 +37,7 @@ func App() {
 
 	nde := node.Node{
 		Id:   utils.RandName(),
-		Type: "app",
+		Type: "web",
 	}
 	nde.Keepalive()
 
@@ -65,4 +65,28 @@ func App() {
 	if err != nil {
 		panic(err)
 	}
+}
+
+func StorageNode() {
+	nde := node.Node{
+		Id:   utils.RandName(),
+		Type: "storage",
+	}
+	nde.Keepalive()
+
+	sch := scheduler.Storage{}
+
+	sch.Start()
+}
+
+func BuilderNode() {
+	nde := node.Node{
+		Id:   utils.RandName(),
+		Type: "builder",
+	}
+	nde.Keepalive()
+
+	sch := scheduler.Build{}
+
+	sch.Start()
 }
