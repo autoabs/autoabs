@@ -30,7 +30,6 @@ export default class Nodes extends React.Component<null, State> {
 	constructor(props: any, context: any) {
 		super(props, context);
 		this.state = getState();
-		NodeActions.sync();
 	}
 
 	componentDidMount(): void {

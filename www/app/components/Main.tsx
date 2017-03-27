@@ -29,6 +29,7 @@ export default class Main extends React.Component<void, State> {
 		this.state = {
 			page: 'builds',
 		};
+		this.sync();
 	}
 
 	setPage(page: string): void {
