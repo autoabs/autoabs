@@ -40,9 +40,9 @@ func LoadAverage() (ld *LoadStat, err error) {
 	}
 
 	ld = &LoadStat{
-		Load1:  avg.Load1 / count,
-		Load5:  avg.Load5 / count,
-		Load15: avg.Load15 / count,
+		Load1:  avg.Load1 / count * 100,
+		Load5:  avg.Load5 / count * 100,
+		Load15: avg.Load15 / count * 100,
 	}
 
 	return
