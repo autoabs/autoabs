@@ -36,20 +36,41 @@ export default class Loading extends React.Component<Props, State> {
 	}
 
 	render(): JSX.Element {
-		if (!this.state.loading) {
-			return null;
-		}
+		let spinner: JSX.Element;
 
-		let className = '';
-		if (this.props.size) {
-			className = 'pt-' + this.props.size;
+		if (!this.state.loading) {
+			let size;
+			switch (this.props.size) {
+				case 'small':
+					size = '24px';
+					break;
+				case 'large':
+					size = '100px';
+					break;
+				default:
+					size = '50px';
+			}
+
+			let style = {
+				width: size,
+				height: size,
+			} as React.CSSProperties;
+
+			spinner = <div style={style}/>;
+		} else {
+			let className = '';
+			if (this.props.size) {
+				className = 'pt-' + this.props.size;
+			}
+
+			spinner = <Blueprint.Spinner
+				className={className}
+				intent={this.props.intent}
+			/>;
 		}
 
 		return <div style={this.props.style}>
-			<Blueprint.Spinner
-				className={className}
-				intent={this.props.intent}
-			/>
+			{spinner}
 		</div>;
 	}
 }
