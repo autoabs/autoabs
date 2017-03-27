@@ -11,12 +11,25 @@ interface State {
 	page: string;
 }
 
+const css = {
+	nav: {
+		overflowX: 'auto',
+		overflowY: 'hidden',
+	} as React.CSSProperties,
+}
+
 export default class Main extends React.Component<void, State> {
 	constructor(props: any, context: any) {
 		super(props, context);
 		this.state = {
 			page: 'builds',
 		};
+	}
+
+	setPage(page: string): void {
+		this.setState({
+			page: page,
+		}, this.sync);
 	}
 
 	sync = (): void => {
@@ -40,14 +53,20 @@ export default class Main extends React.Component<void, State> {
 		}
 
 		return <div>
-			<nav className="pt-navbar">
-				<div className="pt-navbar-group pt-align-left">
+			<nav className="pt-navbar layout horizontal" style={css.nav}>
+				<div className="pt-navbar-group pt-align-left flex">
 					<div className="pt-navbar-heading">AutoABS</div>
 					<Loading size="small"/>
-					<div className="pt-navbar-heading">Builds</div>
-					<div className="pt-navbar-heading">Nodes</div>
 				</div>
 				<div className="pt-navbar-group pt-align-right">
+					<button
+						className="pt-button pt-minimal pt-icon-oil-field"
+						onClick={() => {this.setPage('builds')}}
+					>Builds</button>
+					<button
+						className="pt-button pt-minimal pt-icon-layers"
+						onClick={() => {this.setPage('nodes')}}
+					>Nodes</button>
 					<button
 						className="pt-button pt-minimal pt-icon-refresh"
 						onClick={this.sync}
