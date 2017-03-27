@@ -15,12 +15,11 @@ const css = {
 		flex: '1 0 auto',
 		minWidth: '270px',
 		maxWidth: '600px',
-		height: '130px',
 		margin: '5px',
 		padding: '0',
 	} as React.CSSProperties,
 	content: {
-		padding: '10px 0 0 10px',
+		padding: '10px',
 	} as React.CSSProperties,
 	name: {
 		fontSize: '14px',
@@ -49,6 +48,15 @@ export default class Node extends React.Component<Props, State> {
 						<div style={css.name}>{node.id}</div>
 						<div className="pt-text-muted" style={css.info}>
 							{node.memory}
+						</div>
+						<div className="pt-text-muted" style={css.info}>
+							{node.load1}
+						</div>
+						<div className="pt-text-muted" style={css.info}>
+							{node.load5}
+						</div>
+						<div className="pt-text-muted" style={css.info}>
+							{node.load15}
 						</div>
 					</div>
 				</div>
