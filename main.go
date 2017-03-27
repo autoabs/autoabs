@@ -16,19 +16,19 @@ func main() {
 	logger.Init()
 
 	switch flag.Arg(0) {
-	case "app":
-		cmd.App()
-		return
 	case "set":
 		cmd.Settings()
 		return
-	case "scheduler":
+	case "node":
 		switch flag.Arg(1) {
-		case "build":
-			cmd.BuildScheduler()
+		case "web":
+			cmd.WebNode()
+			return
+		case "builder":
+			cmd.BuilderNode()
 			return
 		case "storage":
-			cmd.StorageScheduler()
+			cmd.StorageNode()
 			return
 		}
 	case "builds":
