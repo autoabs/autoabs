@@ -90,24 +90,22 @@ func GetAll(db *database.Database, index int) (
 	return
 }
 
-func GetQueued(db *database.Database) (builds []*Build, err error) {
-	builds = []*Build{}
+func GetQueued(db *database.Database) (build *Build, err error) {
+	build = &Build{}
 	coll := db.Builds()
 
-	cursor := coll.Find(&bson.M{
+	err = coll.Find(&bson.M{
 		"state": "pending",
-	}).Iter()
-
-	bild := &Build{}
-	for cursor.Next(bild) {
-		builds = append(builds, bild)
-		bild = &Build{}
-	}
-
-	err = cursor.Close()
+	}).One(build)
 	if err != nil {
 		err = database.ParseError(err)
-		return
+
+		switch err.(type) {
+		case *database.NotFoundError:
+			err = nil
+		default:
+			return
+		}
 	}
 
 	return
