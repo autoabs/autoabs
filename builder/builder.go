@@ -53,7 +53,7 @@ func (b *Builder) build(bild *build.Build) {
 	}()
 }
 
-func (b *Builder) Build() (err error) {
+func (b *Builder) Start() (err error) {
 	db := database.GetDatabase()
 	defer db.Close()
 

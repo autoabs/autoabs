@@ -13,7 +13,7 @@ func (b *Build) build() (err error) {
 
 	bilder := builder.Builder{}
 
-	err = bilder.Build()
+	err = bilder.Start()
 	if err != nil {
 		logrus.WithFields(logrus.Fields{
 			"error": err,

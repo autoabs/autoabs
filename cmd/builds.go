@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"github.com/autoabs/autoabs/build"
+	"github.com/autoabs/autoabs/builder"
 	"github.com/autoabs/autoabs/queue"
 )
 
@@ -26,7 +27,7 @@ func SyncState() {
 func Build() {
 	bilder := builder.Builder{}
 
-	err := bilder.Build()
+	err := bilder.Start()
 	if err != nil {
 		panic(err)
 	}
