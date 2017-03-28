@@ -486,12 +486,6 @@ func (b *Build) Archive(db *database.Database) (err error) {
 	})
 	if err != nil {
 		err = database.ParseError(err)
-
-		switch err.(type) {
-		case *database.NotFoundError:
-			err = nil
-		}
-
 		return
 	}
 	b.State = "archived"
@@ -526,12 +520,6 @@ func (b *Build) Rebuild(db *database.Database) (err error) {
 	})
 	if err != nil {
 		err = database.ParseError(err)
-
-		switch err.(type) {
-		case *database.NotFoundError:
-			err = nil
-		}
-
 		return
 	}
 	b.State = "pending"
@@ -556,9 +544,9 @@ func (b *Build) removePkg(db *database.Database) (err error) {
 			switch err.(type) {
 			case *database.NotFoundError:
 				err = nil
+			default:
+				return
 			}
-
-			return
 		}
 	}
 
@@ -578,9 +566,9 @@ func (b *Build) removePkgBuild(db *database.Database) (err error) {
 			switch err.(type) {
 			case *database.NotFoundError:
 				err = nil
+			default:
+				return
 			}
-
-			return
 		}
 	}
 
@@ -614,9 +602,9 @@ func (b *Build) Remove(db *database.Database) (err error) {
 		switch err.(type) {
 		case *database.NotFoundError:
 			err = nil
+		default:
+			return
 		}
-
-		return
 	}
 
 	PublishChange(db)
