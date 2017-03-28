@@ -24,9 +24,9 @@ func SyncState() {
 }
 
 func Build() {
-	que := queue.Queue{}
+	bilder := builder.Builder{}
 
-	err := que.Build()
+	err := bilder.Build()
 	if err != nil {
 		panic(err)
 	}
