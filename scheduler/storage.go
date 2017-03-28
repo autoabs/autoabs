@@ -11,7 +11,7 @@ type Storage struct{}
 func (s *Storage) sync() (err error) {
 	logrus.Info("scheduler: Syncing")
 
-	que := queue.Queue{}
+	que := &queue.Queue{}
 
 	err = que.Sync()
 	if err != nil {
@@ -27,7 +27,7 @@ func (s *Storage) sync() (err error) {
 func (s *Storage) syncState() (err error) {
 	logrus.Info("scheduler: Syncing state")
 
-	que := queue.Queue{}
+	que := &queue.Queue{}
 
 	err = que.SyncState()
 	if err != nil {
@@ -43,7 +43,7 @@ func (s *Storage) syncState() (err error) {
 func (s *Storage) upload() (err error) {
 	logrus.Info("scheduler: Uploading")
 
-	que := queue.Queue{}
+	que := &queue.Queue{}
 
 	err = que.Upload()
 	if err != nil {
@@ -59,7 +59,7 @@ func (s *Storage) upload() (err error) {
 func (s *Storage) clean() (err error) {
 	logrus.Info("scheduler: Cleaning")
 
-	que := queue.Queue{}
+	que := &queue.Queue{}
 
 	err = que.Clean()
 	if err != nil {
