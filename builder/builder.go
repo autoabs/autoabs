@@ -57,6 +57,8 @@ func (b *Builder) Build() (err error) {
 	db := database.GetDatabase()
 	defer db.Close()
 
+	b.Count = 4
+
 	for {
 		b.acquire()
 
