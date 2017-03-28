@@ -8,6 +8,8 @@ import (
 	"github.com/autoabs/autoabs/utils"
 	"github.com/dropbox/godropbox/container/set"
 	"gopkg.in/mgo.v2/bson"
+	"sync"
+	"time"
 )
 
 type Queue struct {
@@ -168,6 +170,11 @@ func (q *Queue) SyncState() (err error) {
 }
 
 func (q *Queue) Build() (err error) {
+	running := 0
+	count := 4
+	lock := sync.Mutex{}
+	waiters := sync.WaitGroup{}
+
 	db := database.GetDatabase()
 	defer db.Close()
 
@@ -177,11 +184,36 @@ func (q *Queue) Build() (err error) {
 	}
 
 	for _, bild := range builds {
-		err = bild.Build(db)
-		if err != nil {
-			return
+		for {
+			lock.Lock()
+			if running < count {
+				running += 1
+				lock.Unlock()
+				break
+			} else {
+				lock.Unlock()
+				time.Sleep(50 * time.Millisecond)
+			}
 		}
+
+		waiters.Add(1)
+
+		go func(bild *build.Build) {
+			defer func() {
+				lock.Lock()
+				running -= 1
+				lock.Unlock()
+				waiters.Done()
+			}()
+
+			err = bild.Build(db)
+			if err != nil {
+				return
+			}
+		}(bild)
 	}
+
+	waiters.Wait()
 
 	return
 }
