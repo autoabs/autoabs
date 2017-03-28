@@ -179,16 +179,6 @@ func (q *Queue) Build() (err error) {
 	defer db.Close()
 
 	for {
-		bild, e := build.GetQueued(db)
-		if e != nil {
-			err = e
-			return
-		}
-
-		if bild == nil {
-			break
-		}
-
 		for {
 			lock.Lock()
 			if running < count {
@@ -199,6 +189,16 @@ func (q *Queue) Build() (err error) {
 				lock.Unlock()
 				time.Sleep(50 * time.Millisecond)
 			}
+		}
+
+		bild, e := build.GetQueued(db)
+		if e != nil {
+			err = e
+			return
+		}
+
+		if bild == nil {
+			break
 		}
 
 		waiters.Add(1)
