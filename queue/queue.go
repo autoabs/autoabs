@@ -178,12 +178,17 @@ func (q *Queue) Build() (err error) {
 	db := database.GetDatabase()
 	defer db.Close()
 
-	builds, err := build.GetQueued(db)
-	if err != nil {
-		return
-	}
+	for {
+		bild, e := build.GetQueued(db)
+		if e != nil {
+			err = e
+			return
+		}
 
-	for _, bild := range builds {
+		if bild == nil {
+			break
+		}
+
 		for {
 			lock.Lock()
 			if running < count {
