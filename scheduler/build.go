@@ -2,7 +2,7 @@ package scheduler
 
 import (
 	"github.com/Sirupsen/logrus"
-	"github.com/autoabs/autoabs/queue"
+	"github.com/autoabs/autoabs/builder"
 	"time"
 )
 
@@ -11,9 +11,9 @@ type Build struct{}
 func (b *Build) build() (err error) {
 	logrus.Info("scheduler: Building")
 
-	que := queue.Queue{}
+	bilder := builder.Builder{}
 
-	err = que.Build()
+	err = bilder.Build()
 	if err != nil {
 		logrus.WithFields(logrus.Fields{
 			"error": err,
