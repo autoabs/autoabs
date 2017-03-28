@@ -102,6 +102,7 @@ func GetQueued(db *database.Database) (build *Build, err error) {
 
 		switch err.(type) {
 		case *database.NotFoundError:
+			build = nil
 			err = nil
 		default:
 			return
