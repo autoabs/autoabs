@@ -36,7 +36,7 @@ function getState(): State {
 
 const css = {
 	loading: {
-		float: "left",
+		float: 'left',
 	} as React.CSSProperties,
 	buildInfo: {
 		top: '20px',
@@ -68,7 +68,7 @@ export default class Build extends React.Component<void, State> {
 			if (this.state.id && this.state.state === 'building') {
 				BuildInfoActions.sync();
 			}
-		}, 1000)
+		}, 1000);
 	}
 
 	componentWillUnmount(): void {
