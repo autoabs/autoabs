@@ -23,6 +23,7 @@ find app/ -name "*.js*" -delete
 ### development
 
 ```
+tsc
 jspm depcache app/App.js
 tsc --watch
 ```
