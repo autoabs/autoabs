@@ -19,7 +19,7 @@ function _sync(): Promise<void> {
 	return new Promise<void>((resolve, reject): void => {
 		SuperAgent
 			.get('/build')
-			.query({'index': BuildStore.index})
+			.query({index: BuildStore.index})
 			.set('Accept', 'application/json')
 			.end((err: any, res: SuperAgent.Response): void => {
 				loader.done();
