@@ -72,11 +72,15 @@ export default class Main extends React.Component<void, State> {
 				<div className="pt-navbar-group pt-align-right">
 					<button
 						className="pt-button pt-minimal pt-icon-oil-field"
-						onClick={() => {this.setPage('builds')}}
+						onClick={() => {
+							this.setPage('builds');
+						}}
 					>Builds</button>
 					<button
 						className="pt-button pt-minimal pt-icon-layers"
-						onClick={() => {this.setPage('nodes')}}
+						onClick={() => {
+							this.setPage('nodes');
+						}}
 					>Nodes</button>
 					<button
 						className="pt-button pt-minimal pt-icon-refresh"
