@@ -28,6 +28,9 @@ const css = {
 		fontSize: '12px',
 		marginTop: '5px',
 	} as React.CSSProperties,
+	settings: {
+		margin: '10px 10px 0 0',
+	} as React.CSSProperties,
 	stat: {
 		marginTop: '1px',
 	} as React.CSSProperties,
@@ -97,6 +100,12 @@ export default class Node extends React.Component<Props, State> {
 							<div className="pt-progress-meter" style={load15Style}/>
 						</div>
 					</div>
+				</div>
+				<div>
+					<button type="button"
+						className="pt-button pt-minimal pt-icon-cog"
+						style={css.settings}
+					/>
 				</div>
 			</div>
 		</div>;
