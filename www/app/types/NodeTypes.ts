@@ -9,6 +9,11 @@ export interface Node {
 	load1: number;
 	load5: number;
 	load15: number;
+	data: NodeData;
+}
+
+export interface NodeData {
+	concurrency: number;
 }
 
 export type Nodes = Node[];
