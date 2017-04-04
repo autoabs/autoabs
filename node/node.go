@@ -9,13 +9,24 @@ import (
 )
 
 type Node struct {
-	Id        string    `bson:"_id" json:"id"`
-	Type      string    `bson:"type" json:"type"`
-	Timestamp time.Time `bson:"timestamp" json:"timestamp"`
-	Memory    float64   `bson:"memory" json:"memory"`
-	Load1     float64   `bson:"load1" json:"load1"`
-	Load5     float64   `bson:"load5" json:"load5"`
-	Load15    float64   `bson:"load15" json:"load15"`
+	Id        string      `bson:"_id" json:"id"`
+	Type      string      `bson:"type" json:"type"`
+	Timestamp time.Time   `bson:"timestamp" json:"timestamp"`
+	Memory    float64     `bson:"memory" json:"memory"`
+	Load1     float64     `bson:"load1" json:"load1"`
+	Load5     float64     `bson:"load5" json:"load5"`
+	Load15    float64     `bson:"load15" json:"load15"`
+	Data      interface{} `bson:"-" json:"data"`
+}
+
+func (n *Node) LoadData() (err error) {
+	if n.Type == "builder" {
+		n.Data = &BuilderData{
+			Concurrency: 4, // TODO
+		}
+	}
+
+	return
 }
 
 func (n *Node) keepalive() {
