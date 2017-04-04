@@ -6,7 +6,7 @@ import LoadingStore from '../stores/LoadingStore';
 interface Props {
 	style?: React.CSSProperties;
 	size?: string;
-	intent?: Blueprint.Intent,
+	intent?: Blueprint.Intent;
 }
 
 interface State {

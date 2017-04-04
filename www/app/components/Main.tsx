@@ -21,7 +21,7 @@ const css = {
 	heading: {
 		marginRight: '11px',
 	} as React.CSSProperties,
-}
+};
 
 export default class Main extends React.Component<void, State> {
 	constructor(props: any, context: any) {

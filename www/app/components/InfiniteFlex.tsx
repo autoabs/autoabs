@@ -1,13 +1,9 @@
 /// <reference path="../References.d.ts"/>
 import * as React from 'react';
 
-interface BuildItem {
-	(index: number, item: any): JSX.Element;
-}
+type BuildItem = (index: number, item: any) => JSX.Element;
 
-interface Traverse {
-	(index: number): void;
-}
+type Traverse = (index: number) => void;
 
 interface Props {
 	style: React.CSSProperties;
@@ -68,9 +64,9 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 		}
 		let count = this.props.count || 0;
 
-		let elem = this.refs['container'] as Element;
+		let elem = this.refs.container as Element;
 		let width = parseInt(
-			window.getComputedStyle(elem).width) - this.props.padding * 2;
+			window.getComputedStyle(elem).width, 10) - this.props.padding * 2;
 		this.columns = Math.floor(width / this.props.width);
 
 		this.shown = Math.ceil(
@@ -139,19 +135,19 @@ export default class InfiniteFlex extends React.Component<Props, null> {
 				let end = start + len;
 
 				if ((this.props.index !== 0 && upper - start < 50)) {
-					let index = Math.max(0, upper - Math.floor(len / 2));
-					if (index !== this.index) {
-						this.index = index;
+					let newIndex = Math.max(0, upper - Math.floor(len / 2));
+					if (newIndex !== this.index) {
+						this.index = newIndex;
 						setTimeout(() => {
-							this.props.traverse(index);
+							this.props.traverse(newIndex);
 						});
 					}
 				} else if (end < this.props.count && end - lower < 50) {
-					let index = lower - Math.floor(len / 2);
-					if (index !== this.index) {
-						this.index = index;
+					let newIndex = lower - Math.floor(len / 2);
+					if (newIndex !== this.index) {
+						this.index = newIndex;
 						setTimeout(() => {
-							this.props.traverse(index);
+							this.props.traverse(newIndex);
 						});
 					}
 				}

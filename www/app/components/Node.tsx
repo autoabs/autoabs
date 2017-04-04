@@ -45,16 +45,16 @@ export default class Node extends React.Component<Props, State> {
 		let node = this.props.node;
 
 		let memoryStyle = {
-			'width': node.memory + '%',
+			width: node.memory + '%',
 		} as React.CSSProperties;
 		let load1Style = {
-			'width': node.load1 + '%',
+			width: node.load1 + '%',
 		} as React.CSSProperties;
 		let load5Style = {
-			'width': node.load5 + '%',
+			width: node.load5 + '%',
 		} as React.CSSProperties;
 		let load15Style = {
-			'width': node.load15 + '%',
+			width: node.load15 + '%',
 		} as React.CSSProperties;
 
 		return <div className="pt-card" style={css.card}>

@@ -51,7 +51,7 @@ export default class Builds extends React.Component<null, State> {
 	}
 
 	buildItem = (index: number, build: BuildTypes.Build): JSX.Element => {
-		return <Build key={index} build={build}/>
+		return <Build key={index} build={build}/>;
 	}
 
 	traverse = (index: number): void => {

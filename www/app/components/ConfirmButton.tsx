@@ -4,9 +4,7 @@ import * as Blueprint from '@blueprintjs/core';
 import * as Constants from '../Constants';
 import * as MiscUtils from '../utils/MiscUtils';
 
-interface OnConfirm {
-	(): void;
-}
+type OnConfirm = () => void;
 
 interface Props {
 	style?: React.CSSProperties;
@@ -184,7 +182,7 @@ export default class ConfirmButton extends React.Component<Props, State> {
 		}
 
 		let style = this.props.style || {};
-		style['position'] = 'relative';
+		style.position = 'relative';
 
 		return <button type="button"
 			className={'pt-button ' + (this.props.className || '')}
