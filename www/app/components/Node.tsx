@@ -18,6 +18,9 @@ const css = {
 		margin: '5px',
 		padding: '0',
 	} as React.CSSProperties,
+	layout: {
+		position: 'relative',
+	} as React.CSSProperties,
 	content: {
 		padding: '10px',
 	} as React.CSSProperties,
@@ -29,6 +32,8 @@ const css = {
 		marginTop: '5px',
 	} as React.CSSProperties,
 	settings: {
+		position: 'absolute',
+		right: '0',
 		margin: '10px 10px 0 0',
 	} as React.CSSProperties,
 	stat: {
@@ -61,7 +66,7 @@ export default class Node extends React.Component<Props, State> {
 		} as React.CSSProperties;
 
 		return <div className="pt-card" style={css.card}>
-			<div className="layout horizontal">
+			<div className="layout horizontal" style={css.layout}>
 				<div style={css.content} className="card-content flex">
 					<div className="layout vertical">
 						<div style={css.name}>
