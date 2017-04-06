@@ -1,9 +1,14 @@
 /// <reference path="../References.d.ts"/>
 import * as React from 'react';
 import * as NodeTypes from '../types/NodeTypes';
+import * as Blueprint from '@blueprintjs/core';
 
 interface Props {
 	node: NodeTypes.Node;
+}
+
+interface State {
+	settings: boolean;
 }
 
 const css = {
@@ -37,9 +42,24 @@ const css = {
 	} as React.CSSProperties,
 };
 
-export default class Node extends React.Component<Props, void> {
+export default class Node extends React.Component<Props, State> {
 	constructor(props: Props, context: any) {
 		super(props, context);
+		this.state = {
+			settings: false,
+		};
+	}
+
+	openDialog = (): void => {
+		this.setState({
+			settings: true,
+		});
+	}
+
+	closeDialog = (): void => {
+		this.setState({
+			settings: false,
+		});
 	}
 
 	render(): JSX.Element {
@@ -103,9 +123,33 @@ export default class Node extends React.Component<Props, void> {
 					<button type="button"
 						className="pt-button pt-minimal pt-icon-cog"
 						style={css.settings}
+						onClick={this.openDialog}
 					/>
 				</div>
 			</div>
+			<Blueprint.Dialog
+				title={`Node Settings - ${node.id}`}
+				isOpen={this.state.settings}
+				onClose={this.closeDialog}
+				canOutsideClickClose={false}
+			>
+				<div className="pt-dialog-body">
+					<div className="pt-text-muted">
+						id: {node.id}
+					</div>
+					<div className="pt-text-muted">
+						type: {node.type}
+					</div>
+				</div>
+				<div className="pt-dialog-footer">
+					<div className="pt-dialog-footer-actions">
+						<button type="button"
+							className="pt-button"
+							onClick={this.closeDialog}
+						>Close</button>
+					</div>
+				</div>
+			</Blueprint.Dialog>
 		</div>;
 	}
 }
