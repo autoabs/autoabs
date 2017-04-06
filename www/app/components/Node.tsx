@@ -6,10 +6,6 @@ interface Props {
 	node: NodeTypes.Node;
 }
 
-interface State {
-	locked: boolean;
-}
-
 const css = {
 	card: {
 		flex: '1 0 auto',
@@ -41,12 +37,9 @@ const css = {
 	} as React.CSSProperties,
 };
 
-export default class Node extends React.Component<Props, State> {
+export default class Node extends React.Component<Props, void> {
 	constructor(props: Props, context: any) {
 		super(props, context);
-		this.state = {
-			locked: false,
-		};
 	}
 
 	render(): JSX.Element {
