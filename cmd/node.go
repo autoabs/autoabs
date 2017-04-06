@@ -24,13 +24,16 @@ func WebNode() {
 		debug, _ = strconv.ParseBool(debugStr)
 	}
 
+	if debug {
+		gin.SetMode(gin.DebugMode)
+	} else {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
 	router := gin.New()
 
 	if debug {
 		router.Use(gin.Logger())
-		gin.SetMode(gin.DebugMode)
-	} else {
-		gin.SetMode(gin.ReleaseMode)
 	}
 
 	handlers.Register(router)
