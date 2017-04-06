@@ -13,6 +13,11 @@ func GetAll(db *database.Database) (nodes []*Node, err error) {
 
 	nde := &Node{}
 	for cursor.Next(nde) {
+		err = nde.LoadData()
+		if err != nil {
+			return
+		}
+
 		nodes = append(nodes, nde)
 		nde = &Node{}
 	}
