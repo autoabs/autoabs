@@ -131,7 +131,7 @@ export default class Node extends React.Component<Props, State> {
 				</div>
 			</div>
 			<Blueprint.Dialog
-				title={`Node Settings - ${node.id}`}
+				title={node.id}
 				style={css.settingsDialog}
 				isOpen={this.state.settings}
 				onClose={this.closeDialog}
