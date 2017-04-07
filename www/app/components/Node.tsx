@@ -40,6 +40,9 @@ const css = {
 	stat: {
 		marginTop: '1px',
 	} as React.CSSProperties,
+	settingsDialog: {
+		maxWidth: 'calc(100% - 40px)',
+	} as React.CSSProperties,
 };
 
 export default class Node extends React.Component<Props, State> {
@@ -129,6 +132,7 @@ export default class Node extends React.Component<Props, State> {
 			</div>
 			<Blueprint.Dialog
 				title={`Node Settings - ${node.id}`}
+				style={css.settingsDialog}
 				isOpen={this.state.settings}
 				onClose={this.closeDialog}
 				canOutsideClickClose={false}
