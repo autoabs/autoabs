@@ -4,35 +4,26 @@ import (
 	"fmt"
 	"github.com/Sirupsen/logrus"
 	"github.com/autoabs/autoabs/config"
+	"github.com/autoabs/autoabs/constants"
 	"github.com/autoabs/autoabs/handlers"
 	"github.com/autoabs/autoabs/node"
 	"github.com/autoabs/autoabs/scheduler"
 	"github.com/autoabs/autoabs/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"os"
-	"strconv"
 	"time"
 )
 
 func WebNode() {
-	var debug bool
-	debugStr := os.Getenv("DEBUG")
-	if debugStr == "" {
-		debug = true
-	} else {
-		debug, _ = strconv.ParseBool(debugStr)
-	}
-
-	if debug {
-		gin.SetMode(gin.DebugMode)
-	} else {
+	if constants.Production {
 		gin.SetMode(gin.ReleaseMode)
+	} else {
+		gin.SetMode(gin.DebugMode)
 	}
 
 	router := gin.New()
 
-	if debug {
+	if !constants.Production {
 		router.Use(gin.Logger())
 	}
 
@@ -59,9 +50,9 @@ func WebNode() {
 	}
 
 	logrus.WithFields(logrus.Fields{
-		"address": config.Config.ServerHost,
-		"port":    config.Config.ServerPort,
-		"debug":   debug,
+		"address":    config.Config.ServerHost,
+		"port":       config.Config.ServerPort,
+		"production": constants.Production,
 	}).Info("cmd.app: Starting app node")
 
 	err := server.ListenAndServe()
