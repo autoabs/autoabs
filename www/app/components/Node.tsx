@@ -41,9 +41,6 @@ const css = {
 	stat: {
 		marginTop: '1px',
 	} as React.CSSProperties,
-	settingsDialog: {
-		maxWidth: 'calc(100% - 40px)',
-	} as React.CSSProperties,
 };
 
 export default class Node extends React.Component<Props, State> {
