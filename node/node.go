@@ -19,10 +19,25 @@ type Node struct {
 	Settings  interface{} `bson:"settings" json:"settings"`
 }
 
-func (n *Node) LoadSettings() (err error) {
+func (n *Node) LoadSettings(db *database.Database) (err error) {
+	coll := db.NodesSettings()
+
 	if n.Type == "builder" {
 		n.Settings = &BuilderSettings{
-			Concurrency: 4, // TODO
+			NodeId:      n.Id,
+			Concurrency: 4,
+		}
+	} else {
+		return
+	}
+
+	err = coll.FindOneId(n.Id, n.Settings)
+	if err != nil {
+		switch err.(type) {
+		case *database.NotFoundError:
+			err = nil
+		default:
+			return
 		}
 	}
 

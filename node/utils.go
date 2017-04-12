@@ -13,7 +13,7 @@ func GetAll(db *database.Database) (nodes []*Node, err error) {
 
 	nde := &Node{}
 	for cursor.Next(nde) {
-		err = nde.LoadSettings()
+		err = nde.LoadSettings(db)
 		if err != nil {
 			return
 		}
