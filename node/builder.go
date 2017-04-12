@@ -1,5 +1,5 @@
 package node
 
-type BuilderData struct {
+type BuilderSettings struct {
 	Concurrency int `json:"concurrency"`
 }
