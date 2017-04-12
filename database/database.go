@@ -51,6 +51,11 @@ func (d *Database) Nodes() (coll *Collection) {
 	return
 }
 
+func (d *Database) NodesSettings() (coll *Collection) {
+	coll = d.getCollection("nodes_settings")
+	return
+}
+
 func (d *Database) Builds() (coll *Collection) {
 	coll = d.getCollection("builds")
 	return
