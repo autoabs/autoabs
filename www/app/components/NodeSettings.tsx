@@ -18,8 +18,23 @@ const css = {
 };
 
 export default class NodeSettings extends React.Component<Props, void> {
+	builderSettings(): JSX.Element {
+		return <div>
+			<div className="pt-text-muted">
+				concurrency: {this.props.node.settings.concurrency}
+			</div>
+		</div>;
+	}
+
 	render(): JSX.Element {
 		let node = this.props.node;
+		let settings: JSX.Element;
+
+		switch (node.type) {
+			case 'builder':
+				settings = this.builderSettings();
+				break;
+		}
 
 		return <Blueprint.Dialog
 				title={node.id}
@@ -35,6 +50,7 @@ export default class NodeSettings extends React.Component<Props, void> {
 					<div className="pt-text-muted">
 						type: {node.type}
 					</div>
+					{settings}
 				</div>
 				<div className="pt-dialog-footer">
 					<div className="pt-dialog-footer-actions">
