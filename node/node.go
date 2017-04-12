@@ -44,6 +44,18 @@ func (n *Node) LoadSettings(db *database.Database) (err error) {
 	return
 }
 
+func (n *Node) CommitSetttings(db *database.Database) (err error) {
+	coll := db.NodesSettings()
+
+	_, err = coll.UpsertId(n.Id, n.Settings)
+	if err != nil {
+		err = database.ParseError(err)
+		return
+	}
+
+	return
+}
+
 func (n *Node) keepalive() {
 	db := database.GetDatabase()
 	coll := db.Nodes()
