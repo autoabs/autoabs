@@ -2,6 +2,7 @@
 import * as React from 'react';
 import * as NodeTypes from '../types/NodeTypes';
 import * as Blueprint from '@blueprintjs/core';
+import NodeSettings from './NodeSettings';
 
 interface Props {
 	node: NodeTypes.Node;
@@ -130,30 +131,11 @@ export default class Node extends React.Component<Props, State> {
 					/>
 				</div>
 			</div>
-			<Blueprint.Dialog
-				title={node.id}
-				style={css.settingsDialog}
-				isOpen={this.state.settings}
+			<NodeSettings
+				node={node}
+				open={this.state.settings}
 				onClose={this.closeDialog}
-				canOutsideClickClose={false}
-			>
-				<div className="pt-dialog-body">
-					<div className="pt-text-muted">
-						id: {node.id}
-					</div>
-					<div className="pt-text-muted">
-						type: {node.type}
-					</div>
-				</div>
-				<div className="pt-dialog-footer">
-					<div className="pt-dialog-footer-actions">
-						<button type="button"
-							className="pt-button"
-							onClick={this.closeDialog}
-						>Close</button>
-					</div>
-				</div>
-			</Blueprint.Dialog>
+			/>
 		</div>;
 	}
 }
