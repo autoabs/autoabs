@@ -9,10 +9,10 @@ export interface Node {
 	load1: number;
 	load5: number;
 	load15: number;
-	data: NodeData;
+	settings: NodeSettings;
 }
 
-export interface NodeData {
+export interface NodeSettings {
 	concurrency: number;
 }
 
