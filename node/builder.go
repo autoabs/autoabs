@@ -1,5 +1,6 @@
 package node
 
 type BuilderSettings struct {
-	Concurrency int `json:"concurrency"`
+	NodeId      string `bson:"_id" json:"-"`
+	Concurrency int    `bson:"concurrency" json:"concurrency"`
 }
