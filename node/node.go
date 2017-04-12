@@ -16,7 +16,7 @@ type Node struct {
 	Load1     float64     `bson:"load1" json:"load1"`
 	Load5     float64     `bson:"load5" json:"load5"`
 	Load15    float64     `bson:"load15" json:"load15"`
-	Settings  interface{} `bson:"-" json:"settings"`
+	Settings  interface{} `bson:"settings" json:"settings"`
 }
 
 func (n *Node) LoadSettings() (err error) {
