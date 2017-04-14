@@ -45,6 +45,29 @@ export function sync(): Promise<void> {
 	});
 }
 
+export function commit(id: string,
+		settings: NodeTypes.NodeSettings): Promise<void> {
+	let loader = new Loader().loading();
+
+	return new Promise<void>((resolve, reject): void => {
+		SuperAgent
+			.put('/node/' + id)
+			.send(settings)
+			.set('Accept', 'application/json')
+			.end((err: any, res: SuperAgent.Response): void => {
+				loader.done();
+
+				if (err) {
+					Alert.error('Failed to commit node settings');
+					reject(err);
+					return;
+				}
+
+				resolve();
+			});
+	});
+}
+
 EventDispatcher.register((action: NodeTypes.NodeDispatch) => {
 	switch (action.type) {
 		case NodeTypes.CHANGE:
