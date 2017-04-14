@@ -58,6 +58,14 @@ export default class NodeSettings extends React.Component<Props, State> {
 		</div>;
 	}
 
+	onSave = (): void => {
+		console.log(this.state.settings);
+		this.setState({
+			settings: null,
+		});
+		this.props.onClose();
+	}
+
 	onClose = (): void => {
 		this.setState({
 			settings: null,
@@ -97,6 +105,10 @@ export default class NodeSettings extends React.Component<Props, State> {
 							className="pt-button"
 							onClick={this.onClose}
 						>Close</button>
+						<button type="button"
+							className="pt-button pt-intent-primary"
+							onClick={this.onSave}
+						>Save</button>
 					</div>
 				</div>
 		</Blueprint.Dialog>;
