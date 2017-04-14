@@ -2,8 +2,22 @@ package node
 
 import (
 	"github.com/autoabs/autoabs/database"
+	"github.com/autoabs/autoabs/event"
 	"gopkg.in/mgo.v2/bson"
 )
+
+func PublishChange(db *database.Database) (err error) {
+	evt := &event.Dispatch{
+		Type: "node.change",
+	}
+
+	err = event.Publish(db, "dispatch", evt)
+	if err != nil {
+		return
+	}
+
+	return
+}
 
 func Get(db *database.Database, nodeId string) (nde *Node, err error) {
 	nde = &Node{}
