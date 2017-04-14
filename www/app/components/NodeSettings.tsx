@@ -95,13 +95,13 @@ export default class NodeSettings extends React.Component<Props, State> {
 			>
 				<div className="pt-dialog-body">
 					<label className="pt-label">
-						id
+						Node ID
 						<div className="pt-text-muted">
 							{node.id}
 						</div>
 					</label>
 					<label className="pt-label">
-						type
+						Node Type
 						<div className="pt-text-muted">
 							{node.type}
 						</div>
