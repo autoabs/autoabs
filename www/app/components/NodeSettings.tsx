@@ -48,13 +48,16 @@ export default class NodeSettings extends React.Component<Props, State> {
 		}
 
 		return <div>
-			<Blueprint.Slider
-				min={1}
-				max={10}
-				stepSize={1}
-				value={concurrency}
-				onChange={this.concurrencyChange}
-			/>
+			<label className="pt-label">
+				Concurrency
+				<Blueprint.Slider
+					min={1}
+					max={10}
+					stepSize={1}
+					value={concurrency}
+					onChange={this.concurrencyChange}
+				/>
+			</label>
 		</div>;
 	}
 
@@ -91,12 +94,18 @@ export default class NodeSettings extends React.Component<Props, State> {
 				canOutsideClickClose={false}
 			>
 				<div className="pt-dialog-body">
-					<div className="pt-text-muted">
-						id: {node.id}
-					</div>
-					<div className="pt-text-muted">
-						type: {node.type}
-					</div>
+					<label className="pt-label">
+						id
+						<div className="pt-text-muted">
+							{node.id}
+						</div>
+					</label>
+					<label className="pt-label">
+						type
+						<div className="pt-text-muted">
+							{node.type}
+						</div>
+					</label>
 					{settings}
 				</div>
 				<div className="pt-dialog-footer">
