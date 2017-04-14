@@ -1,6 +1,7 @@
 /// <reference path="../References.d.ts"/>
 import * as React from 'react';
 import * as NodeTypes from '../types/NodeTypes';
+import * as NodeActions from '../actions/NodeActions';
 import * as Blueprint from '@blueprintjs/core';
 
 type OnClose = () => void;
@@ -62,11 +63,12 @@ export default class NodeSettings extends React.Component<Props, State> {
 	}
 
 	onSave = (): void => {
-		console.log(this.state.settings);
-		this.setState({
-			settings: null,
+		NodeActions.commit(this.props.node.id, this.state.settings).then(() => {
+			this.setState({
+				settings: null,
+			});
+			this.props.onClose();
 		});
-		this.props.onClose();
 	}
 
 	onClose = (): void => {
