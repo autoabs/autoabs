@@ -9,11 +9,11 @@ import (
 func nodeGet(c *gin.Context) {
 	db := c.MustGet("db").(*database.Database)
 
-	builds, err := node.GetAll(db)
+	nodes, err := node.GetAll(db)
 	if err != nil {
 		c.AbortWithError(500, err)
 		return
 	}
 
-	c.JSON(200, builds)
+	c.JSON(200, nodes)
 }
