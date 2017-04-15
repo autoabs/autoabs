@@ -53,6 +53,8 @@ func (n *Node) CommitSetttings(db *database.Database) (err error) {
 		return
 	}
 
+	PublishChange(db)
+
 	return
 }
 
