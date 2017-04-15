@@ -54,7 +54,7 @@ export function commit(id: string,
 			.put('/node/' + id)
 			.send(settings)
 			.set('Accept', 'application/json')
-			.end((err: any, res: SuperAgent.Response): void => {
+			.end((err: any): void => {
 				loader.done();
 
 				if (err) {
