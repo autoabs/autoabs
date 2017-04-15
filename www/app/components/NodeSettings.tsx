@@ -36,7 +36,7 @@ export default class NodeSettings extends React.Component<Props, State> {
 				...this.state.settings,
 				concurrency: val,
 			},
-		})
+		});
 	}
 
 	builderSettings(): JSX.Element {
