@@ -63,6 +63,11 @@ export default class NodeSettings extends React.Component<Props, State> {
 	}
 
 	onSave = (): void => {
+		if (!this.state.settings) {
+			this.onClose();
+			return;
+		}
+
 		NodeActions.commit(this.props.node.id, this.state.settings).then(() => {
 			this.setState({
 				settings: null,
