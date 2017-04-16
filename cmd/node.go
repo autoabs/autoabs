@@ -33,7 +33,7 @@ func WebNode() {
 		Id:   utils.RandName(),
 		Type: "web",
 	}
-	nde.Keepalive()
+	nde.Init()
 
 	addr := fmt.Sprintf(
 		"%s:%d",
@@ -66,7 +66,7 @@ func StorageNode() {
 		Id:   utils.RandName(),
 		Type: "storage",
 	}
-	nde.Keepalive()
+	nde.Init()
 
 	sch := scheduler.Storage{}
 
@@ -78,7 +78,7 @@ func BuilderNode() {
 		Id:   utils.RandName(),
 		Type: "builder",
 	}
-	nde.Keepalive()
+	nde.Init()
 
 	sch := scheduler.Build{}
 

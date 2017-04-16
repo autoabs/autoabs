@@ -99,7 +99,7 @@ func (n *Node) keepalive() {
 	}
 }
 
-func (n *Node) Keepalive() (err error) {
+func (n *Node) Init() (err error) {
 	go n.keepalive()
 
 	return
