@@ -8,6 +8,8 @@ import (
 	"time"
 )
 
+var Self *Node
+
 type Node struct {
 	Id        string      `bson:"_id" json:"id"`
 	Type      string      `bson:"type" json:"type"`
@@ -100,6 +102,8 @@ func (n *Node) keepalive() {
 }
 
 func (n *Node) Init() (err error) {
+	Self = n
+
 	go n.keepalive()
 
 	return
