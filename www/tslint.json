@@ -8,6 +8,7 @@
     "switch-default": false,
     "interface-name": false,
     "ordered-imports": false,
+    "align": false,
     "member-access": [],
     "indent": [true, "tabs"],
     "quotemark": [true, "single", "jsx-double", "avoid-escape"],
