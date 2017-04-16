@@ -1,7 +1,6 @@
 /// <reference path="../References.d.ts"/>
 import * as React from 'react';
 import * as NodeTypes from '../types/NodeTypes';
-import * as Blueprint from '@blueprintjs/core';
 import NodeSettings from './NodeSettings';
 
 interface Props {
