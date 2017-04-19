@@ -24,8 +24,10 @@ type Node struct {
 func (n *Node) LoadSettings(db *database.Database) (err error) {
 	coll := db.NodesSettings()
 
+	var settings interface{}
+
 	if n.Type == "builder" {
-		n.Settings = &BuilderSettings{
+		settings = &BuilderSettings{
 			NodeId:      n.Id,
 			Concurrency: 4,
 		}
@@ -33,7 +35,7 @@ func (n *Node) LoadSettings(db *database.Database) (err error) {
 		return
 	}
 
-	err = coll.FindOneId(n.Id, n.Settings)
+	err = coll.FindOneId(n.Id, settings)
 	if err != nil {
 		switch err.(type) {
 		case *database.NotFoundError:
@@ -42,6 +44,8 @@ func (n *Node) LoadSettings(db *database.Database) (err error) {
 			return
 		}
 	}
+
+	n.Settings = settings
 
 	return
 }
