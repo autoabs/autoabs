@@ -22,6 +22,14 @@ type Node struct {
 	Settings  interface{} `bson:"settings" json:"settings"`
 }
 
+func (n *Node) initStats() {
+	switch n.Type {
+	case "builder":
+		n.Stats = &BuilderStats{}
+		break
+	}
+}
+
 func (n *Node) LoadSettings(db *database.Database) (err error) {
 	coll := db.NodesSettings()
 
@@ -115,6 +123,8 @@ func (n *Node) keepalive() {
 func (n *Node) Init() (err error) {
 	db := database.GetDatabase()
 	defer db.Close()
+
+	n.initStats()
 
 	err = n.LoadSettings(db)
 	if err != nil {
