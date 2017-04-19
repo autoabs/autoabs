@@ -8,7 +8,6 @@ import (
 	"github.com/autoabs/autoabs/handlers"
 	"github.com/autoabs/autoabs/node"
 	"github.com/autoabs/autoabs/scheduler"
-	"github.com/autoabs/autoabs/utils"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"time"
@@ -30,7 +29,7 @@ func WebNode() {
 	handlers.Register(router)
 
 	nde := node.Node{
-		Id:   utils.RandName(),
+		Id:   config.Config.WebNodeId,
 		Type: "web",
 	}
 	nde.Init()
@@ -63,7 +62,7 @@ func WebNode() {
 
 func StorageNode() {
 	nde := node.Node{
-		Id:   utils.RandName(),
+		Id:   config.Config.StorageNodeId,
 		Type: "storage",
 	}
 	nde.Init()
@@ -75,7 +74,7 @@ func StorageNode() {
 
 func BuilderNode() {
 	nde := node.Node{
-		Id:   utils.RandName(),
+		Id:   config.Config.BuilderNodeId,
 		Type: "builder",
 	}
 	nde.Init()
