@@ -66,6 +66,8 @@ func (n *Node) CommitSetttings(db *database.Database) (err error) {
 
 func (n *Node) keepalive() {
 	db := database.GetDatabase()
+	defer db.Close()
+
 	coll := db.Nodes()
 
 	for {
@@ -100,6 +102,8 @@ func (n *Node) keepalive() {
 		coll.Upsert(&bson.M{
 			"_id": n.Id,
 		}, n)
+
+		n.LoadSettings(db)
 
 		time.Sleep(10 * time.Second)
 	}
