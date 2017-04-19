@@ -116,7 +116,7 @@ func (n *Node) keepalive() {
 
 		n.LoadSettings(db)
 
-		time.Sleep(10 * time.Second)
+		time.Sleep(5 * time.Second)
 	}
 }
 
