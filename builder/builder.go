@@ -4,6 +4,7 @@ import (
 	"github.com/Sirupsen/logrus"
 	"github.com/autoabs/autoabs/build"
 	"github.com/autoabs/autoabs/database"
+	"github.com/autoabs/autoabs/node"
 	"sync"
 	"time"
 )
@@ -15,10 +16,15 @@ type Builder struct {
 	Count   int
 }
 
+func (b *Builder) getConcurrency() int {
+	settings := node.Self.Settings.(*node.BuilderSettings)
+	return settings.Concurrency
+}
+
 func (b *Builder) acquire() {
 	for {
 		b.lock.Lock()
-		if b.running < b.Count {
+		if b.running < b.getConcurrency() {
 			b.running += 1
 			b.lock.Unlock()
 			break
@@ -56,8 +62,6 @@ func (b *Builder) build(bild *build.Build) {
 func (b *Builder) Start() (err error) {
 	db := database.GetDatabase()
 	defer db.Close()
-
-	b.Count = 4
 
 	for {
 		b.acquire()
