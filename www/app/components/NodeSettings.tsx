@@ -69,18 +69,22 @@ export default class NodeSettings extends React.Component<Props, State> {
 		}
 
 		NodeActions.commit(this.props.node.id, this.state.settings).then(() => {
-			this.setState({
-				settings: null,
-			});
 			this.props.onClose();
+			setTimeout(() => {
+				this.setState({
+					settings: null,
+				});
+			}, 100);
 		});
 	}
 
 	onClose = (): void => {
-		this.setState({
-			settings: null,
-		});
 		this.props.onClose();
+		setTimeout(() => {
+			this.setState({
+				settings: null,
+			});
+		}, 100);
 	}
 
 	render(): JSX.Element {
