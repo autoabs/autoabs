@@ -21,14 +21,17 @@ var (
 var Config = &ConfigData{}
 
 type ConfigData struct {
-	path       string `json:"path"`
-	loaded     bool   `json:"-"`
-	RootPath   string `json:"root_path"`
-	MongoUri   string `json:"mongo_uri"`
-	ServerName string `json:"server_name"`
-	ServerPort int    `json:"server_port"`
-	ServerHost string `json:"server_host"`
-	SigKeyName string `json:"sig_key_name"`
+	path          string `json:"path"`
+	loaded        bool   `json:"-"`
+	RootPath      string `json:"root_path"`
+	MongoUri      string `json:"mongo_uri"`
+	ServerName    string `json:"server_name"`
+	ServerPort    int    `json:"server_port"`
+	ServerHost    string `json:"server_host"`
+	SigKeyName    string `json:"sig_key_name"`
+	WebNodeId     string `json:"web_node_id"`
+	StorageNodeId string `json:"storage_node_id"`
+	BuilderNodeId string `json:"builder_node_id"`
 }
 
 func (c *ConfigData) Load(path string) (err error) {
@@ -139,6 +142,30 @@ func init() {
 		err := Load()
 		if err != nil {
 			panic(err)
+		}
+
+		save := false
+
+		if Config.WebNodeId == "" {
+			save = true
+			Config.WebNodeId = utils.RandName()
+		}
+
+		if Config.StorageNodeId == "" {
+			save = true
+			Config.StorageNodeId = utils.RandName()
+		}
+
+		if Config.BuilderNodeId == "" {
+			save = true
+			Config.BuilderNodeId = utils.RandName()
+		}
+
+		if save {
+			err = Save()
+			if err != nil {
+				panic(err)
+			}
 		}
 	}
 }
