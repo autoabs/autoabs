@@ -26,7 +26,9 @@ func (b *Builder) acquire() {
 		b.lock.Lock()
 		if b.running < b.getConcurrency() {
 			b.running += 1
+			node.Self.Stats.(*node.BuilderStats).Active = b.running
 			b.lock.Unlock()
+
 			break
 		} else {
 			b.lock.Unlock()
@@ -42,6 +44,7 @@ func (b *Builder) build(bild *build.Build) {
 		defer func() {
 			b.lock.Lock()
 			b.running -= 1
+			node.Self.Stats.(*node.BuilderStats).Active = b.running
 			b.lock.Unlock()
 			b.waiters.Done()
 		}()
