@@ -110,6 +110,14 @@ func (n *Node) keepalive() {
 }
 
 func (n *Node) Init() (err error) {
+	db := database.GetDatabase()
+	defer db.Close()
+
+	err = n.LoadSettings(db)
+	if err != nil {
+		return
+	}
+
 	Self = n
 
 	go n.keepalive()
