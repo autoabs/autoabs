@@ -26,12 +26,14 @@ func (n *Node) LoadSettings(db *database.Database) (err error) {
 
 	var settings interface{}
 
-	if n.Type == "builder" {
+	switch n.Type {
+	case "builder":
 		settings = &BuilderSettings{
 			NodeId:      n.Id,
 			Concurrency: 4,
 		}
-	} else {
+		break
+	default:
 		return
 	}
 
