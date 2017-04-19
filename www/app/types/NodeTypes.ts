@@ -9,7 +9,16 @@ export interface Node {
 	load1: number;
 	load5: number;
 	load15: number;
+	stats: NodeStats;
 	settings: NodeSettings;
+}
+
+export type NodeStats = DefaultStats | BuilderStats;
+
+export interface DefaultStats {}
+
+export interface BuilderStats {
+	active: number;
 }
 
 export type NodeSettings = DefaultSettings | BuilderSettings;
