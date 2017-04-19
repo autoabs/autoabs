@@ -12,7 +12,9 @@ export interface Node {
 	settings: NodeSettings;
 }
 
-export type NodeSettings = BuilderSettings;
+export type NodeSettings = DefaultSettings | BuilderSettings;
+
+export interface DefaultSettings {}
 
 export interface BuilderSettings {
 	concurrency: number;

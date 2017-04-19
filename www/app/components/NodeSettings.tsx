@@ -43,9 +43,11 @@ export default class NodeSettings extends React.Component<Props, State> {
 		let concurrency: number;
 
 		if (this.state.settings) {
-			concurrency = this.state.settings.concurrency;
+			let settings = this.state.settings as NodeTypes.BuilderSettings;
+			concurrency = settings.concurrency;
 		} else {
-			concurrency = this.props.node.settings.concurrency;
+			let settings = this.props.node.settings as NodeTypes.BuilderSettings;
+			concurrency = settings.concurrency;
 		}
 
 		return <div>
