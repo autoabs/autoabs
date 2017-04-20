@@ -437,6 +437,7 @@ func (b *Build) Build(db *database.Database) (err error) {
 
 		return
 	}
+
 	b.State = "building"
 	b.StateRank = BuildingRank
 	b.Builder = config.Config.ServerName
