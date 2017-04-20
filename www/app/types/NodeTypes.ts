@@ -15,7 +15,7 @@ export interface Node {
 
 export type NodeStats = DefaultStats | BuilderStats;
 
-export interface DefaultStats {}
+export type DefaultStats = {}
 
 export interface BuilderStats {
 	active: number;
@@ -23,7 +23,7 @@ export interface BuilderStats {
 
 export type NodeSettings = DefaultSettings | BuilderSettings;
 
-export interface DefaultSettings {}
+export type DefaultSettings = {}
 
 export interface BuilderSettings {
 	concurrency: number;
