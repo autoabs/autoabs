@@ -21,7 +21,7 @@ var (
 var Config = &ConfigData{}
 
 type ConfigData struct {
-	path          string `json:"path"`
+	path          string `json:"-"`
 	loaded        bool   `json:"-"`
 	RootPath      string `json:"root_path"`
 	MongoUri      string `json:"mongo_uri"`
@@ -40,6 +40,7 @@ func (c *ConfigData) Load(path string) (err error) {
 	_, err = os.Stat(c.path)
 	if err != nil {
 		if os.IsNotExist(err) {
+			c.loaded = true
 			err = nil
 		} else {
 			err = &errortypes.ReadError{
