@@ -56,11 +56,11 @@ func Register(engine *gin.Engine) {
 	engine.GET("/check", checkGet)
 
 	if constants.Production {
-		var err error
-		store, err = static.NewStore(constants.StaticRoot)
+		stre, err := static.NewStore(constants.StaticRoot)
 		if err != nil {
 			panic(err)
 		}
+		store = stre
 
 		engine.GET("/", staticIndexGet)
 		engine.GET("/static/*path", staticGet)
